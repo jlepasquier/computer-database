@@ -19,7 +19,7 @@ public final class CLI {
 		} catch (SQLException e) {
 			System.out.println("Connection failed");
 			System.out.println(e.getMessage());
-		}
+		} 
 	}
 
 }
