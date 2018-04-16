@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.main.java.model;
 import java.util.Date;
 
 public class Computer {
+	private int id;
 	private String name;
 	private Date introduced;
 	private Date discontinued;
@@ -23,6 +24,21 @@ public class Computer {
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		this.company = company;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
