@@ -23,5 +23,16 @@ public class ComputerService {
 		}
 		return new ArrayList<Computer>();
 	}
+	
+	public Computer getComputer(int id) {
+		try {
+			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
+			return dao.getComputer(id);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

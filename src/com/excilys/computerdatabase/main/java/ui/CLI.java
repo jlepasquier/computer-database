@@ -15,6 +15,12 @@ public final class CLI {
 			System.out.println(cpu.getName());
 		}
 		
+		for (int i=25 ; i<30 ; i++) {
+			System.out.println("--------------");
+			Computer cpu = cs.getComputer(i);
+			System.out.println(cpu.getName());
+		}
+		
 
 		
 		/*

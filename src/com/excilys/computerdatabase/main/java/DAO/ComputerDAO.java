@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.excilys.computerdatabase.main.java.model.Computer;
@@ -30,7 +29,7 @@ public class ComputerDAO {
 
 	public List<Computer> getComputerList() throws Exception {
 		String sql = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname\n"
-				+ "FROM computer as cpu\n" + "INNER JOIN company as cpy\n" + "ON cpy.id = cpu.company_id";
+				+ "FROM computer as cpu\n" + "LEFT JOIN company as cpy\n" + "ON cpy.id = cpu.company_id";
 
 		List<Computer> cpuList = new ArrayList<>();
 		Connection connection = null;
@@ -46,13 +45,8 @@ public class ComputerDAO {
 				Timestamp discontinued = rs.getTimestamp("discontinued");
 				String company = rs.getString("companyname");
 
-				cpuList.add(new Computer
-						.Builder(name)
-						.withCompany(company)
-						.withIntroduced(introduced)
-						.withDiscontinued(discontinued)
-						.withId(id).build()
-						);
+				cpuList.add(new Computer.Builder(name).withCompany(company).withIntroduced(introduced)
+						.withDiscontinued(discontinued).withId(id).build());
 			}
 		} catch (SQLException e) {
 			throw new Exception(e.getMessage(), e);
@@ -64,8 +58,33 @@ public class ComputerDAO {
 	}
 
 	public Computer getComputer(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname\n"
+				+ "FROM computer as cpu \n" + "left JOIN company as cpy ON cpy.id = cpu.company_id \n" + "WHERE cpu.id="
+				+ id;
+
+		Connection connection = null;
+		Computer cpu = null;
+		try {
+			connection = getConnection();
+			PreparedStatement statement = connection.prepareStatement(sql);
+			ResultSet rs = statement.executeQuery();
+
+			while (rs.next()) {
+				String name = rs.getString("cpuname");
+				Timestamp introduced = rs.getTimestamp("introduced");
+				Timestamp discontinued = rs.getTimestamp("discontinued");
+				String company = rs.getString("companyname");
+
+				cpu = new Computer.Builder(name).withCompany(company).withIntroduced(introduced)
+						.withDiscontinued(discontinued).withId(id).build();
+			}
+		} catch (SQLException e) {
+			throw new Exception(e.getMessage(), e);
+		} finally {
+			closeConnection(connection);
+		}
+
+		return cpu;
 	}
 
 	public void createComputer() throws Exception {
