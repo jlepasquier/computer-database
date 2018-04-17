@@ -67,6 +67,12 @@ public class Computer {
 		this.company = company;
 	}
 
+	@Override
+	public String toString() {
+		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+				+ ", company=" + company + "]";
+	}
+
 	public static class Builder {
 		private int id;
 		private String name;

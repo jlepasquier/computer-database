@@ -12,14 +12,16 @@ public final class CLI {
 		ComputerService cs = new ComputerService();
 		List<Computer> cpuList = cs.getComputerList();
 		for (Computer cpu : cpuList) {
-			System.out.println(cpu.getName());
+			System.out.println(cpu);
 		}
 		
 		for (int i=25 ; i<30 ; i++) {
 			System.out.println("--------------");
 			Computer cpu = cs.getComputer(i);
-			System.out.println(cpu.getName());
+			System.out.println(cpu);
 		}
+		
+		
 		
 
 		
