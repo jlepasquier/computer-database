@@ -7,8 +7,9 @@ public class Company {
 	/**
 	 * @param name
 	 */
-	public Company(String name) {
+	public Company(int id, String name) {
 		super();
+		this.id = id;
 		this.name = name;
 	}
 

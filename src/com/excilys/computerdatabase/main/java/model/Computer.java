@@ -1,24 +1,17 @@
 package com.excilys.computerdatabase.main.java.model;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 public class Computer {
 	private int id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
-	private String company;
+	private Date introduced;
+	private Date discontinued;
+	private Company company;
 
 	public Computer() {
 	}
 
-	/**
-	 * @param name
-	 * @param introduced
-	 * @param discontinued
-	 * @param company
-	 */
 	public Computer(Builder builder) {
 		this.id = builder.id;
 		this.name = builder.name;
@@ -47,7 +40,7 @@ public class Computer {
 		return introduced;
 	}
 
-	public void setIntroduced(Timestamp introduced) {
+	public void setIntroduced(Date introduced) {
 		this.introduced = introduced;
 	}
 
@@ -55,24 +48,30 @@ public class Computer {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Timestamp discontinued) {
+	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	public String getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	@Override
+	public String toString() {
+		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+				+ ", company=" + company + "]";
 	}
 
 	public static class Builder {
 		private int id;
 		private String name;
-		private Timestamp introduced;
-		private Timestamp discontinued;
-		private String company;
+		private Date introduced;
+		private Date discontinued;
+		private Company company;
 
 		public Builder(String name) {
 			if (name == null) {
@@ -86,17 +85,17 @@ public class Computer {
 			return this;
 		}
 
-		public Builder withIntroduced(Timestamp introduced) {
+		public Builder withIntroduced(Date introduced) {
 			this.introduced = introduced;
 			return this;
 		}
 
-		public Builder withDiscontinued(Timestamp discontinued) {
+		public Builder withDiscontinued(Date discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
 
-		public Builder withCompany(String company) {
+		public Builder withCompany(Company company) {
 			this.company = company;
 			return this;
 		}
