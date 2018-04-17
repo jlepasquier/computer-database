@@ -8,7 +8,7 @@ public class Computer {
 	private String name;
 	private Timestamp introduced;
 	private Timestamp discontinued;
-	private String company;
+	private Company company;
 
 	public Computer() {
 	}
@@ -59,11 +59,11 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 
-	public String getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 
@@ -78,7 +78,7 @@ public class Computer {
 		private String name;
 		private Timestamp introduced;
 		private Timestamp discontinued;
-		private String company;
+		private Company company;
 
 		public Builder(String name) {
 			if (name == null) {
@@ -102,7 +102,7 @@ public class Computer {
 			return this;
 		}
 
-		public Builder withCompany(String company) {
+		public Builder withCompany(Company company) {
 			this.company = company;
 			return this;
 		}

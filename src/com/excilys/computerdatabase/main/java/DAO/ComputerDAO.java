@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.computerdatabase.main.java.model.Company;
 import com.excilys.computerdatabase.main.java.model.Computer;
 import com.excilys.computerdatabase.main.java.persistence.Database;
 
@@ -28,7 +29,7 @@ public class ComputerDAO {
 	}
 
 	public List<Computer> getComputerList() throws Exception {
-		String sql = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname\n"
+		String sql = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid\n"
 				+ "FROM computer as cpu\n" + "LEFT JOIN company as cpy\n" + "ON cpy.id = cpu.company_id";
 
 		List<Computer> cpuList = new ArrayList<>();
@@ -43,7 +44,9 @@ public class ComputerDAO {
 				String name = rs.getString("cpuname");
 				Timestamp introduced = rs.getTimestamp("introduced");
 				Timestamp discontinued = rs.getTimestamp("discontinued");
-				String company = rs.getString("companyname");
+				String companyName = rs.getString("companyname");
+				int companyId = rs.getInt("companyid");
+				Company company = new Company(companyId, companyName);
 
 				cpuList.add(new Computer.Builder(name).withCompany(company).withIntroduced(introduced)
 						.withDiscontinued(discontinued).withId(id).build());
@@ -58,7 +61,7 @@ public class ComputerDAO {
 	}
 
 	public Computer getComputer(int id) throws Exception {
-		String sql = "SELECT cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname\n"
+		String sql = "SELECT cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid\n"
 				+ "FROM computer as cpu \n" + "left JOIN company as cpy ON cpy.id = cpu.company_id \n" + "WHERE cpu.id="
 				+ id;
 
@@ -73,7 +76,9 @@ public class ComputerDAO {
 				String name = rs.getString("cpuname");
 				Timestamp introduced = rs.getTimestamp("introduced");
 				Timestamp discontinued = rs.getTimestamp("discontinued");
-				String company = rs.getString("companyname");
+				String companyName = rs.getString("companyname");
+				int companyId = rs.getInt("companyid");
+				Company company = new Company(companyId, companyName);
 
 				cpu = new Computer.Builder(name).withCompany(company).withIntroduced(introduced)
 						.withDiscontinued(discontinued).withId(id).build();
@@ -87,9 +92,18 @@ public class ComputerDAO {
 		return cpu;
 	}
 
-	public void createComputer() throws Exception {
-		// TODO Auto-generated method stub
-
+	public void insertComputer(Computer cpu) throws Exception {
+		String sql = "";
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+		} catch (SQLException e) {
+			throw new Exception(e.getMessage(), e);
+		} finally {
+			closeConnection(connection);
+		}
 	}
 
 	public void updateComputer() throws Exception {
