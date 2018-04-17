@@ -1,11 +1,13 @@
 package com.excilys.computerdatabase.main.java.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Computer {
+	private int id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	private Timestamp introduced;
+	private Timestamp discontinued;
 	private String company;
 
 	public Computer() {
@@ -17,72 +19,91 @@ public class Computer {
 	 * @param discontinued
 	 * @param company
 	 */
-	public Computer(String name, Date introduced, Date discontinued, String company) {
-		super();
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.company = company;
+	public Computer(Builder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+		this.introduced = builder.introduced;
+		this.discontinued = builder.discontinued;
+		this.company = builder.company;
 	}
 
-	/**
-	 * @return the name
-	 */
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the date the computer was introduced
-	 */
 	public Date getIntroduced() {
 		return introduced;
 	}
 
-	/**
-	 * @param introduced
-	 *            the date the computer was introduced to set
-	 */
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(Timestamp introduced) {
 		this.introduced = introduced;
 	}
 
-	/**
-	 * @return the date the computer was discontinued
-	 */
 	public Date getDiscontinued() {
 		return discontinued;
 	}
 
-	/**
-	 * @param discontinued
-	 *            the date the computer was discontinued to set
-	 */
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(Timestamp discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	/**
-	 * @return the company
-	 */
 	public String getCompany() {
 		return company;
 	}
 
-	/**
-	 * @param company
-	 *            the company to set
-	 */
 	public void setCompany(String company) {
 		this.company = company;
+	}
+
+	public static class Builder {
+		private int id;
+		private String name;
+		private Timestamp introduced;
+		private Timestamp discontinued;
+		private String company;
+
+		public Builder(String name) {
+			if (name == null) {
+				throw new IllegalArgumentException("name can not be null");
+			}
+			this.name = name;
+		}
+
+		public Builder withId(int id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder withIntroduced(Timestamp introduced) {
+			this.introduced = introduced;
+			return this;
+		}
+
+		public Builder withDiscontinued(Timestamp discontinued) {
+			this.discontinued = discontinued;
+			return this;
+		}
+
+		public Builder withCompany(String company) {
+			this.company = company;
+			return this;
+		}
+
+		public Computer build() {
+			return new Computer(this);
+		}
 	}
 
 }

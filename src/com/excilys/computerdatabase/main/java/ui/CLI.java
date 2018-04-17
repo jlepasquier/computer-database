@@ -1,25 +1,33 @@
 package com.excilys.computerdatabase.main.java.ui;
 
-import java.sql.SQLException;
+import java.util.List;
 
-import com.excilys.computerdatabase.main.java.persistence.DaoSingletonFactory;
-import com.excilys.computerdatabase.main.java.persistence.IDao;
+import com.excilys.computerdatabase.main.java.model.Computer;
+import com.excilys.computerdatabase.main.java.service.ComputerService;
 
 public final class CLI {
 
 	public static void main(String[] args) {
-		if (args.length == 0) {
-			System.out.println("Aucun argument détecté. Utilisez 'help' pour voir la liste des commandes disponibles.");
-		}
 
-		IDao db = DaoSingletonFactory.getInstance();
+		ComputerService cs = new ComputerService();
+		List<Computer> cpuList = cs.getComputerList();
+		for (Computer cpu : cpuList) {
+			System.out.println(cpu.getName());
+		}
 		
-		try {
-			db.getConnection();
-		} catch (SQLException e) {
-			System.out.println("Connection failed");
-			System.out.println(e.getMessage());
-		} 
+
+		
+		/*
+		 * if (args.length == 0) { System.out.
+		 * println("Aucun argument détecté. Utilisez 'help' pour voir la liste des commandes disponibles."
+		 * ); } switch (args[0]) { case "cpulist": ComputerService cs = new
+		 * ComputerService(); List<Computer> cpulist = cs.getComputerList(); for
+		 * (Computer cpu : cpulist) { System.out.println(cpu.getName()); } break;
+		 * default: System.out.
+		 * println("Argument inconnu. Utilisez 'help' pour voir la liste des commandes disponibles."
+		 * ); break; }
+		 */
+
 	}
 
 }
