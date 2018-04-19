@@ -18,7 +18,7 @@ public enum ComputerMapper {
 		Date discontinued = rs.getDate("discontinued");
 		String companyName = rs.getString("companyname");
 		int companyId = rs.getInt("companyid");
-		Company company = new Company(companyId, companyName);
+		Company company = new Company.Builder(companyId).withName(companyName).build();
 
 		return new Computer.Builder(name).withCompany(company).withIntroduced(introduced)
 				.withDiscontinued(discontinued).withId(id).build();

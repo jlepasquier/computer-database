@@ -4,42 +4,46 @@ public class Company {
 	private int id;
 	private String name;
 
-	/**
-	 * @param name
-	 */
-	public Company(int id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
+	public Company() {
 	}
 
-	/**
-	 * @return the id
-	 */
+	public Company(Builder builder) {
+		this.id = builder.id;
+		this.name = builder.name;
+	}
+
 	public int getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
+	public static class Builder {
+		private int id;
+		private String name;
+
+		public Builder(int id) {
+			this.id = id;
+		}
+
+		public Builder withName(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Company build() {
+			return new Company(this);
+		}
+	}
+
 }

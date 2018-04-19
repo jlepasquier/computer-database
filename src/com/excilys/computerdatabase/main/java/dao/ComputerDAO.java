@@ -5,12 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.main.java.mapper.ComputerMapper;
-import com.excilys.computerdatabase.main.java.model.Company;
 import com.excilys.computerdatabase.main.java.model.Computer;
 import com.excilys.computerdatabase.main.java.persistence.Database;
 

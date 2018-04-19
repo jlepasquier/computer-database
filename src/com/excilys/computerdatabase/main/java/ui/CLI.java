@@ -1,57 +1,96 @@
 package com.excilys.computerdatabase.main.java.ui;
 
 import java.sql.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
 
 import com.excilys.computerdatabase.main.java.model.Company;
 import com.excilys.computerdatabase.main.java.model.Computer;
-import com.excilys.computerdatabase.main.java.service.ComputerService;
 
-public final class CLI {
+public class CLI {
 
-	public static void main(String[] args) {
+	private static Scanner scan;
 
-		/* Creation of ComputerService*/
-		ComputerService cs = new ComputerService();
-		
-		/* GetComputerList*/
-		List<Computer> cpuList = cs.getComputerList();
-		for (Computer cpu : cpuList) {
-			System.out.println(cpu);
+	public void initView() {
+		scan = new Scanner(System.in);
+	}
+
+	public void stop() {
+		scan.close();
+	}
+
+	public void showActions() {
+		System.out.println();
+		System.out.println("---------------------------------------------------------------");
+		System.out.println("-------------- Liste des commandes disponibles : --------------");
+		System.out.println("---------------------------------------------------------------");
+		System.out.println("0 - Quitter");
+		System.out.println("1 - Obtenir la liste de tous les ordinateurs");
+		System.out.println("2 - Obtenir les informations d'un ordinateur à partir de son id");
+		System.out.println("3 - Supprimer un ordinateur à partir de son id");
+		System.out.println("4 - Mettre à jour les informations d'un ordinateur");
+		System.out.println("5 - Créer un nouvel ordinateur");
+		System.out.println("---------------------------------------------------------------");
+	}
+
+	/*** METHODS TO READ DATA ***/
+	public String readData() {
+		System.out.print("> ");
+		return scan.nextLine();
+	}
+
+	public int readInt() {
+		try {
+			return Integer.parseInt(readData());
+		} catch (Exception e) {
+			System.out.println("Entrez un nombre entier svp.");
+			return readInt();
 		}
-		
-		/* GetComputer by id*/
-		for (int i=25 ; i<30 ; i++) {
-			System.out.println("--------------");
-			Computer cpu = cs.getComputer(i);
-			System.out.println(cpu);
+	}
+
+	public String readString() {
+		return readData();
+	}
+
+	public Date readDate() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			return new Date(format.parse(readString()).getTime());
+		} catch (ParseException e) {
+			System.out.println("Erreur dans le format de la date, veuillez réessayer : dd/MM/yyyy");
+			return readDate();
 		}
-		
-		/* Create computer */
-		Computer cpu = new Computer.Builder("Microsoft").build();
-		//cs.createComputer(cpu);
-		
-		/* Update computer */
-		Company company = new Company(1,"Apple");
-		Computer cpuToUpdate = new Computer.Builder("SuperBG3000").withId(578).withDiscontinued(new Date(System.currentTimeMillis())).withCompany(company).build();
-		cs.updateComputer(cpuToUpdate);
-		
-		/* Delete computer*/
-		cs.deleteComputer(579);
-		
+	}
 
-		
-		/*
-		 * if (args.length == 0) { System.out.
-		 * println("Aucun argument détecté. Utilisez 'help' pour voir la liste des commandes disponibles."
-		 * ); } switch (args[0]) { case "cpulist": ComputerService cs = new
-		 * ComputerService(); List<Computer> cpulist = cs.getComputerList(); for
-		 * (Computer cpu : cpulist) { System.out.println(cpu.getName()); } break;
-		 * default: System.out.
-		 * println("Argument inconnu. Utilisez 'help' pour voir la liste des commandes disponibles."
-		 * ); break; }
-		 */
+	public Computer readCpuToUpdate() {
+		System.out.println("ID de l'ordinateur ?");
+		int id = readInt();
+		System.out.println("Nom de l'ordinateur ?");
+		String name = readString();
+		System.out.println("Date de mise sur le marché ?");
+		Date introduced = readDate();
+		System.out.println("Date de retrait du marché ?");
+		Date discontinued = readDate();
+		System.out.println("ID de l'entreprise ?");
+		int comp_id = readInt();
+		Company company = new Company.Builder(comp_id).build();
+		return new Computer.Builder(name).withId(id).withCompany(company).withIntroduced(introduced)
+				.withDiscontinued(discontinued).build();
+	}
 
+	public Computer readCpuToCreate() {
+		System.out.println("Nom de l'ordinateur ?");
+		String name = readString();
+		System.out.println("Date de mise sur le marché ?");
+		Date introduced = readDate();
+		System.out.println("Date de retrait du marché ?");
+		Date discontinued = readDate();
+		System.out.println("ID de l'entreprise ?");
+		int comp_id = readInt();
+		Company company = new Company.Builder(comp_id).build();
+		return new Computer.Builder(name).withCompany(company).withIntroduced(introduced).withDiscontinued(discontinued)
+				.build();
 	}
 
 }
