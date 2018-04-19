@@ -1,24 +1,22 @@
 package com.excilys.computerdatabase.main.java.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.main.java.dao.ComputerDAO;
 import com.excilys.computerdatabase.main.java.model.Computer;
-import com.excilys.computerdatabase.main.java.persistence.Database;
 
 public class ComputerService {
 	public ComputerService() {
 
 	}
 
-	public List<Computer> getComputerList() {
+	public List<Computer> getComputerList(int offset) {
 		try {
-			return ComputerDAO.INSTANCE.getComputerList();
+			return ComputerDAO.INSTANCE.getComputerPage(offset).getElements();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ArrayList<Computer>();
+		return null;
 	}
 
 	public Computer getComputer(int id) {

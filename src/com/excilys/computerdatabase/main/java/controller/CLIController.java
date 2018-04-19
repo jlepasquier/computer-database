@@ -51,10 +51,12 @@ public class CLIController {
 
 	/*** Service calls ***/
 	public void findAll() {
-		List<Computer> cpuList = cs.getComputerList();
-		for (Computer cpu : cpuList) {
-			System.out.println(cpu);
-		}
+		do {
+			List<Computer> cpuList = cs.getComputerList(0);
+			for (Computer cpu : cpuList) {
+				System.out.println(cpu);
+			}
+		} while (!cli.readString().equals("m"));
 	}
 
 	public void find(int id) {

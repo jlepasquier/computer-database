@@ -19,7 +19,7 @@ public enum ComputerDAO {
 
 	private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
 	private static final String UPDATE = "UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id=?";
-	private static final String FIND_ALL = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id";
+	private static final String FIND_ALL = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id LIMIT ? OFFSET ?";
 	private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
 	private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
 
@@ -35,15 +35,17 @@ public enum ComputerDAO {
 		db.closeConnection(conn);
 	}
 
-	public List<Computer> getComputerList() throws Exception {
+	public Page<Computer> getComputerPage(int offset) throws Exception {
 		List<Computer> cpuList = new ArrayList<>();
 		Connection connection = null;
+		int elementsPerPage = 25;
 		
 		try {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(FIND_ALL);
+			st.setInt(1, elementsPerPage);
+			st.setInt(2, offset);
 			ResultSet rs = st.executeQuery();
-
 			while (rs.next()) {
 				Computer cpu = ComputerMapper.INSTANCE.createComputer(rs);
 				cpuList.add(cpu);
@@ -54,7 +56,7 @@ public enum ComputerDAO {
 			closeConnection(connection);
 		}
 
-		return cpuList;
+		return new Page<Computer>(elementsPerPage, offset, cpuList);
 	}
 
 	public Computer getComputer(int id) throws Exception {

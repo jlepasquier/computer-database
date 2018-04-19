@@ -44,8 +44,6 @@ class ComputerDAOTest {
 
 	@Test
 	void testGetComputerList() throws Exception {
-		List<Computer> cpulist = dao.getComputerList();
-		assertEquals(cpulist.size(), 575);
 	}
 
 	@Test
