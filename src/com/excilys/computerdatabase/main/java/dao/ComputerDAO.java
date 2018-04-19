@@ -12,8 +12,9 @@ import com.excilys.computerdatabase.main.java.mapper.ComputerMapper;
 import com.excilys.computerdatabase.main.java.model.Computer;
 import com.excilys.computerdatabase.main.java.persistence.Database;
 
-public class ComputerDAO {
-
+public enum ComputerDAO {
+	INSTANCE;
+	
 	private final Database db;
 
 	private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
@@ -22,8 +23,8 @@ public class ComputerDAO {
 	private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
 	private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
 
-	public ComputerDAO(Database db) {
-		this.db = db;
+	private ComputerDAO() {
+		this.db = Database.INSTANCE;
 	}
 
 	private Connection getConnection() throws SQLException {

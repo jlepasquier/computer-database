@@ -26,7 +26,7 @@ class ComputerDAOTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		dao = new ComputerDAO(Database.INSTANCE);
+		dao = ComputerDAO.INSTANCE;
 		entriesInDatabase = 575;
 	}
 

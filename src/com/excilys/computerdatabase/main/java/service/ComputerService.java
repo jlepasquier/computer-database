@@ -14,8 +14,7 @@ public class ComputerService {
 
 	public List<Computer> getComputerList() {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.getComputerList();
+			return ComputerDAO.INSTANCE.getComputerList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -24,8 +23,7 @@ public class ComputerService {
 
 	public Computer getComputer(int id) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.getComputer(id);
+			return ComputerDAO.INSTANCE.getComputer(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -34,8 +32,7 @@ public class ComputerService {
 
 	public int createComputer(Computer cpu) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.createComputer(cpu);
+			return ComputerDAO.INSTANCE.createComputer(cpu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,8 +41,7 @@ public class ComputerService {
 
 	public int updateComputer(Computer cpu) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.updateComputer(cpu);
+			return ComputerDAO.INSTANCE.updateComputer(cpu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,8 +50,7 @@ public class ComputerService {
 
 	public int deleteComputer(int id) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.deleteComputer(id);
+			return ComputerDAO.INSTANCE.deleteComputer(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

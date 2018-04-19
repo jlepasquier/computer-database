@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.main.java.Controller;
+package com.excilys.computerdatabase.main.java.controller;
 
 import java.util.List;
 
