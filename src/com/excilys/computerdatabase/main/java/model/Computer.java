@@ -3,7 +3,7 @@ package com.excilys.computerdatabase.main.java.model;
 import java.sql.Date;
 
 public class Computer {
-	private int id;
+	private long id;
 	private String name;
 	private Date introduced;
 	private Date discontinued;
@@ -20,11 +20,11 @@ public class Computer {
 		this.company = builder.company;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -67,7 +67,7 @@ public class Computer {
 	}
 
 	public static class Builder {
-		private int id;
+		private long id;
 		private String name;
 		private Date introduced;
 		private Date discontinued;
@@ -80,7 +80,7 @@ public class Computer {
 			this.name = name;
 		}
 
-		public Builder withId(int id) {
+		public Builder withId(long id) {
 			this.id = id;
 			return this;
 		}
