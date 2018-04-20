@@ -9,6 +9,7 @@ import com.excilys.computerdatabase.main.java.model.Computer;
 
 public enum ComputerMapper {
 	INSTANCE;
+
 	
 	public Computer createComputer(ResultSet rs) throws SQLException {
 		

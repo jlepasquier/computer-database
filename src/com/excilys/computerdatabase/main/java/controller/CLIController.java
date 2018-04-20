@@ -1,4 +1,4 @@
-package com.excilys.computerdatabase.main.java.Controller;
+package com.excilys.computerdatabase.main.java.controller;
 
 import java.util.List;
 
@@ -51,15 +51,32 @@ public class CLIController {
 
 	/*** Service calls ***/
 	public void findAll() {
-		List<Computer> cpuList = cs.getComputerList();
-		for (Computer cpu : cpuList) {
-			System.out.println(cpu);
-		}
+		int currentPage = 0;
+		boolean exit = false;
+		do {
+			List<Computer> cpuList = cs.getComputerList(currentPage);
+			if (cpuList.isEmpty() && (currentPage >0)) {
+				currentPage -= 1;
+				cpuList = cs.getComputerList(currentPage);
+			}
+			cli.printComputerList(cpuList);
+			cli.printPageNavigationIndication();
+
+			String action = cli.readString();
+
+			if (action.equals("m")) {
+				exit = true;
+			} else if (action.equals("s") && !cpuList.isEmpty()) {
+				currentPage += 1;
+			} else if (action.equals("p") && (currentPage > 0)) {
+				currentPage -= 1;
+			}
+		} while (!exit);
 	}
 
 	public void find(int id) {
 		Computer cpu = cs.getComputer(id);
-		System.out.println(cpu);
+		cli.printComputer(cpu);
 	}
 
 	public void delete(int id) {

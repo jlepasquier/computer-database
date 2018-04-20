@@ -1,31 +1,27 @@
 package com.excilys.computerdatabase.main.java.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.main.java.dao.ComputerDAO;
 import com.excilys.computerdatabase.main.java.model.Computer;
-import com.excilys.computerdatabase.main.java.persistence.Database;
 
 public class ComputerService {
 	public ComputerService() {
 
 	}
 
-	public List<Computer> getComputerList() {
+	public List<Computer> getComputerList(int offset) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.getComputerList();
+			return ComputerDAO.INSTANCE.getComputerPage(offset).getElements();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ArrayList<Computer>();
+		return null;
 	}
 
 	public Computer getComputer(int id) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.getComputer(id);
+			return ComputerDAO.INSTANCE.getComputer(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -34,8 +30,7 @@ public class ComputerService {
 
 	public int createComputer(Computer cpu) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.createComputer(cpu);
+			return ComputerDAO.INSTANCE.createComputer(cpu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,8 +39,7 @@ public class ComputerService {
 
 	public int updateComputer(Computer cpu) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.updateComputer(cpu);
+			return ComputerDAO.INSTANCE.updateComputer(cpu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,8 +48,7 @@ public class ComputerService {
 
 	public int deleteComputer(int id) {
 		try {
-			ComputerDAO dao = new ComputerDAO(Database.INSTANCE);
-			return dao.deleteComputer(id);
+			return ComputerDAO.INSTANCE.deleteComputer(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

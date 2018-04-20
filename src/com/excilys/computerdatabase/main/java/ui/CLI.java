@@ -3,6 +3,7 @@ package com.excilys.computerdatabase.main.java.ui;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Scanner;
 
 import com.excilys.computerdatabase.main.java.model.Company;
@@ -32,6 +33,24 @@ public class CLI {
 		System.out.println("4 - Mettre à jour les informations d'un ordinateur");
 		System.out.println("5 - Créer un nouvel ordinateur");
 		System.out.println("---------------------------------------------------------------");
+	}
+	
+	public void printComputer(Computer cpu) {
+		System.out.println(cpu);
+	}
+	
+	public void printComputerList(List<Computer> cpuList) {
+		for (Computer cpu : cpuList) {
+			System.out.println(cpu);
+		}
+	}
+	
+	public void printPageNavigationIndication() {
+		System.out.println();
+		System.out.println("m : retour au menu");
+		System.out.println("s : page suivante");
+		System.out.println("p : page précédente");
+		System.out.println();
 	}
 
 	/*** METHODS TO READ DATA ***/
