@@ -24,7 +24,7 @@ public enum ComputerDAO {
 	private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
 	private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
 
-	private static final int COMPUTERS_PER_PAGE = 100;
+	private static final int COMPUTERS_PER_PAGE = 25;
 	
 	private ComputerDAO() {
 		this.db = Database.INSTANCE;
