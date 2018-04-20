@@ -32,6 +32,7 @@ public class CLI {
 		System.out.println("3 - Supprimer un ordinateur à partir de son id");
 		System.out.println("4 - Mettre à jour les informations d'un ordinateur");
 		System.out.println("5 - Créer un nouvel ordinateur");
+		System.out.println("6 - Voir la liste des entreprises");
 		System.out.println("---------------------------------------------------------------");
 	}
 	
@@ -39,9 +40,9 @@ public class CLI {
 		System.out.println(cpu);
 	}
 	
-	public void printComputerList(List<Computer> cpuList) {
-		for (Computer cpu : cpuList) {
-			System.out.println(cpu);
+	public <T> void printList(List<T> list) {
+		for (T item : list) {
+			System.out.println(item);
 		}
 	}
 	

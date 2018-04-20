@@ -2,18 +2,22 @@ package com.excilys.computerdatabase.main.java.controller;
 
 import java.util.List;
 
+import com.excilys.computerdatabase.main.java.model.Company;
 import com.excilys.computerdatabase.main.java.model.Computer;
+import com.excilys.computerdatabase.main.java.service.CompanyService;
 import com.excilys.computerdatabase.main.java.service.ComputerService;
 import com.excilys.computerdatabase.main.java.ui.CLI;
 
 public class CLIController {
 
 	private final CLI cli;
-	private final ComputerService cs;
+	private final ComputerService computerService;
+	private final CompanyService companyService;
 
-	public CLIController(CLI cli, ComputerService cs) {
+	public CLIController(CLI cli, ComputerService computerService, CompanyService companyService) {
 		this.cli = cli;
-		this.cs = cs;
+		this.computerService = computerService;
+		this.companyService = companyService;
 	}
 
 	public void start() {
@@ -43,6 +47,9 @@ public class CLIController {
 		case 5:
 			create(cli.readCpuToCreate());
 			break;
+		case 6:
+			findEveryCompany();
+			break;
 		default:
 			break;
 		}
@@ -54,12 +61,12 @@ public class CLIController {
 		int currentPage = 0;
 		boolean exit = false;
 		do {
-			List<Computer> cpuList = cs.getComputerList(currentPage);
+			List<Computer> cpuList = computerService.getComputerList(currentPage);
 			if (cpuList.isEmpty() && (currentPage >0)) {
 				currentPage -= 1;
-				cpuList = cs.getComputerList(currentPage);
+				cpuList = computerService.getComputerList(currentPage);
 			}
-			cli.printComputerList(cpuList);
+			cli.printList(cpuList);
 			cli.printPageNavigationIndication();
 
 			String action = cli.readString();
@@ -73,22 +80,46 @@ public class CLIController {
 			}
 		} while (!exit);
 	}
+	
+	public void findEveryCompany() {
+		int currentPage = 0;
+		boolean exit = false;
+		do {
+			List<Company> companyList = companyService.getCompanyList(currentPage);
+			if (companyList.isEmpty() && (currentPage >0)) {
+				currentPage -= 1;
+				companyList = companyService.getCompanyList(currentPage);
+			}
+			cli.printList(companyList);
+			cli.printPageNavigationIndication();
+
+			String action = cli.readString();
+
+			if (action.equals("m")) {
+				exit = true;
+			} else if (action.equals("s") && !companyList.isEmpty()) {
+				currentPage += 1;
+			} else if (action.equals("p") && (currentPage > 0)) {
+				currentPage -= 1;
+			}
+		} while (!exit);
+	}
 
 	public void find(int id) {
-		Computer cpu = cs.getComputer(id);
+		Computer cpu = computerService.getComputer(id);
 		cli.printComputer(cpu);
 	}
 
 	public void delete(int id) {
-		cs.deleteComputer(id);
+		computerService.deleteComputer(id);
 	}
 
 	public void update(Computer cpu) {
-		cs.updateComputer(cpu);
+		computerService.updateComputer(cpu);
 	}
 
 	public void create(Computer cpu) {
-		cs.createComputer(cpu);
+		computerService.createComputer(cpu);
 	}
 
 }
