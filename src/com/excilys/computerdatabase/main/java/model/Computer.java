@@ -1,12 +1,12 @@
 package com.excilys.computerdatabase.main.java.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Computer {
-	private int id;
+	private long id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private Company company;
 
 	public Computer() {
@@ -20,11 +20,11 @@ public class Computer {
 		this.company = builder.company;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -36,19 +36,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Date getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
-	public Date getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
@@ -67,10 +67,10 @@ public class Computer {
 	}
 
 	public static class Builder {
-		private int id;
+		private long id;
 		private String name;
-		private Date introduced;
-		private Date discontinued;
+		private LocalDate introduced;
+		private LocalDate discontinued;
 		private Company company;
 
 		public Builder(String name) {
@@ -80,17 +80,17 @@ public class Computer {
 			this.name = name;
 		}
 
-		public Builder withId(int id) {
+		public Builder withId(long id) {
 			this.id = id;
 			return this;
 		}
 
-		public Builder withIntroduced(Date introduced) {
+		public Builder withIntroduced(LocalDate introduced) {
 			this.introduced = introduced;
 			return this;
 		}
 
-		public Builder withDiscontinued(Date discontinued) {
+		public Builder withDiscontinued(LocalDate discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}

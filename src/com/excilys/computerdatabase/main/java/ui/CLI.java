@@ -1,8 +1,8 @@
 package com.excilys.computerdatabase.main.java.ui;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -72,11 +72,11 @@ public class CLI {
 		return readData();
 	}
 
-	public Date readDate() {
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	public LocalDate readDate() {
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		try {
-			return new Date(format.parse(readString()).getTime());
-		} catch (ParseException e) {
+			return LocalDate.parse(readString(), format);
+		} catch (DateTimeParseException e) {
 			System.out.println("Erreur dans le format de la date, veuillez réessayer : dd/MM/yyyy");
 			return readDate();
 		}
@@ -88,9 +88,9 @@ public class CLI {
 		System.out.println("Nom de l'ordinateur ?");
 		String name = readString();
 		System.out.println("Date de mise sur le marché ?");
-		Date introduced = readDate();
+		LocalDate introduced = readDate();
 		System.out.println("Date de retrait du marché ?");
-		Date discontinued = readDate();
+		LocalDate discontinued = readDate();
 		System.out.println("ID de l'entreprise ?");
 		int comp_id = readInt();
 		Company company = new Company.Builder(comp_id).build();
@@ -102,9 +102,9 @@ public class CLI {
 		System.out.println("Nom de l'ordinateur ?");
 		String name = readString();
 		System.out.println("Date de mise sur le marché ?");
-		Date introduced = readDate();
+		LocalDate introduced = readDate();
 		System.out.println("Date de retrait du marché ?");
-		Date discontinued = readDate();
+		LocalDate discontinued = readDate();
 		System.out.println("ID de l'entreprise ?");
 		int comp_id = readInt();
 		Company company = new Company.Builder(comp_id).build();

@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.main.java.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,14 +61,14 @@ public enum ComputerDAO {
 		return new Page<Computer>(COMPUTERS_PER_PAGE, offset, cpuList);
 	}
 
-	public Computer getComputer(int id) throws Exception {
+	public Computer getComputer(long id) throws Exception {
 
 		Connection connection = null;
 		Computer cpu = null;
 		try {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(FIND_BY_ID);
-			st.setInt(1, id);
+			st.setLong(1, id);
 			ResultSet rs = st.executeQuery();
 
 			while (rs.next()) {
@@ -88,8 +89,8 @@ public enum ComputerDAO {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(CREATE);
 			st.setString(1, cpu.getName());
-			st.setDate(2, cpu.getIntroduced());
-			st.setDate(3, cpu.getDiscontinued());
+			st.setDate(2, Date.valueOf(cpu.getIntroduced()));
+			st.setDate(3, Date.valueOf(cpu.getDiscontinued()));
 			if (cpu.getCompany() == null) {
 				st.setNull(4, Types.NULL);
 			} else {
@@ -109,14 +110,14 @@ public enum ComputerDAO {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(UPDATE);
 			st.setString(1, cpu.getName());
-			st.setDate(2, cpu.getIntroduced());
-			st.setDate(3, cpu.getDiscontinued());
+			st.setDate(2, Date.valueOf(cpu.getIntroduced()));
+			st.setDate(3, Date.valueOf(cpu.getDiscontinued()));
 			if (cpu.getCompany() == null) {
 				st.setNull(4, Types.NULL);
 			} else {
 				st.setInt(4, cpu.getCompany().getId());
 			}
-			st.setInt(5, cpu.getId());
+			st.setLong(5, cpu.getId());
 			return st.executeUpdate();
 		} catch (SQLException e) {
 			throw new Exception(e.getMessage(), e);
@@ -125,12 +126,12 @@ public enum ComputerDAO {
 		}
 	}
 
-	public int deleteComputer(int id) throws Exception {
+	public int deleteComputer(long id) throws Exception {
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(DELETE);
-			st.setInt(1, id);
+			st.setLong(1, id);
 			return st.executeUpdate();
 		} catch (SQLException e) {
 			throw new Exception(e.getMessage(), e);

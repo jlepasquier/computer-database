@@ -1,8 +1,8 @@
 package com.excilys.computerdatabase.main.java.mapper;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import com.excilys.computerdatabase.main.java.model.Company;
 import com.excilys.computerdatabase.main.java.model.Computer;
@@ -15,8 +15,8 @@ public enum ComputerMapper {
 		
 		int id = rs.getInt("id");
 		String name = rs.getString("cpuname");
-		Date introduced = rs.getDate("introduced");
-		Date discontinued = rs.getDate("discontinued");
+		LocalDate introduced = rs.getDate("introduced").toLocalDate();
+		LocalDate discontinued = rs.getDate("discontinued").toLocalDate();
 		String companyName = rs.getString("companyname");
 		int companyId = rs.getInt("companyid");
 		Company company = new Company.Builder(companyId).withName(companyName).build();
