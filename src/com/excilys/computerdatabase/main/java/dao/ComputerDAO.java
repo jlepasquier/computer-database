@@ -1,6 +1,7 @@
 package com.excilys.computerdatabase.main.java.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,8 +89,8 @@ public enum ComputerDAO {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(CREATE);
 			st.setString(1, cpu.getName());
-			st.setDate(2, cpu.getIntroduced());
-			st.setDate(3, cpu.getDiscontinued());
+			st.setDate(2, Date.valueOf(cpu.getIntroduced()));
+			st.setDate(3, Date.valueOf(cpu.getDiscontinued()));
 			if (cpu.getCompany() == null) {
 				st.setNull(4, Types.NULL);
 			} else {
@@ -109,8 +110,8 @@ public enum ComputerDAO {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(UPDATE);
 			st.setString(1, cpu.getName());
-			st.setDate(2, cpu.getIntroduced());
-			st.setDate(3, cpu.getDiscontinued());
+			st.setDate(2, Date.valueOf(cpu.getIntroduced()));
+			st.setDate(3, Date.valueOf(cpu.getDiscontinued()));
 			if (cpu.getCompany() == null) {
 				st.setNull(4, Types.NULL);
 			} else {
