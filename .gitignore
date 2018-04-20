@@ -3,6 +3,8 @@
 
 ### Eclipse ###
 
+resources/config/config.properties
+
 .metadata
 bin/
 tmp/
