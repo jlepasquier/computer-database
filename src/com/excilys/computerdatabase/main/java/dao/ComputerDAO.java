@@ -23,6 +23,8 @@ public enum ComputerDAO {
 	private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
 	private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
 
+	private static final int COMPUTERS_PER_PAGE = 100;
+	
 	private ComputerDAO() {
 		this.db = Database.INSTANCE;
 	}
@@ -38,13 +40,12 @@ public enum ComputerDAO {
 	public Page<Computer> getComputerPage(int offset) throws Exception {
 		List<Computer> cpuList = new ArrayList<>();
 		Connection connection = null;
-		int elementsPerPage = 25;
 		
 		try {
 			connection = getConnection();
 			PreparedStatement st = connection.prepareStatement(FIND_ALL);
-			st.setInt(1, elementsPerPage);
-			st.setInt(2, offset);
+			st.setInt(1, COMPUTERS_PER_PAGE);
+			st.setInt(2, offset*COMPUTERS_PER_PAGE);
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				Computer cpu = ComputerMapper.INSTANCE.createComputer(rs);
@@ -56,7 +57,7 @@ public enum ComputerDAO {
 			closeConnection(connection);
 		}
 
-		return new Page<Computer>(elementsPerPage, offset, cpuList);
+		return new Page<Computer>(COMPUTERS_PER_PAGE, offset, cpuList);
 	}
 
 	public Computer getComputer(int id) throws Exception {

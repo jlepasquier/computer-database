@@ -51,17 +51,32 @@ public class CLIController {
 
 	/*** Service calls ***/
 	public void findAll() {
+		int currentPage = 0;
+		boolean exit = false;
 		do {
-			List<Computer> cpuList = cs.getComputerList(0);
-			for (Computer cpu : cpuList) {
-				System.out.println(cpu);
+			List<Computer> cpuList = cs.getComputerList(currentPage);
+			if (cpuList.isEmpty() && (currentPage >0)) {
+				currentPage -= 1;
+				cpuList = cs.getComputerList(currentPage);
 			}
-		} while (!cli.readString().equals("m"));
+			cli.printComputerList(cpuList);
+			cli.printPageNavigationIndication();
+
+			String action = cli.readString();
+
+			if (action.equals("m")) {
+				exit = true;
+			} else if (action.equals("s") && !cpuList.isEmpty()) {
+				currentPage += 1;
+			} else if (action.equals("p") && (currentPage > 0)) {
+				currentPage -= 1;
+			}
+		} while (!exit);
 	}
 
 	public void find(int id) {
 		Computer cpu = cs.getComputer(id);
-		System.out.println(cpu);
+		cli.printComputer(cpu);
 	}
 
 	public void delete(int id) {
