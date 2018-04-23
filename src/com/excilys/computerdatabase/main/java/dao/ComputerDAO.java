@@ -2,7 +2,6 @@ package com.excilys.computerdatabase.main.java.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerdatabase.main.java.mapper.ComputerMapper;
+import com.excilys.computerdatabase.main.java.mapper.QueryMapper;
 import com.excilys.computerdatabase.main.java.model.Computer;
 import com.excilys.computerdatabase.main.java.persistence.Database;
 
@@ -44,10 +44,7 @@ public enum ComputerDAO {
 		
 		try {
 			connection = getConnection();
-			PreparedStatement st = connection.prepareStatement(FIND_ALL);
-			st.setInt(1, COMPUTERS_PER_PAGE);
-			st.setInt(2, offset*COMPUTERS_PER_PAGE);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE, offset*COMPUTERS_PER_PAGE);
 			while (rs.next()) {
 				Computer cpu = ComputerMapper.INSTANCE.createComputer(rs);
 				cpuList.add(cpu);
@@ -67,9 +64,7 @@ public enum ComputerDAO {
 		Computer cpu = null;
 		try {
 			connection = getConnection();
-			PreparedStatement st = connection.prepareStatement(FIND_BY_ID);
-			st.setLong(1, id);
-			ResultSet rs = st.executeQuery();
+			ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_BY_ID, id);
 
 			while (rs.next()) {
 				cpu = ComputerMapper.INSTANCE.createComputer(rs);
@@ -87,16 +82,11 @@ public enum ComputerDAO {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			PreparedStatement st = connection.prepareStatement(CREATE);
-			st.setString(1, cpu.getName());
-			st.setDate(2, Date.valueOf(cpu.getIntroduced()));
-			st.setDate(3, Date.valueOf(cpu.getDiscontinued()));
-			if (cpu.getCompany() == null) {
-				st.setNull(4, Types.NULL);
-			} else {
-				st.setInt(4, cpu.getCompany().getId());
-			}
-			return st.executeUpdate();
+			return QueryMapper.INSTANCE.executeUpdate(connection, CREATE, 
+					cpu.getName(), 
+					Date.valueOf(cpu.getIntroduced()), 
+					Date.valueOf(cpu.getDiscontinued()),
+					cpu.getCompany() == null ? Types.NULL : cpu.getCompany().getId());
 		} catch (SQLException e) {
 			throw new Exception(e.getMessage(), e);
 		} finally {
@@ -108,17 +98,12 @@ public enum ComputerDAO {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			PreparedStatement st = connection.prepareStatement(UPDATE);
-			st.setString(1, cpu.getName());
-			st.setDate(2, Date.valueOf(cpu.getIntroduced()));
-			st.setDate(3, Date.valueOf(cpu.getDiscontinued()));
-			if (cpu.getCompany() == null) {
-				st.setNull(4, Types.NULL);
-			} else {
-				st.setInt(4, cpu.getCompany().getId());
-			}
-			st.setLong(5, cpu.getId());
-			return st.executeUpdate();
+			return QueryMapper.INSTANCE.executeUpdate(connection, UPDATE, 
+					cpu.getName(), 
+					Date.valueOf(cpu.getIntroduced()), 
+					Date.valueOf(cpu.getDiscontinued()),
+					cpu.getCompany() == null ? Types.NULL : cpu.getCompany().getId(),
+					cpu.getId());
 		} catch (SQLException e) {
 			throw new Exception(e.getMessage(), e);
 		} finally {
@@ -130,9 +115,7 @@ public enum ComputerDAO {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			PreparedStatement st = connection.prepareStatement(DELETE);
-			st.setLong(1, id);
-			return st.executeUpdate();
+			return QueryMapper.INSTANCE.executeUpdate(connection, DELETE, id);
 		} catch (SQLException e) {
 			throw new Exception(e.getMessage(), e);
 		} finally {
