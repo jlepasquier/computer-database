@@ -11,48 +11,81 @@ import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.persistence.Database;
 
+/**
+ * The CompanyDAO singleton.
+ */
 public enum CompanyDAO {
-	INSTANCE;
-	
-	private final Database db;
 
-	private static final String FIND_ALL = "SELECT * from company LIMIT ? OFFSET ?";
+    /** The singleton instance. */
+    INSTANCE;
 
+    /** The database. */
+    private final Database db;
 
-	private static final int COMPANIES_PER_PAGE = 10;
-	
-	private CompanyDAO() {
-		this.db = Database.INSTANCE;
-	}
+    /** The query FIND_ALL. */
+    private static final String FIND_ALL = "SELECT * from company LIMIT ? OFFSET ?";
 
-	private Connection getConnection() throws SQLException {
-		return db.getConnection();
-	}
+    /** The Constant COMPANIES_PER_PAGE. */
+    private static final int COMPANIES_PER_PAGE = 10;
 
-	private void closeConnection(Connection conn) throws SQLException {
-		db.closeConnection(conn);
-	}
-	
-	
-	public Page<Company> getCompanyPage(int offset) throws Exception {
-		List<Company> companyList = new ArrayList<>();
-		Connection connection = null;
-		
-		try {
-			connection = getConnection();
-			ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPANIES_PER_PAGE, offset*COMPANIES_PER_PAGE);
-			while (rs.next()) {
-				Company company = CompanyMapper.INSTANCE.createCompany(rs);
-				companyList.add(company);
-			}
-		} catch (SQLException e) {
-			throw new Exception(e.getMessage(), e);
-		} finally {
-			closeConnection(connection);
-		}
+    /**
+     * Instantiates a new company DAO.
+     */
+    CompanyDAO() {
+        this.db = Database.INSTANCE;
+    }
 
-		return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
-	}
+    /**
+     * Gets the connection.
+     *
+     * @return the connection
+     * @throws SQLException
+     *             the SQL exception
+     */
+    private Connection getConnection() throws SQLException {
+        return db.getConnection();
+    }
 
-	
+    /**
+     * Close connection.
+     *
+     * @param connection
+     *            the connection
+     * @throws SQLException
+     *             the SQL exception
+     */
+    private void closeConnection(Connection connection) throws SQLException {
+        db.closeConnection(connection);
+    }
+
+    /**
+     * Gets the company page.
+     *
+     * @param offset
+     *            the offset
+     * @return the company page
+     * @throws Exception
+     *             the exception
+     */
+    public Page<Company> getCompanyPage(int offset) throws Exception {
+        List<Company> companyList = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPANIES_PER_PAGE,
+                    offset * COMPANIES_PER_PAGE);
+            while (rs.next()) {
+                Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                companyList.add(company);
+            }
+        } catch (SQLException e) {
+            throw new Exception(e.getMessage(), e);
+        } finally {
+            closeConnection(connection);
+        }
+
+        return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
+    }
+
 }

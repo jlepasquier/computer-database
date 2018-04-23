@@ -1,55 +1,120 @@
 package main.java.com.excilys.computerdatabase.model;
 
+/**
+ * The Class Company.
+ */
 public class Company {
-	private int id;
-	private String name;
 
-	public Company() {
-	}
+    /** The id. */
+    private int id;
 
-	public Company(Builder builder) {
-		this.id = builder.id;
-		this.name = builder.name;
-	}
+    /** The name. */
+    private String name;
 
-	public int getId() {
-		return id;
-	}
+    /**
+     * Instantiates a new company.
+     */
+    public Company() {
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * Instantiates a new company.
+     *
+     * @param builder
+     *            the company builder
+     */
+    public Company(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Sets the id.
+     *
+     * @param id
+     *            the new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public static class Builder {
-		private int id;
-		private String name;
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-		public Builder(int id) {
-			this.id = id;
-		}
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            the new name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		public Builder withName(String name) {
-			this.name = name;
-			return this;
-		}
+    /**
+     * The private Class Builder, used to Instantiates a new company.
+     */
+    public static class Builder {
 
-		public Company build() {
-			return new Company(this);
-		}
-	}
+        /** The id. */
+        private int id;
 
-	@Override
-	public String toString() {
-		return "Company [id=" + id + ", name=" + name + "]";
-	}
+        /** The name. */
+        private String name;
 
-	
+        /**
+         * Instantiates a new builder.
+         *
+         * @param id
+         *            the id, which is mandatory to build a new company
+         */
+        public Builder(int id) {
+            this.id = id;
+        }
+
+        /**
+         * Sets the builder name.
+         *
+         * @param name
+         *            the name
+         * @return the builder
+         */
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * Builds the company.
+         *
+         * @return the company
+         */
+        public Company build() {
+            return new Company(this);
+        }
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Company [id=" + id + ", name=" + name + "]";
+    }
+
 }

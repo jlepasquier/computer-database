@@ -5,17 +5,30 @@ import java.util.List;
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
 import main.java.com.excilys.computerdatabase.model.Company;
 
+/**
+ * The Class CompanyService.
+ */
 public class CompanyService {
-	public CompanyService() {
-		
-	}
-	
-	public List<Company> getCompanyList(int offset) {
-		try {
-			return CompanyDAO.INSTANCE.getCompanyPage(offset).getElements();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+
+    /**
+     * Instantiates a new company service.
+     */
+    public CompanyService() {
+
+    }
+
+    /**
+     * Gets the company list.
+     *
+     * @param page the page
+     * @return the company list
+     */
+    public List<Company> getCompanyList(int page) {
+        try {
+            return CompanyDAO.INSTANCE.getCompanyPage(page).getElements();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
