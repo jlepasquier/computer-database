@@ -64,25 +64,30 @@ public enum CompanyDAO {
      * @param offset
      *            the offset
      * @return the company page
-     * @throws Exception
+     * @throws SQLException
+     *             the exception
+     * @throws IllegalArgumentException
      *             the exception
      */
-    public Page<Company> getCompanyPage(int offset) throws Exception {
+    public Page<Company> getCompanyPage(int offset) throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
         Connection connection = null;
-
-        try {
-            connection = getConnection();
-            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPANIES_PER_PAGE,
-                    offset * COMPANIES_PER_PAGE);
-            while (rs.next()) {
-                Company company = CompanyMapper.INSTANCE.createCompany(rs);
-                companyList.add(company);
+        if (offset < 0) {
+            throw new IllegalArgumentException();
+        } else {
+            try {
+                connection = getConnection();
+                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPANIES_PER_PAGE,
+                        offset * COMPANIES_PER_PAGE);
+                while (rs.next()) {
+                    Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                    companyList.add(company);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                closeConnection(connection);
             }
-        } catch (SQLException e) {
-            throw new Exception(e.getMessage(), e);
-        } finally {
-            closeConnection(connection);
         }
 
         return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);

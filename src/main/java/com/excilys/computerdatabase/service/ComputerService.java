@@ -39,7 +39,7 @@ public class ComputerService {
      * @param id the id
      * @return the computer
      */
-    public Computer getComputer(int id) {
+    public Computer getComputer(long id) {
         try {
             return ComputerDAO.INSTANCE.getComputer(id);
         } catch (Exception e) {
@@ -52,9 +52,9 @@ public class ComputerService {
      * Creates a new computer to store in the database.
      *
      * @param cpu the cpu
-     * @return the int
+     * @return the id of the computer we created
      */
-    public int createComputer(Computer cpu) {
+    public long createComputer(Computer cpu) {
         try {
             return ComputerDAO.INSTANCE.createComputer(cpu);
         } catch (Exception e) {
@@ -67,30 +67,28 @@ public class ComputerService {
      * Updates a computer in the database.
      *
      * @param cpu the cpu
-     * @return the int
+     * @return the id of the computer we updated
      */
-    public int updateComputer(Computer cpu) {
+    public boolean updateComputer(Computer cpu) {
         try {
             return ComputerDAO.INSTANCE.updateComputer(cpu);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1;
+        return false;
     }
 
     /**
      * Deletes a computer from its id.
      *
      * @param id the id
-     * @return the int
      */
-    public int deleteComputer(int id) {
+    public void deleteComputer(long id) {
         try {
-            return ComputerDAO.INSTANCE.deleteComputer(id);
+            ComputerDAO.INSTANCE.deleteComputer(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return -1;
     }
 
 }

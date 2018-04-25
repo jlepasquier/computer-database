@@ -24,13 +24,9 @@ public class CLIController {
 
     /**
      * Instantiates a new CLI controller.
-     *
-     * @param cli
-     *            the command line interface
-     * @param computerService
-     *            the computer service
-     * @param companyService
-     *            the company service
+     * @param cli the command line interface
+     * @param computerService the computer service
+     * @param companyService the company service
      */
     public CLIController(CLI cli, ComputerService computerService, CompanyService companyService) {
         this.cli = cli;
@@ -51,9 +47,7 @@ public class CLIController {
 
     /**
      * Handles user action.
-     *
-     * @param action
-     *            the action
+     * @param action the action
      * @return true, if successful
      */
     public boolean handleAction(int action) {
@@ -140,9 +134,7 @@ public class CLIController {
 
     /**
      * Find a computer.
-     *
-     * @param id
-     *            the id
+     * @param id the id
      */
     public void find(int id) {
         Computer cpu = computerService.getComputer(id);
@@ -151,9 +143,7 @@ public class CLIController {
 
     /**
      * Deletes a computer.
-     *
-     * @param id
-     *            the id
+     * @param id the id
      */
     public void delete(int id) {
         computerService.deleteComputer(id);
@@ -161,9 +151,7 @@ public class CLIController {
 
     /**
      * Updates a computer.
-     *
-     * @param cpu
-     *            the computer
+     * @param cpu the computer
      */
     public void update(Computer cpu) {
         computerService.updateComputer(cpu);
@@ -171,9 +159,7 @@ public class CLIController {
 
     /**
      * Creates a new computer.
-     *
-     * @param cpu
-     *            the computer
+     * @param cpu the computer
      */
     public void create(Computer cpu) {
         computerService.createComputer(cpu);

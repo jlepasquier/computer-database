@@ -13,15 +13,7 @@ public class Company {
 
     /**
      * Instantiates a new company.
-     */
-    public Company() {
-    }
-
-    /**
-     * Instantiates a new company.
-     *
-     * @param builder
-     *            the company builder
+     * @param builder the company builder
      */
     public Company(Builder builder) {
         this.id = builder.id;
@@ -30,7 +22,6 @@ public class Company {
 
     /**
      * Gets the id.
-     *
      * @return the id
      */
     public int getId() {
@@ -39,9 +30,7 @@ public class Company {
 
     /**
      * Sets the id.
-     *
-     * @param id
-     *            the new id
+     * @param id the new id
      */
     public void setId(int id) {
         this.id = id;
@@ -49,7 +38,6 @@ public class Company {
 
     /**
      * Gets the name.
-     *
      * @return the name
      */
     public String getName() {
@@ -58,9 +46,7 @@ public class Company {
 
     /**
      * Sets the name.
-     *
-     * @param name
-     *            the new name
+     * @param name the new name
      */
     public void setName(String name) {
         this.name = name;
@@ -79,19 +65,18 @@ public class Company {
 
         /**
          * Instantiates a new builder.
-         *
-         * @param id
-         *            the id, which is mandatory to build a new company
+         * @param id the id, which is mandatory to build a new company
          */
         public Builder(int id) {
+            if (id == 0) {
+                throw new IllegalArgumentException("id can not be equal to zero");
+            }
             this.id = id;
         }
 
         /**
          * Sets the builder name.
-         *
-         * @param name
-         *            the name
+         * @param name the name
          * @return the builder
          */
         public Builder withName(String name) {
@@ -101,7 +86,6 @@ public class Company {
 
         /**
          * Builds the company.
-         *
          * @return the company
          */
         public Company build() {
@@ -115,6 +99,42 @@ public class Company {
     @Override
     public String toString() {
         return "Company [id=" + id + ", name=" + name + "]";
+    }
+
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    /*
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Company other = (Company) obj;
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
     }
 
 }

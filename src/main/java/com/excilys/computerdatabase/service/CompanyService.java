@@ -1,5 +1,6 @@
 package main.java.com.excilys.computerdatabase.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
@@ -29,6 +30,6 @@ public class CompanyService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<Company>();
     }
 }

@@ -1,19 +1,16 @@
 package main.java.com.excilys.computerdatabase.persistence;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
- * The Enum Database.
+ * The Database singleton.
  */
 public enum Database {
 
-    /** The instance. */
+    /** The singleton instance. */
     INSTANCE;
 
     /**
@@ -25,14 +22,16 @@ public enum Database {
      */
     public Connection getConnection() throws SQLException {
         Connection conn = null;
-        Properties properties = new Properties();
 
-        try (InputStream inputStream = new FileInputStream("resources/config/config.properties")) {
-            String dburl = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
-            properties.load(inputStream);
-            conn = DriverManager.getConnection(dburl, properties);
-        } catch (IOException e) {
-            e.printStackTrace();
+        ResourceBundle bundle = ResourceBundle.getBundle("config");
+        String dburl = bundle.getString("dburl");
+        String user = bundle.getString("user");
+        String password = bundle.getString("password");
+
+        try {
+            conn = DriverManager.getConnection(dburl, user, password);
+        } catch (SQLException e) {
+            throw e;
         }
 
         return conn;

@@ -15,11 +15,41 @@
       </dependency>
 
       <dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <version>5.1.9</version>
+      </dependency>
+
+      <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
-         <version>1.7.25</version>
+         <version>${slf4j.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-classic</artifactId>
+         <version>${logback.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-core</artifactId>
+         <version>${logback.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-all</artifactId>
+         <version>1.9.5</version>
+         <scope>test</scope>
       </dependency>
    </dependencies>
+
+   <properties>
+      <slf4j.version>1.6.4</slf4j.version>
+      <logback.version>1.0.1</logback.version>
+   </properties>
 
    <build>
       <sourceDirectory>src</sourceDirectory>
@@ -85,8 +115,7 @@
                   </configuration>
                </execution>
 
-               <execution>
-                      <?m2e execute onConfiguration?>
+               <execution> <?m2e execute onConfiguration?>
                   <id>create-table</id>
                   <phase>process-test-resources</phase>
                   <goals>
@@ -95,13 +124,11 @@
                   <configuration>
                      <autocommit>true</autocommit>
                      <srcFiles>
-                        <srcFile>src/main/sql/com/excilys/schema.sql</srcFile>
+                        <srcFile>src/main/sql/com/excilys/computerdatabase/schema.sql</srcFile>
                      </srcFiles>
                   </configuration>
                </execution>
-
-               <execution>
-     <?m2e execute onConfiguration?>
+               <execution> <?m2e execute onConfiguration?>
                   <id>insert-table</id>
                   <phase>process-test-resources</phase>
                   <goals>
@@ -110,7 +137,7 @@
                   <configuration>
                      <autocommit>true</autocommit>
                      <srcFiles>
-                        <srcFile>src/test/sql/com/excilys/entries.sql</srcFile>
+                        <srcFile>src/test/sql/com/excilys/computerdatabase/entries.sql</srcFile>
                      </srcFiles>
                   </configuration>
                </execution>
