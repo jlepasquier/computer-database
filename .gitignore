@@ -3,7 +3,8 @@
 
 ### Eclipse ###
 
-resources/config/config.properties
+src/main/resources/config.properties
+src/test/resources/config.properties
 
 .metadata
 bin/
