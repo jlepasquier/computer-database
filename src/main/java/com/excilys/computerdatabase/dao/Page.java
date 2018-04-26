@@ -4,9 +4,7 @@ import java.util.List;
 
 /**
  * The template Class Page.
- *
- * @param <T>
- *            the generic type
+ * @param <T> the generic type
  */
 public class Page<T> {
 
@@ -21,13 +19,15 @@ public class Page<T> {
 
     /**
      * Instantiates a new page.
-     *
-     * @param elementsPerPage
-     *            the elements per page
-     * @param offset
-     *            the offset
-     * @param elements
-     *            the elements
+     */
+    public Page() {
+    }
+
+    /**
+     * Instantiates a new page.
+     * @param elementsPerPage the elements per page
+     * @param offset the offset
+     * @param elements the elements
      */
     public Page(int elementsPerPage, int offset, List<T> elements) {
         this.elementsPerPage = elementsPerPage;
@@ -37,7 +37,6 @@ public class Page<T> {
 
     /**
      * Gets the elements per page.
-     *
      * @return the elements per page
      */
     public int getElementsPerPage() {
@@ -46,9 +45,7 @@ public class Page<T> {
 
     /**
      * Sets the elements per page.
-     *
-     * @param elementsPerPage
-     *            the new elements per page
+     * @param elementsPerPage the new elements per page
      */
     public void setElementsPerPage(int elementsPerPage) {
         this.elementsPerPage = elementsPerPage;
@@ -56,7 +53,6 @@ public class Page<T> {
 
     /**
      * Gets the offset.
-     *
      * @return the offset
      */
     public int getOffset() {
@@ -65,9 +61,7 @@ public class Page<T> {
 
     /**
      * Sets the offset.
-     *
-     * @param offset
-     *            the new offset
+     * @param offset the new offset
      */
     public void setOffset(int offset) {
         this.offset = offset;
@@ -75,7 +69,6 @@ public class Page<T> {
 
     /**
      * Gets the elements.
-     *
      * @return the elements
      */
     public List<T> getElements() {
@@ -84,9 +77,7 @@ public class Page<T> {
 
     /**
      * Sets the elements.
-     *
-     * @param elements
-     *            the new elements
+     * @param elements the new elements
      */
     public void setElements(List<T> elements) {
         this.elements = elements;

@@ -15,7 +15,6 @@ import main.java.com.excilys.computerdatabase.persistence.Database;
  * The CompanyDAO singleton.
  */
 public enum CompanyDAO {
-
     /** The singleton instance. */
     INSTANCE;
 

@@ -5,10 +5,7 @@ package main.java.com.excilys.computerdatabase.model;
  */
 public class Company {
 
-    /** The id. */
     private int id;
-
-    /** The name. */
     private String name;
 
     /**
@@ -57,10 +54,7 @@ public class Company {
      */
     public static class Builder {
 
-        /** The id. */
         private int id;
-
-        /** The name. */
         private String name;
 
         /**
