@@ -3,8 +3,6 @@
 <%@page import="main.java.com.excilys.computerdatabase.dto.ComputerDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-
 <%@include file="../partials/header.jsp"%>
 
 <section id="main">
@@ -63,18 +61,39 @@
 							class="cb" value="0"></td>
 						<td><a href="editComputer.html" onclick=""><c:out
 									value="${dto.getName()}" /></a></td>
-						<td><c:out
-									value="${dto.getIntroduced()}" /></td>
-						<td><c:out
-									value="${dto.getDiscontinued()}" /></td>
-						<td><c:out
-									value="${dto.getCompanyName()}" /></td>
+						<td><c:out value="${dto.getIntroduced()}" /></td>
+						<td><c:out value="${dto.getDiscontinued()}" /></td>
+						<td><c:out value="${dto.getCompanyName()}" /></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
 </section>
+
+<footer class="navbar-fixed-bottom">
+	<div class="container text-center">
+		<ul class="pagination">
+			<li><a href="#" aria-label="Previous"> <span
+					aria-hidden="true">&laquo;</span>
+			</a></li>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+			</a></li>
+		</ul>
+	</div>
+
+	<div class="btn-group btn-group-sm pull-right" role="group">
+		<button type="button" class="btn btn-default">10</button>
+		<button type="button" class="btn btn-default">50</button>
+		<button type="button" class="btn btn-default">100</button>
+	</div>
+
+</footer>
 
 
 <%@include file="../partials/footer.jsp"%>
