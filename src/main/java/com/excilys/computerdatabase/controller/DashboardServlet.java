@@ -1,6 +1,8 @@
 package main.java.com.excilys.computerdatabase.controller;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,10 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
+import main.java.com.excilys.computerdatabase.mapper.DashboardDTOMapper;
+import main.java.com.excilys.computerdatabase.model.Computer;
+import main.java.com.excilys.computerdatabase.service.ComputerService;
+
 /**
  * Servlet implementation class DashboardServlet.
  */
-@WebServlet(urlPatterns = "/dashboard/*")
+@WebServlet(urlPatterns = { "/dashboard/" })
 public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +38,12 @@ public class DashboardServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/pages/dashboard.jsp").forward(request, response);
+        ComputerService cs = new ComputerService();
+        List<Computer> cpuList = cs.getComputerList(0);
+        List<ComputerDTO> dtoList = DashboardDTOMapper.INSTANCE.createDTOList(cpuList);
+
+        request.setAttribute("dtoList", dtoList);
+        this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
     }
 
     /**
