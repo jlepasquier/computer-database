@@ -108,9 +108,4 @@
 </footer>
 
 
-<script src="${root}/js/jquery.min.js"></script>
-<script src="${root}/js/dashboard.js"></script>
-<script src="${root}/js/bootstrap.min.js"></script>
-
-</body>
-</html>
+<%@include file="../partials/footer.jsp"%>
