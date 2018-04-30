@@ -27,7 +27,12 @@
 						<div class="form-group">
 							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId">
-								<option value="0">--</option>
+								<c:forEach var="company" items="${companyList}">
+									<option value="<c:out value="${company.getId()}"/>">
+										<c:out value="${company.getName()}" />
+									</option>
+								</c:forEach>
+
 							</select>
 						</div>
 					</fieldset>

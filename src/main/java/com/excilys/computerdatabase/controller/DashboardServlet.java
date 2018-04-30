@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
-import main.java.com.excilys.computerdatabase.mapper.DashboardDTOMapper;
+import main.java.com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
 
@@ -43,7 +43,7 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("page", page);
 
         List<Computer> cpuList = cs.getComputerList(page);
-        List<ComputerDTO> dtoList = DashboardDTOMapper.INSTANCE.createDTOList(cpuList);
+        List<ComputerDTO> dtoList = ComputerDTOMapper.INSTANCE.createDTOList(cpuList);
         request.setAttribute("dtoList", dtoList);
         
         int totalPages = cs.getComputerPageCount();

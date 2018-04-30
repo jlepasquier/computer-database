@@ -9,7 +9,7 @@ import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
-public enum DashboardDTOMapper {
+public enum ComputerDTOMapper {
     INSTANCE;
 
     public List<ComputerDTO> createDTOList(List<Computer> cpuList) {

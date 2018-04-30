@@ -22,7 +22,10 @@ public enum CompanyDAO {
     private final Database db;
 
     /** The query FIND_ALL. */
-    private static final String FIND_ALL = "SELECT * from company LIMIT ? OFFSET ?";
+    private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
+
+    /** The query FIND_ALL. */
+    private static final String FIND_ALL = "SELECT * from company";
 
     /** The Constant COMPANIES_PER_PAGE. */
     private static final int COMPANIES_PER_PAGE = 10;
@@ -36,10 +39,8 @@ public enum CompanyDAO {
 
     /**
      * Gets the connection.
-     *
      * @return the connection
-     * @throws SQLException
-     *             the SQL exception
+     * @throws SQLException the SQL exception
      */
     private Connection getConnection() throws SQLException {
         return db.getConnection();
@@ -47,11 +48,8 @@ public enum CompanyDAO {
 
     /**
      * Close connection.
-     *
-     * @param connection
-     *            the connection
-     * @throws SQLException
-     *             the SQL exception
+     * @param connection the connection
+     * @throws SQLException the SQL exception
      */
     private void closeConnection(Connection connection) throws SQLException {
         db.closeConnection(connection);
@@ -59,14 +57,10 @@ public enum CompanyDAO {
 
     /**
      * Gets the company page.
-     *
-     * @param offset
-     *            the offset
+     * @param offset the offset
      * @return the company page
-     * @throws SQLException
-     *             the exception
-     * @throws IllegalArgumentException
-     *             the exception
+     * @throws SQLException the exception
+     * @throws IllegalArgumentException the exception
      */
     public Page<Company> getCompanyPage(int offset) throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
@@ -76,7 +70,7 @@ public enum CompanyDAO {
         } else {
             try {
                 connection = getConnection();
-                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPANIES_PER_PAGE,
+                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
                         offset * COMPANIES_PER_PAGE);
                 while (rs.next()) {
                     Company company = CompanyMapper.INSTANCE.createCompany(rs);
@@ -90,6 +84,32 @@ public enum CompanyDAO {
         }
 
         return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
+    }
+
+    /**
+     * Gets the list of all companies.
+     * @param offset the offset
+     * @return the company page
+     * @throws SQLException the exception
+     * @throws IllegalArgumentException the exception
+     */
+    public List<Company> getCompanyList() throws SQLException, IllegalArgumentException {
+        List<Company> companyList = new ArrayList<>();
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL);
+            while (rs.next()) {
+                Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                companyList.add(company);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+
+        return companyList;
     }
 
 }

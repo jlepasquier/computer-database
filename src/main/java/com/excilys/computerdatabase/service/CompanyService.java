@@ -19,14 +19,28 @@ public class CompanyService {
     }
 
     /**
-     * Gets the company list.
+     * Gets a company page.
      *
      * @param page the page
-     * @return the company list
+     * @return the company page
      */
     public List<Company> getCompanyList(int page) {
         try {
             return CompanyDAO.INSTANCE.getCompanyPage(page).getElements();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Company>();
+    }
+    
+    /**
+     * Gets the company list.
+     *
+     * @return the company list
+     */
+    public List<Company> getCompanyList() {
+        try {
+            return CompanyDAO.INSTANCE.getCompanyList();
         } catch (Exception e) {
             e.printStackTrace();
         }
