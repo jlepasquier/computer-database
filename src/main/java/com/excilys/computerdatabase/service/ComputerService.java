@@ -104,5 +104,20 @@ public class ComputerService {
         }
         return -1;
     }
+    
+    
+    /**
+     * Gets the number of computer pages.
+     *
+     * @return Gets the number of pages.
+     */
+    public int getComputerPageCount() {
+        try {
+            return ComputerDAO.INSTANCE.getComputerPageCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
 }

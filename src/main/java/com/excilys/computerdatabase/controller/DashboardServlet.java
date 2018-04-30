@@ -38,26 +38,20 @@ public class DashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ComputerService cs = new ComputerService();
-        List<Computer> cpuList = cs.getComputerList(0);
-        List<ComputerDTO> dtoList = DashboardDTOMapper.INSTANCE.createDTOList(cpuList);
-        int computerCount = cs.getComputerCount();
-        
-        int page;
-        String pageString = request.getParameter("page");
-        if(pageString==null) {
-            page = 1;
-        } else {
-            page = Integer.parseInt(pageString);
-        }
-        if (page<1) {
-            page = 1;
-        }
+
+        int page = pageToDisplay(request);
         request.setAttribute("page", page);
-        int totalPages = 5;
-        request.setAttribute("totalPages", totalPages);
-        
-        request.setAttribute("computerCount", computerCount);
+
+        List<Computer> cpuList = cs.getComputerList(page);
+        List<ComputerDTO> dtoList = DashboardDTOMapper.INSTANCE.createDTOList(cpuList);
         request.setAttribute("dtoList", dtoList);
+        
+        int totalPages = cs.getComputerPageCount();
+        request.setAttribute("totalPages", totalPages);
+
+        int computerCount = cs.getComputerCount();
+        request.setAttribute("computerCount", computerCount);
+
         this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
     }
 
@@ -72,6 +66,20 @@ public class DashboardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    private int pageToDisplay(HttpServletRequest request) {
+        int page;
+        String pageString = request.getParameter("page");
+        if (pageString == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(pageString);
+        }
+        if (page < 1) {
+            page = 1;
+        }
+        return page;
     }
 
 }

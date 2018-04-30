@@ -228,6 +228,30 @@ public enum ComputerDAO {
         } finally {
             closeConnection(connection);
         }
+    }
+    
+    /**
+     * Gets the number of computers in the database.
+     * @throws SQLException the exception
+     * @throws InvalidComputerIdException exception
+     * @return the number of computers in the database
+     */
+    public int getComputerPageCount() throws SQLException, InvalidComputerIdException {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            int count = -1;
+
+            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            return (int) Math.ceil(count/COMPUTERS_PER_PAGE);
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            closeConnection(connection);
+        }
 
     }
 
