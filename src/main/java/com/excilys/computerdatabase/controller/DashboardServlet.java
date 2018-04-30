@@ -42,6 +42,20 @@ public class DashboardServlet extends HttpServlet {
         List<ComputerDTO> dtoList = DashboardDTOMapper.INSTANCE.createDTOList(cpuList);
         int computerCount = cs.getComputerCount();
         
+        int page;
+        String pageString = request.getParameter("page");
+        if(pageString==null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(pageString);
+        }
+        if (page<1) {
+            page = 1;
+        }
+        request.setAttribute("page", page);
+        int totalPages = 5;
+        request.setAttribute("totalPages", totalPages);
+        
         request.setAttribute("computerCount", computerCount);
         request.setAttribute("dtoList", dtoList);
         this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);

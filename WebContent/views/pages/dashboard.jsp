@@ -2,7 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="main.java.com.excilys.computerdatabase.dto.ComputerDTO"%>
 
-
+ <%@ taglib prefix = "paginator" uri ="/WEB-INF/tlds/Paginator" %>
 <%@include file="../partials/header.jsp"%>
 
 <section id="main">
@@ -73,10 +73,19 @@
 		</table>
 	</div>
 </section>
+	
+		<!--<c:url var="searchUri" value="/dashboard?page=##" />
+		<paginator:display maxLinks="5" currPage="${page}" totalPages="${totalPages}" uri="${searchUri}" />-->
+
+
 
 <footer class="navbar-fixed-bottom">
 	<div class="container text-center">
-		<ul class="pagination">
+	
+	<c:url var="searchUri" value="/dashboard?page=##" />
+		<paginator:display maxLinks="5" currPage="${page}" totalPages="${totalPages}" uri="${searchUri}" />
+	
+		<!-- <ul class="pagination">
 			<li><a href="#" aria-label="Previous"> <span
 					aria-hidden="true">&laquo;</span>
 			</a></li>
@@ -87,7 +96,7 @@
 			<li><a href="#">5</a></li>
 			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 			</a></li>
-		</ul>
+		</ul> -->
 	</div>
 
 	<div class="btn-group btn-group-sm pull-right" role="group">
