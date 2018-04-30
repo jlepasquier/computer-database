@@ -90,5 +90,19 @@ public class ComputerService {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Gets the number of computers in the database.
+     *
+     * @return the number of computers in the database
+     */
+    public int getComputerCount() {
+        try {
+            return ComputerDAO.INSTANCE.getComputerCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
 }

@@ -29,9 +29,12 @@ public enum Database {
         String password = bundle.getString("password");
 
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(dburl, user, password);
         } catch (SQLException e) {
             throw e;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         return conn;
