@@ -22,7 +22,7 @@
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="addComputer.jsp">Add
+				<a class="btn btn-success" id="addComputer" href="addComputer">Add
 					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
@@ -62,7 +62,7 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="0"></td>
-						<td><a href="editComputer.jsp" onclick=""><c:out
+						<td><a href="editComputer" onclick=""><c:out
 									value="${dto.getName()}" /></a></td>
 						<td><c:out value="${dto.getIntroduced()}" /></td>
 						<td><c:out value="${dto.getDiscontinued()}" /></td>
