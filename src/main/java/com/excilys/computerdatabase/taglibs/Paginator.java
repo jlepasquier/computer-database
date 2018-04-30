@@ -33,11 +33,11 @@ public class Paginator extends SimpleTagSupport {
 
         try {
             out.write("<ul class=\"pagination\">");
-            
+
             if (currPage > 1) {
                 out.write("<li><a href=\"#\" aria-label=\"Previous\"> <span aria-hidden=\"true\">&laquo;</span> </a>");
             }
-            
+
             for (int i = pgStart; i < pgEnd; i++) {
                 out.write(constructLink(i));
             }
@@ -45,8 +45,6 @@ public class Paginator extends SimpleTagSupport {
             if (!lastPage) {
                 out.write("<li><a href=\"#\" aria-label=\"Next\"> <span aria-hidden=\"true\">&raquo;</span></a>");
             }
-
-            
 
             out.write("</ul>");
 
