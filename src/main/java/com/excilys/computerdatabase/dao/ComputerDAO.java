@@ -40,6 +40,9 @@ public enum ComputerDAO {
     /** The query DELETE. */
     private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
 
+    /** The query COUNT. */
+    private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
+
     /** The Constant COMPUTERS_PER_PAGE. */
     private static final int COMPUTERS_PER_PAGE = 25;
 
@@ -201,6 +204,31 @@ public enum ComputerDAO {
                 closeConnection(connection);
             }
         }
+    }
+
+    /**
+     * Gets the number of computers in the database.
+     * @throws SQLException the exception
+     * @throws InvalidComputerIdException exception
+     * @return the number of computers in the database
+     */
+    public int getComputerCount() throws SQLException, InvalidComputerIdException {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+
+            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
+            int count = -1;
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            return count;
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            closeConnection(connection);
+        }
+
     }
 
 }

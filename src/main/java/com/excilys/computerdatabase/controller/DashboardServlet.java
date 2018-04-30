@@ -41,7 +41,9 @@ public class DashboardServlet extends HttpServlet {
         ComputerService cs = new ComputerService();
         List<Computer> cpuList = cs.getComputerList(0);
         List<ComputerDTO> dtoList = DashboardDTOMapper.INSTANCE.createDTOList(cpuList);
-
+        int computerCount = cs.getComputerCount();
+        
+        request.setAttribute("computerCount", computerCount);
         request.setAttribute("dtoList", dtoList);
         this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
     }
