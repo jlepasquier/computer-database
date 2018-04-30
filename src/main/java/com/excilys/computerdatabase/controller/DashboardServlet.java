@@ -1,7 +1,6 @@
 package main.java.com.excilys.computerdatabase.controller;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,7 +17,7 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 /**
  * Servlet implementation class DashboardServlet.
  */
-@WebServlet(urlPatterns = { "/dashboard/" })
+@WebServlet(urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

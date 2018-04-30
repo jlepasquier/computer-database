@@ -216,9 +216,9 @@ public enum ComputerDAO {
         Connection connection = null;
         try {
             connection = getConnection();
+            int count = -1;
 
             ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
-            int count = -1;
             while (rs.next()) {
                 count = rs.getInt(1);
             }

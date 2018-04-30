@@ -1,13 +1,16 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="main.java.com.excilys.computerdatabase.dto.ComputerDTO"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 
 <%@include file="../partials/header.jsp"%>
 
 <section id="main">
 	<div class="container">
-		<h1 id="homeTitle"><c:out value="${computerCount}" /> Computers found</h1>
+		<h1 id="homeTitle">
+			<c:out value="${computerCount}" />
+			Computers found
+		</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -19,7 +22,7 @@
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+				<a class="btn btn-success" id="addComputer" href="addComputer.jsp">Add
 					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
@@ -59,7 +62,7 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick=""><c:out
+						<td><a href="editComputer.jsp" onclick=""><c:out
 									value="${dto.getName()}" /></a></td>
 						<td><c:out value="${dto.getIntroduced()}" /></td>
 						<td><c:out value="${dto.getDiscontinued()}" /></td>
@@ -96,4 +99,9 @@
 </footer>
 
 
-<%@include file="../partials/footer.jsp"%>
+<script src="${root}/js/jquery.min.js"></script>
+<script src="${root}/js/dashboard.js"></script>
+<script src="${root}/js/bootstrap.min.js"></script>
+
+</body>
+</html>
