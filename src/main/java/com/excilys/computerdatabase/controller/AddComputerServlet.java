@@ -61,11 +61,6 @@ public class AddComputerServlet extends HttpServlet {
             String introduced = request.getParameter("introduced");
             String discontinued = request.getParameter("discontinued");
             String companyId = request.getParameter("companyId");
-
-            System.out.println(computerName);
-            System.out.println(introduced);
-            System.out.println(discontinued);
-            System.out.println(companyId);
             
             Computer computer = ComputerMapper.INSTANCE.createComputer(computerName, introduced, discontinued, companyId);
             computerService.createComputer(computer);

@@ -17,14 +17,19 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 /**
  * Servlet implementation class DashboardServlet.
  */
-@WebServlet(urlPatterns = { "/dashboard" })
+@WebServlet(urlPatterns = { "/dashboard", "/index" })
 public class DashboardServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
+    private ComputerService computerService;
+    private ComputerDTOMapper computerDTOMapper;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public DashboardServlet() {
+        computerService = new ComputerService();
+        computerDTOMapper = ComputerDTOMapper.INSTANCE;
     }
 
     /**
@@ -37,19 +42,19 @@ public class DashboardServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ComputerService cs = new ComputerService();
 
         int page = pageToDisplay(request);
+
+        List<Computer> cpuList = computerService.getComputerList(page);
+
+        List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
+
+        int totalPages = computerService.getComputerPageCount();
+        int computerCount = computerService.getComputerCount();
+
         request.setAttribute("page", page);
-
-        List<Computer> cpuList = cs.getComputerList(page);
-        List<ComputerDTO> dtoList = ComputerDTOMapper.INSTANCE.createDTOList(cpuList);
         request.setAttribute("dtoList", dtoList);
-        
-        int totalPages = cs.getComputerPageCount();
         request.setAttribute("totalPages", totalPages);
-
-        int computerCount = cs.getComputerCount();
         request.setAttribute("computerCount", computerCount);
 
         this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);

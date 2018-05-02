@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
 import main.java.com.excilys.computerdatabase.mapper.CompanyDTOMapper;
+import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
+import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
 
@@ -23,6 +25,8 @@ public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private CompanyService companyService;
     private ComputerService computerService;
+    private ComputerMapper computerMapper;
+    private CompanyDTOMapper companyDTOMapper;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -30,6 +34,8 @@ public class EditComputerServlet extends HttpServlet {
     public EditComputerServlet() {
         companyService = new CompanyService();
         computerService = new ComputerService();
+        computerMapper = ComputerMapper.INSTANCE;
+        companyDTOMapper = CompanyDTOMapper.INSTANCE;
     }
 
     /**
@@ -38,9 +44,10 @@ public class EditComputerServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         List<Company> companyList = companyService.getCompanyList();
-        List<CompanyDTO> dtoList = CompanyDTOMapper.INSTANCE.createDTOList(companyList);
+        List<CompanyDTO> dtoList = companyDTOMapper.createDTOList(companyList);
+
         request.setAttribute("companyList", dtoList);
         request.setAttribute("id", request.getParameter("id"));
 
@@ -53,7 +60,28 @@ public class EditComputerServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        try {
+            String computerName = request.getParameter("computerName");
+            String introduced = request.getParameter("introduced");
+            String discontinued = request.getParameter("discontinued");
+            String companyId = request.getParameter("companyId");
+            String id = request.getParameter("id");
+
+            System.out.println(computerName);
+            System.out.println(introduced);
+            System.out.println(discontinued);
+            System.out.println(companyId);
+            System.out.println(id);
+
+            Computer computer = computerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
+            computerService.updateComputer(computer);
+
+            String path = this.getServletContext().getContextPath();
+            response.sendRedirect(path + "/dashboard");
+        } catch (Exception e) { // TODO : change to custom exceptions
+            String path = this.getServletContext().getContextPath();
+            response.sendRedirect(path + "/editComputer");
+        }
     }
 
 }
