@@ -21,13 +21,17 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
  * Servlet implementation class addComputerServlet
  */
 @WebServlet("/addComputer")
-public class addComputerServlet extends HttpServlet {
+public class AddComputerServlet extends HttpServlet {
+    
+    private static final long serialVersionUID = 1L;
     private ComputerService computerService;
-
+    private CompanyService companyService;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public addComputerServlet() {
+    public AddComputerServlet() {
+
+        companyService = new CompanyService();
         computerService = new ComputerService();
     }
 
@@ -37,7 +41,7 @@ public class addComputerServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CompanyService companyService = new CompanyService();
+        
         List<Company> companyList = companyService.getCompanyList();
         List<CompanyDTO> dtoList = CompanyDTOMapper.INSTANCE.createDTOList(companyList);
         request.setAttribute("companyList", dtoList);

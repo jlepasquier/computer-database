@@ -6,12 +6,11 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
-				<div class="label label-default pull-right">id: 0</div>
+				<div class="label label-default pull-right">id: <c:out value="${id}" /></div>
 				<h1>Edit Computer</h1>
 
 				<form action="editComputer" method="POST">
-					<input type="hidden" value="0" id="id" />
-					<!-- TODO: Change this value with the computer id -->
+					<input type="hidden" value="<c:out value="${id}" />" id="id" />
 					<fieldset>
 						<div class="form-group">
 							<label for="computerName">Computer name</label> <input
@@ -31,7 +30,11 @@
 						<div class="form-group">
 							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId">
-								<option value="0">--</option>
+								<c:forEach var="company" items="${companyList}">
+									<option value="<c:out value="${company.getId()}"/>">
+										<c:out value="${company.getName()}" />
+									</option>
+								</c:forEach>
 							</select>
 						</div>
 					</fieldset>

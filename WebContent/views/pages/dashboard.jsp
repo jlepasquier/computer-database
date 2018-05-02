@@ -63,7 +63,7 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="0"></td>
-						<td><a href="editComputer" onclick=""><c:out
+						<td><a href="editComputer?id=<c:out value="${dto.getId()}" />" onclick=""><c:out
 									value="${dto.getName()}" /></a></td>
 						<td><c:out value="${dto.getIntroduced()}" /></td>
 						<td><c:out value="${dto.getDiscontinued()}" /></td>
