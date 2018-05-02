@@ -11,40 +11,63 @@ import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
 import main.java.com.excilys.computerdatabase.mapper.CompanyDTOMapper;
+import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
+import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
+import main.java.com.excilys.computerdatabase.service.ComputerService;
 
 /**
  * Servlet implementation class addComputerServlet
  */
 @WebServlet("/addComputer")
 public class addComputerServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private ComputerService computerService;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public addComputerServlet() {
+        computerService = new ComputerService();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    CompanyService companyService = new CompanyService();
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        CompanyService companyService = new CompanyService();
         List<Company> companyList = companyService.getCompanyList();
         List<CompanyDTO> dtoList = CompanyDTOMapper.INSTANCE.createDTOList(companyList);
         request.setAttribute("companyList", dtoList);
-	    
-        this.getServletContext().getRequestDispatcher("/views/pages/addComputer.jsp").forward(request, response);
-	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        this.getServletContext().getRequestDispatcher("/views/pages/addComputer.jsp").forward(request, response);
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            String computerName = request.getParameter("computerName");
+            String introduced = request.getParameter("introduced");
+            String discontinued = request.getParameter("discontinued");
+            String companyId = request.getParameter("companyId");
+            
+            Computer computer = ComputerMapper.INSTANCE.createComputer(computerName, introduced, discontinued, companyId);
+            System.out.println(computer);
+            computerService.createComputer(computer);
+            
+            String path = this.getServletContext().getContextPath();
+            response.sendRedirect(path + "/dashboard");
+        } catch (Exception e) { // TODO : change to custom exceptions
+            String path = this.getServletContext().getContextPath();
+            response.sendRedirect(path + "/addComputer");
+        }
+    }
 
 }
