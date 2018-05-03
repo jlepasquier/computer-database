@@ -22,17 +22,21 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
  */
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
-    
+
     private static final long serialVersionUID = 1L;
-    private ComputerService computerService;
-    private CompanyService companyService;
+    private final ComputerService computerService;
+    private final CompanyService companyService;
+    private final CompanyDTOMapper companyDTOMapper;
+    private final ComputerMapper computerMapper;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AddComputerServlet() {
-
         companyService = new CompanyService();
         computerService = new ComputerService();
+        companyDTOMapper = CompanyDTOMapper.INSTANCE;
+        computerMapper = ComputerMapper.INSTANCE;
     }
 
     /**
@@ -41,9 +45,9 @@ public class AddComputerServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         List<Company> companyList = companyService.getCompanyList();
-        List<CompanyDTO> dtoList = CompanyDTOMapper.INSTANCE.createDTOList(companyList);
+        List<CompanyDTO> dtoList = companyDTOMapper.createDTOList(companyList);
         request.setAttribute("companyList", dtoList);
 
         this.getServletContext().getRequestDispatcher("/views/pages/addComputer.jsp").forward(request, response);
@@ -61,10 +65,10 @@ public class AddComputerServlet extends HttpServlet {
             String introduced = request.getParameter("introduced");
             String discontinued = request.getParameter("discontinued");
             String companyId = request.getParameter("companyId");
-            
-            Computer computer = ComputerMapper.INSTANCE.createComputer(computerName, introduced, discontinued, companyId);
+
+            Computer computer = computerMapper.createComputer(computerName, introduced, discontinued, companyId);
             computerService.createComputer(computer);
-            
+
             String path = this.getServletContext().getContextPath();
             response.sendRedirect(path + "/dashboard");
         } catch (Exception e) { // TODO : change to custom exceptions

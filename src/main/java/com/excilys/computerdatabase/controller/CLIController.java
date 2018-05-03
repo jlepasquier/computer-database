@@ -13,13 +13,8 @@ import main.java.com.excilys.computerdatabase.ui.CLI;
  */
 public class CLIController {
 
-    /** The command line interface. */
     private final CLI cli;
-
-    /** The computer service. */
     private final ComputerService computerService;
-
-    /** The company service. */
     private final CompanyService companyService;
 
     /**
@@ -28,10 +23,10 @@ public class CLIController {
      * @param computerService the computer service
      * @param companyService the company service
      */
-    public CLIController(CLI cli, ComputerService computerService, CompanyService companyService) {
+    public CLIController(CLI cli) {
         this.cli = cli;
-        this.computerService = computerService;
-        this.companyService = companyService;
+        this.computerService = new ComputerService();
+        this.companyService = new CompanyService();
     }
 
     /**

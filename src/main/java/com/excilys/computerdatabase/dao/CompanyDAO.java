@@ -15,26 +15,25 @@ import main.java.com.excilys.computerdatabase.persistence.Database;
  * The CompanyDAO singleton.
  */
 public enum CompanyDAO {
-    /** The singleton instance. */
     INSTANCE;
 
-    /** The database. */
     private final Database db;
-
-    /** The query FIND_ALL. */
+    private final QueryMapper queryMapper;
+    private final CompanyMapper companyMapper;
+    
+    private static final int COMPANIES_PER_PAGE = 10;
+    
     private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
-
-    /** The query FIND_ALL. */
     private static final String FIND_ALL = "SELECT * from company";
 
-    /** The Constant COMPANIES_PER_PAGE. */
-    private static final int COMPANIES_PER_PAGE = 10;
 
     /**
      * Instantiates a new company DAO.
      */
     CompanyDAO() {
         this.db = Database.INSTANCE;
+        this.queryMapper = QueryMapper.INSTANCE;
+        this.companyMapper = CompanyMapper.INSTANCE;
     }
 
     /**
@@ -70,10 +69,10 @@ public enum CompanyDAO {
         } else {
             try {
                 connection = getConnection();
-                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
+                ResultSet rs = queryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
                         offset * COMPANIES_PER_PAGE);
                 while (rs.next()) {
-                    Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                    Company company = companyMapper.createCompany(rs);
                     companyList.add(company);
                 }
             } catch (SQLException e) {
@@ -98,9 +97,9 @@ public enum CompanyDAO {
         Connection connection = null;
         try {
             connection = getConnection();
-            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL);
+            ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL);
             while (rs.next()) {
-                Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                Company company = companyMapper.createCompany(rs);
                 companyList.add(company);
             }
         } catch (SQLException e) {

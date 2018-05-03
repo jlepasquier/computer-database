@@ -1,22 +1,21 @@
 package main.java.com.excilys.computerdatabase.dto;
 
 public class ComputerDTO {
+
     long id;
     String name;
     String introduced;
     String discontinued;
     String companyName;
-    
 
     public ComputerDTO() {
     }
-
 
     /**
      * @param computerName
      * @param introduced
      * @param discontinued
-     * @param company   
+     * @param company
      */
     public ComputerDTO(long computerId, String computerName, String introduced, String discontinued, String company) {
         this.id = computerId;
@@ -26,14 +25,12 @@ public class ComputerDTO {
         this.companyName = company;
     }
 
-
     /**
      * @return the computerId
      */
     public long getId() {
         return id;
     }
-
 
     /**
      * @param computerId the computerId to set
@@ -42,14 +39,12 @@ public class ComputerDTO {
         this.id = computerId;
     }
 
-
     /**
      * @return the computerName
      */
     public String getName() {
         return name;
     }
-
 
     /**
      * @param computerName the computerName to set
@@ -58,14 +53,12 @@ public class ComputerDTO {
         this.name = computerName;
     }
 
-
     /**
      * @return the introduced
      */
     public String getIntroduced() {
         return introduced;
     }
-
 
     /**
      * @param introduced the introduced to set
@@ -74,14 +67,12 @@ public class ComputerDTO {
         this.introduced = introduced;
     }
 
-
     /**
      * @return the discontinued
      */
     public String getDiscontinued() {
         return discontinued;
     }
-
 
     /**
      * @param discontinued the discontinued to set
@@ -90,7 +81,6 @@ public class ComputerDTO {
         this.discontinued = discontinued;
     }
 
-
     /**
      * @return the company
      */
@@ -98,14 +88,11 @@ public class ComputerDTO {
         return companyName;
     }
 
-
     /**
      * @param company the company to set
      */
     public void setCompanyName(String company) {
         this.companyName = company;
     }
-    
-    
 
 }

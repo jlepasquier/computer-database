@@ -15,8 +15,6 @@ import main.java.com.excilys.computerdatabase.model.Computer;
  * The ComputerMapper singleton.
  */
 public enum ComputerMapper {
-
-    /** The singleton instance. */
     INSTANCE;
 
     /**

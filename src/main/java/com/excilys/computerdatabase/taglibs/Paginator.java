@@ -6,6 +6,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 public class Paginator extends SimpleTagSupport {
+
     private String uri;
     private int currPage;
     private int totalPages;

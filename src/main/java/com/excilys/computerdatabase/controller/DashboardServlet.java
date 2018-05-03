@@ -21,8 +21,8 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 public class DashboardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private ComputerService computerService;
-    private ComputerDTOMapper computerDTOMapper;
+    private final ComputerService computerService;
+    private final ComputerDTOMapper computerDTOMapper;
 
     /**
      * @see HttpServlet#HttpServlet()

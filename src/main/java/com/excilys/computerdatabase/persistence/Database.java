@@ -9,16 +9,12 @@ import java.util.ResourceBundle;
  * The Database singleton.
  */
 public enum Database {
-
-    /** The singleton instance. */
     INSTANCE;
 
     /**
      * Gets the connection.
-     *
      * @return the connection
-     * @throws SQLException
-     *             the SQL exception
+     * @throws SQLException the SQL exception
      */
     public Connection getConnection() throws SQLException {
         Connection conn = null;
@@ -42,9 +38,7 @@ public enum Database {
 
     /**
      * Close connection.
-     *
-     * @param conn
-     *            the connection to database
+     * @param conn the connection to database
      */
     public void closeConnection(Connection conn) {
         if (conn != null) {

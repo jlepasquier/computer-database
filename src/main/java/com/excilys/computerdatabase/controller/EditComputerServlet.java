@@ -23,10 +23,11 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private CompanyService companyService;
-    private ComputerService computerService;
-    private ComputerMapper computerMapper;
-    private CompanyDTOMapper companyDTOMapper;
+    
+    private final CompanyService companyService;
+    private final ComputerService computerService;
+    private final ComputerMapper computerMapper;
+    private final CompanyDTOMapper companyDTOMapper;
 
     /**
      * @see HttpServlet#HttpServlet()

@@ -17,9 +17,7 @@ import main.java.com.excilys.computerdatabase.model.Computer;
  */
 public class CLI {
 
-    /** The scan. */
     private static Scanner scan;
-
 
     /**
      * Inits the view by enabling user interaction.
@@ -55,7 +53,6 @@ public class CLI {
 
     /**
      * Prints the computer data.
-     *
      * @param cpu the computer
      */
     public void printComputer(Computer cpu) {
@@ -64,7 +61,6 @@ public class CLI {
 
     /**
      * Template list printing.
-     *
      * @param <T> the generic type
      * @param list the list
      */
@@ -96,7 +92,6 @@ public class CLI {
 
     /**
      * Reads an integer.
-     *
      * @return the int
      */
     public int readInt() {
@@ -110,7 +105,6 @@ public class CLI {
 
     /**
      * Reads a string.
-     *
      * @return the string
      */
     public String readString() {
@@ -119,7 +113,6 @@ public class CLI {
 
     /**
      * Reads a date.
-     *
      * @return the date
      */
     public LocalDate readDate() {
@@ -134,7 +127,6 @@ public class CLI {
 
     /**
      * Reads computer data to update.
-     *
      * @return the computer
      */
     public Computer readCpuToUpdate() {
@@ -155,7 +147,6 @@ public class CLI {
 
     /**
      * Reads computer to create.
-     *
      * @return the computer
      */
     public Computer readCpuToCreate() {

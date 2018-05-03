@@ -1,10 +1,12 @@
 package main.java.com.excilys.computerdatabase.dto;
 
 public class CompanyDTO {
+
     private int id;
     private String name;
-    
-    public CompanyDTO() {}
+
+    public CompanyDTO() {
+    }
 
     public CompanyDTO(int id, String name) {
         super();

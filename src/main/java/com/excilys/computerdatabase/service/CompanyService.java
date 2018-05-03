@@ -11,16 +11,11 @@ import main.java.com.excilys.computerdatabase.model.Company;
  */
 public class CompanyService {
 
-    /**
-     * Instantiates a new company service.
-     */
     public CompanyService() {
-
     }
 
     /**
      * Gets a company page.
-     *
      * @param page the page
      * @return the company page
      */
@@ -32,10 +27,9 @@ public class CompanyService {
         }
         return new ArrayList<Company>();
     }
-    
+
     /**
      * Gets the company list.
-     *
      * @return the company list
      */
     public List<Company> getCompanyList() {

@@ -10,8 +10,6 @@ import java.sql.Statement;
  * The QueryMapper singleton.
  */
 public enum QueryMapper {
-
-    /** The singleton instance. */
     INSTANCE;
 
     /**

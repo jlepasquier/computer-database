@@ -5,22 +5,16 @@ import java.util.List;
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
-
 /**
  * The Class ComputerService.
  */
 public class ComputerService {
 
-    /**
-     * Instantiates a new computer service.
-     */
     public ComputerService() {
-
     }
 
     /**
      * Gets the computer list from database.
-     *
      * @param page the page number
      * @return the computer list
      */
@@ -35,7 +29,6 @@ public class ComputerService {
 
     /**
      * Gets a computer from its id.
-     *
      * @param id the id
      * @return the computer
      */
@@ -50,7 +43,6 @@ public class ComputerService {
 
     /**
      * Creates a new computer to store in the database.
-     *
      * @param cpu the cpu
      * @return the id of the computer we created
      */
@@ -65,7 +57,6 @@ public class ComputerService {
 
     /**
      * Updates a computer in the database.
-     *
      * @param cpu the cpu
      * @return the id of the computer we updated
      */
@@ -80,7 +71,6 @@ public class ComputerService {
 
     /**
      * Deletes a computer from its id.
-     *
      * @param id the id
      */
     public void deleteComputer(long id) {
@@ -90,10 +80,9 @@ public class ComputerService {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Gets the number of computers in the database.
-     *
      * @return the number of computers in the database
      */
     public int getComputerCount() {
@@ -104,11 +93,9 @@ public class ComputerService {
         }
         return -1;
     }
-    
-    
+
     /**
      * Gets the number of computer pages.
-     *
      * @return Gets the number of pages.
      */
     public int getComputerPageCount() {

@@ -18,39 +18,28 @@ import main.java.com.excilys.computerdatabase.persistence.Database;
  * The singleton ComputerDAO.
  */
 public enum ComputerDAO {
-
-    /** The singleton instance. */
     INSTANCE;
 
-    /** The database. */
     private final Database db;
-
-    /** The query CREATE. */
-    private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
-
-    /** The query UPDATE. */
-    private static final String UPDATE = "UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id=?";
-
-    /** The query FIND_ALL. */
-    private static final String FIND_ALL = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id LIMIT ? OFFSET ?";
-
-    /** The query FIND_BY_ID. */
-    private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
-
-    /** The query DELETE. */
-    private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
-
-    /** The query COUNT. */
-    private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
-
-    /** The Constant COMPUTERS_PER_PAGE. */
+    private final QueryMapper queryMapper;
+    private final ComputerMapper computerMapper;
+    
     private static final int COMPUTERS_PER_PAGE = 25;
+
+    private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
+    private static final String UPDATE = "UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id=?";
+    private static final String FIND_ALL = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id LIMIT ? OFFSET ?";
+    private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
+    private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
+    private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
 
     /**
      * Instantiates a new computer DAO.
      */
     ComputerDAO() {
         this.db = Database.INSTANCE;
+        this.queryMapper = QueryMapper.INSTANCE;
+        this.computerMapper = ComputerMapper.INSTANCE;
     }
 
     /**
@@ -87,10 +76,10 @@ public enum ComputerDAO {
         } else {
             try {
                 connection = getConnection();
-                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE,
+                ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE,
                         offset * COMPUTERS_PER_PAGE);
                 while (rs.next()) {
-                    Computer cpu = ComputerMapper.INSTANCE.createComputer(rs);
+                    Computer cpu = computerMapper.createComputer(rs);
                     cpuList.add(cpu);
                 }
             } catch (SQLException e) {
@@ -229,7 +218,7 @@ public enum ComputerDAO {
             closeConnection(connection);
         }
     }
-    
+
     /**
      * Gets the number of computers in the database.
      * @throws SQLException the exception
@@ -246,7 +235,7 @@ public enum ComputerDAO {
             while (rs.next()) {
                 count = rs.getInt(1);
             }
-            return (int) Math.ceil(count/COMPUTERS_PER_PAGE);
+            return (int) Math.ceil(count / COMPUTERS_PER_PAGE);
         } catch (SQLException e) {
             throw e;
         } finally {

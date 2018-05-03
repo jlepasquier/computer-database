@@ -9,18 +9,13 @@ import main.java.com.excilys.computerdatabase.model.Company;
  * The CompanyMapper singleton.
  */
 public enum CompanyMapper {
-
-    /** The singleton instance. */
     INSTANCE;
 
     /**
      * Creates a company from a result set.
-     *
-     * @param rs
-     *            the result set
+     * @param rs the result set
      * @return the company
-     * @throws SQLException
-     *             the SQL exception
+     * @throws SQLException the SQL exception
      */
     public Company createCompany(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
