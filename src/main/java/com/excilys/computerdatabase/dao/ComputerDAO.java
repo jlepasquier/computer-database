@@ -7,6 +7,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import main.java.com.excilys.computerdatabase.exception.InvalidComputerIdException;
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
@@ -25,6 +29,8 @@ public enum ComputerDAO {
     private final ComputerMapper computerMapper;
 
     private static final int COMPUTERS_PER_PAGE = 25;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
     private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
     private static final String UPDATE = "UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id=?";
@@ -58,7 +64,7 @@ public enum ComputerDAO {
      * @throws SQLException the exception
      * @throws IllegalArgumentException the exception
      */
-    public Page<Computer> getComputerPage(int offset) throws SQLException, IllegalArgumentException {
+    public Page<Computer> getComputerPage(int offset) throws IllegalArgumentException {
         List<Computer> cpuList = new ArrayList<>();
 
         if (offset < 0) {
@@ -72,7 +78,7 @@ public enum ComputerDAO {
                     cpuList.add(cpu);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }
 
@@ -86,63 +92,64 @@ public enum ComputerDAO {
      * @throws SQLException the exception
      * @throws IllegalArgumentException the exception
      */
-    public Computer getComputer(long id) throws SQLException, IllegalArgumentException {
+    public Optional<Computer> getComputer(long id) throws IllegalArgumentException {
 
         Computer cpu = null;
+
         if (id < 1) {
             throw new IllegalArgumentException("id=" + id + ". Wrong id, must be > 0");
         } else {
             try (Connection connection = getConnection()) {
-                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_BY_ID, id);
+                ResultSet rs = queryMapper.executeQuery(connection, FIND_BY_ID, id);
 
                 while (rs.next()) {
-                    cpu = ComputerMapper.INSTANCE.createComputer(rs);
+                    cpu = computerMapper.createComputer(rs);
                 }
             } catch (SQLException e) {
-                throw e;
+                LOGGER.error(e.getMessage());
             }
         }
 
-        return cpu;
+        return Optional.ofNullable(cpu);
     }
 
     /**
      * Creates the computer.
      * @param cpu the computer
      * @return the number of lines updated
-     * @throws SQLException the exception
      */
-    public long createComputer(Computer cpu) throws SQLException {
+    public Optional<Long> createComputer(Computer cpu) {
+        Long cpuId = null;
         try (Connection connection = getConnection()) {
-            return QueryMapper.INSTANCE.executeCreate(connection, CREATE, cpu.getName(),
+            cpuId = queryMapper.executeCreate(connection, CREATE, cpu.getName(),
                     cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                     cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
                     cpu.getCompany() == null ? null : cpu.getCompany().getId());
         } catch (SQLException e) {
-            throw e;
+            LOGGER.error(e.getMessage());
         }
+        return Optional.ofNullable(cpuId);
     }
 
     /**
      * Updates a computer.
      * @param cpu the computer
      * @return boolean if the update was successful or not
-     * @throws SQLException the exception
-     * @throws IllegalArgumentException the exception
      * @throws InvalidComputerIdException exception
      */
-    public boolean updateComputer(Computer cpu) throws SQLException, InvalidComputerIdException {
+    public boolean updateComputer(Computer cpu) throws InvalidComputerIdException {
 
         if (cpu.getId() <= 0) {
             throw new InvalidComputerIdException();
         } else {
             try (Connection connection = getConnection()) {
-                return QueryMapper.INSTANCE.executeUpdate(connection, UPDATE, cpu.getName(),
+                return queryMapper.executeUpdate(connection, UPDATE, cpu.getName(),
                         cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                         cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
                         cpu.getCompany() == null ? null : cpu.getCompany().getId(), cpu.getId());
             } catch (SQLException e) {
-                throw e;
+                LOGGER.error(e.getMessage());
+                return false;
             }
         }
     }
@@ -150,61 +157,63 @@ public enum ComputerDAO {
     /**
      * Deletes a computer.
      * @param id the id of the computer to remove
-     * @throws SQLException the exception
      * @throws InvalidComputerIdException exception
      * @return boolean for query success or failure
      */
-    public boolean deleteComputer(long id) throws SQLException, InvalidComputerIdException {
+    public boolean deleteComputer(Long id) throws InvalidComputerIdException {
 
         if (id <= 0) {
             throw new InvalidComputerIdException();
         } else {
             try (Connection connection = getConnection()) {
-                return QueryMapper.INSTANCE.executeUpdate(connection, DELETE, id);
+                return queryMapper.executeUpdate(connection, DELETE, id);
             } catch (SQLException e) {
-                throw e;
+                LOGGER.error(e.getMessage());
+                return false;
             }
         }
     }
 
     /**
      * Gets the number of computers in the database.
-     * @throws SQLException the exception
      * @throws InvalidComputerIdException exception
      * @return the number of computers in the database
      */
-    public int getComputerCount() throws SQLException, InvalidComputerIdException {
-
+    public Optional<Long> getComputerCount() throws InvalidComputerIdException {
+        Long count = null;
         try (Connection connection = getConnection()) {
-            int count = -1;
 
-            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
+            ResultSet rs = queryMapper.executeQuery(connection, COUNT);
             while (rs.next()) {
-                count = rs.getInt(1);
+                count = rs.getLong(1);
             }
-            return count;
+
         } catch (SQLException e) {
-            throw e;
+            LOGGER.error(e.getMessage());
         }
+
+        return Optional.ofNullable(count);
     }
 
     /**
      * Gets the number of computers in the database.
-     * @throws SQLException the exception
      * @throws InvalidComputerIdException exception
      * @return the number of computers in the database
      */
-    public int getComputerPageCount() throws SQLException, InvalidComputerIdException {
+    public Optional<Long> getComputerPageCount() throws InvalidComputerIdException {
+        Long numberOfComputers = null;
+        Long numberOfPages = null;
         try (Connection connection = getConnection()) {
-            int count = -1;
 
-            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
+            ResultSet rs = queryMapper.executeQuery(connection, COUNT);
             while (rs.next()) {
-                count = rs.getInt(1);
+                numberOfComputers = rs.getLong(1);
             }
-            return (int) Math.ceil(count / COMPUTERS_PER_PAGE);
+            numberOfPages = (long) Math.ceil(numberOfComputers / COMPUTERS_PER_PAGE);
+
         } catch (SQLException e) {
-            throw e;
+            LOGGER.error(e.getMessage());
         }
+        return Optional.ofNullable(numberOfPages);
     }
 }

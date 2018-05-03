@@ -2,6 +2,10 @@ package main.java.com.excilys.computerdatabase.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
@@ -17,6 +21,8 @@ public class CLIController {
     private final ComputerService computerService;
     private final CompanyService companyService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CLIController.class);
+    
     /**
      * Instantiates a new CLI controller.
      * @param cli the command line interface
@@ -53,10 +59,10 @@ public class CLIController {
             findEveryComputer();
             break;
         case 2:
-            find(cli.readInt());
+            find(cli.readLong());
             break;
         case 3:
-            delete(cli.readInt());
+            delete(cli.readLong());
             break;
         case 4:
             update(cli.readCpuToUpdate());
@@ -130,17 +136,22 @@ public class CLIController {
     /**
      * Find a computer.
      * @param id the id
+     * @throws CDBException 
      */
-    public void find(int id) {
-        Computer cpu = computerService.getComputer(id);
-        cli.printComputer(cpu);
+    public void find(Long id) {
+        try {
+            Computer cpu = computerService.getComputer(id);
+            cli.printComputer(cpu);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
      * Deletes a computer.
      * @param id the id
      */
-    public void delete(int id) {
+    public void delete(Long id) {
         computerService.deleteComputer(id);
     }
 
@@ -157,7 +168,11 @@ public class CLIController {
      * @param cpu the computer
      */
     public void create(Computer cpu) {
-        computerService.createComputer(cpu);
+        try {
+            computerService.createComputer(cpu);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
 }

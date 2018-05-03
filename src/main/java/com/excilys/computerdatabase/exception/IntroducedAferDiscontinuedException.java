@@ -1,23 +1,20 @@
 package main.java.com.excilys.computerdatabase.exception;
 
-/**
- * The Class InvalidDateFormatException.
- */
-public class InvalidDateFormatException extends CDBException {
+public class IntroducedAferDiscontinuedException extends CDBException {
     private static final long serialVersionUID = 1L;
 
     /**
      * Instantiates a new missing computer id exception.
      */
-    public InvalidDateFormatException() {
-        super("Error : wrong date format.");
+    public IntroducedAferDiscontinuedException() {
+        super("Error : introduction date is after discontinuation date.");
     }
 
     /**
      * Instantiates a new missing computer id exception.
      * @param message the message
      */
-    public InvalidDateFormatException(String message) {
+    public IntroducedAferDiscontinuedException(String message) {
         super(message);
     }
 }

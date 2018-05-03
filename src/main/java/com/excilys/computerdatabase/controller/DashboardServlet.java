@@ -9,7 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
@@ -23,6 +28,9 @@ public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final ComputerService computerService;
     private final ComputerDTOMapper computerDTOMapper;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
+    
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -49,8 +57,15 @@ public class DashboardServlet extends HttpServlet {
 
         List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
 
-        int totalPages = computerService.getComputerPageCount();
-        int computerCount = computerService.getComputerCount();
+        Long totalPages, computerCount;
+        try {
+            totalPages = computerService.getComputerPageCount();
+            computerCount = computerService.getComputerCount();
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+            totalPages = 0L;
+            computerCount = 0L;
+        }
 
         request.setAttribute("page", page);
         request.setAttribute("dtoList", dtoList);

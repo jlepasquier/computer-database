@@ -2,7 +2,7 @@ package main.java.com.excilys.computerdatabase.dto;
 
 public class ComputerDTO {
 
-    long id;
+    Long id;
     String name;
     String introduced;
     String discontinued;
@@ -17,7 +17,7 @@ public class ComputerDTO {
      * @param discontinued
      * @param company
      */
-    public ComputerDTO(long computerId, String computerName, String introduced, String discontinued, String company) {
+    public ComputerDTO(Long computerId, String computerName, String introduced, String discontinued, String company) {
         this.id = computerId;
         this.name = computerName;
         this.introduced = introduced;
@@ -28,14 +28,14 @@ public class ComputerDTO {
     /**
      * @return the computerId
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param computerId the computerId to set
      */
-    public void setId(long computerId) {
+    public void setId(Long computerId) {
         this.id = computerId;
     }
 

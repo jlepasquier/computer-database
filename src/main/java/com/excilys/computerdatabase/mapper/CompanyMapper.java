@@ -18,7 +18,7 @@ public enum CompanyMapper {
      * @throws SQLException the SQL exception
      */
     public Company createCompany(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
+        Long id = rs.getLong("id");
         String name = rs.getString("name");
         return new Company.Builder(id).withName(name).build();
     }

@@ -7,7 +7,7 @@ import java.time.LocalDate;
  */
 public class Computer {
 
-    private long id;
+    private Long id;
     private String name;
     private LocalDate introduced;
     private LocalDate discontinued;
@@ -29,7 +29,7 @@ public class Computer {
      * Gets the id.
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -37,7 +37,7 @@ public class Computer {
      * Sets the id.
      * @param id the new id
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -111,7 +111,7 @@ public class Computer {
     public static class Builder {
 
         /** The id. */
-        private long id;
+        private Long id;
 
         /** The name. */
         private String name;
@@ -141,7 +141,7 @@ public class Computer {
          * @param id the id
          * @return the builder
          */
-        public Builder withId(long id) {
+        public Builder withId(Long id) {
             this.id = id;
             return this;
         }

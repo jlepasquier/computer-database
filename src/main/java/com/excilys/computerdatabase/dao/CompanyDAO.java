@@ -23,10 +23,10 @@ public enum CompanyDAO {
     private final Database db;
     private final QueryMapper queryMapper;
     private final CompanyMapper companyMapper;
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     private static final int COMPANIES_PER_PAGE = 10;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
     private static final String FIND_ALL = "SELECT * from company";
