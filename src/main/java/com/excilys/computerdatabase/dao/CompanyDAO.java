@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -20,6 +23,8 @@ public enum CompanyDAO {
     private final Database db;
     private final QueryMapper queryMapper;
     private final CompanyMapper companyMapper;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     private static final int COMPANIES_PER_PAGE = 10;
 
@@ -64,6 +69,7 @@ public enum CompanyDAO {
                     companyList.add(company);
                 }
             } catch (SQLException e) {
+                LOGGER.error("SQL error");
                 e.printStackTrace();
             }
         }

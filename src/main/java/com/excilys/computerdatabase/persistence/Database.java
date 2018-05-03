@@ -5,11 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The Database singleton.
  */
 public enum Database {
     INSTANCE;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
 
     /**
      * Gets the connection.
@@ -28,8 +33,10 @@ public enum Database {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(dburl, user, password);
         } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
             throw e;
         } catch (ClassNotFoundException e) {
+            LOGGER.error(e.getMessage());
             e.printStackTrace();
         }
 

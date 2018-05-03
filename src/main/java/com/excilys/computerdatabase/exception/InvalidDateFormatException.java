@@ -3,7 +3,7 @@ package main.java.com.excilys.computerdatabase.exception;
 /**
  * The Class InvalidDateFormatException.
  */
-public class InvalidDateFormatException extends Exception {
+public class InvalidDateFormatException extends CDBException {
 
     /**
      * Instantiates a new missing computer id exception.
