@@ -11,7 +11,10 @@ import main.java.com.excilys.computerdatabase.model.Company;
  */
 public class CompanyService {
 
+    private final CompanyDAO companyDAO;
+    
     public CompanyService() {
+        this.companyDAO = CompanyDAO.INSTANCE;
     }
 
     /**
@@ -21,7 +24,7 @@ public class CompanyService {
      */
     public List<Company> getCompanyList(int page) {
         try {
-            return CompanyDAO.INSTANCE.getCompanyPage(page).getElements();
+            return companyDAO.getCompanyPage(page).getElements();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +37,7 @@ public class CompanyService {
      */
     public List<Company> getCompanyList() {
         try {
-            return CompanyDAO.INSTANCE.getCompanyList();
+            return companyDAO.getCompanyList();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -20,12 +20,11 @@ public enum CompanyDAO {
     private final Database db;
     private final QueryMapper queryMapper;
     private final CompanyMapper companyMapper;
-    
+
     private static final int COMPANIES_PER_PAGE = 10;
-    
+
     private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
     private static final String FIND_ALL = "SELECT * from company";
-
 
     /**
      * Instantiates a new company DAO.
@@ -46,15 +45,6 @@ public enum CompanyDAO {
     }
 
     /**
-     * Close connection.
-     * @param connection the connection
-     * @throws SQLException the SQL exception
-     */
-    private void closeConnection(Connection connection) throws SQLException {
-        db.closeConnection(connection);
-    }
-
-    /**
      * Gets the company page.
      * @param offset the offset
      * @return the company page
@@ -63,12 +53,10 @@ public enum CompanyDAO {
      */
     public Page<Company> getCompanyPage(int offset) throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
-        Connection connection = null;
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try {
-                connection = getConnection();
+            try (Connection connection = getConnection()) {
                 ResultSet rs = queryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
                         offset * COMPANIES_PER_PAGE);
                 while (rs.next()) {
@@ -77,8 +65,6 @@ public enum CompanyDAO {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                closeConnection(connection);
             }
         }
 
@@ -94,9 +80,7 @@ public enum CompanyDAO {
      */
     public List<Company> getCompanyList() throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
-        Connection connection = null;
-        try {
-            connection = getConnection();
+        try (Connection connection = getConnection()) {
             ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL);
             while (rs.next()) {
                 Company company = companyMapper.createCompany(rs);
@@ -104,8 +88,6 @@ public enum CompanyDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection(connection);
         }
 
         return companyList;

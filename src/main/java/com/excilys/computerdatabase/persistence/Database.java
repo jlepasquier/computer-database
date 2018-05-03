@@ -35,19 +35,4 @@ public enum Database {
 
         return conn;
     }
-
-    /**
-     * Close connection.
-     * @param conn the connection to database
-     */
-    public void closeConnection(Connection conn) {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }

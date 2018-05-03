@@ -9,8 +9,11 @@ import main.java.com.excilys.computerdatabase.model.Computer;
  * The Class ComputerService.
  */
 public class ComputerService {
+    
+    private final ComputerDAO computerDAO;
 
     public ComputerService() {
+        this.computerDAO = ComputerDAO.INSTANCE;
     }
 
     /**
@@ -20,7 +23,7 @@ public class ComputerService {
      */
     public List<Computer> getComputerList(int page) {
         try {
-            return ComputerDAO.INSTANCE.getComputerPage(page).getElements();
+            return computerDAO.getComputerPage(page).getElements();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +37,7 @@ public class ComputerService {
      */
     public Computer getComputer(long id) {
         try {
-            return ComputerDAO.INSTANCE.getComputer(id);
+            return computerDAO.getComputer(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +51,7 @@ public class ComputerService {
      */
     public long createComputer(Computer cpu) {
         try {
-            return ComputerDAO.INSTANCE.createComputer(cpu);
+            return computerDAO.createComputer(cpu);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +65,7 @@ public class ComputerService {
      */
     public boolean updateComputer(Computer cpu) {
         try {
-            return ComputerDAO.INSTANCE.updateComputer(cpu);
+            return computerDAO.updateComputer(cpu);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,7 +78,7 @@ public class ComputerService {
      */
     public void deleteComputer(long id) {
         try {
-            ComputerDAO.INSTANCE.deleteComputer(id);
+            computerDAO.deleteComputer(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,7 +90,7 @@ public class ComputerService {
      */
     public int getComputerCount() {
         try {
-            return ComputerDAO.INSTANCE.getComputerCount();
+            return computerDAO.getComputerCount();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,7 +103,7 @@ public class ComputerService {
      */
     public int getComputerPageCount() {
         try {
-            return ComputerDAO.INSTANCE.getComputerPageCount();
+            return computerDAO.getComputerPageCount();
         } catch (Exception e) {
             e.printStackTrace();
         }

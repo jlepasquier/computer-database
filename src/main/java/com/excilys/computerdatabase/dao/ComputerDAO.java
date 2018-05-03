@@ -23,7 +23,7 @@ public enum ComputerDAO {
     private final Database db;
     private final QueryMapper queryMapper;
     private final ComputerMapper computerMapper;
-    
+
     private static final int COMPUTERS_PER_PAGE = 25;
 
     private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
@@ -52,15 +52,6 @@ public enum ComputerDAO {
     }
 
     /**
-     * Closes connection.
-     * @param conn the connection
-     * @throws SQLException the SQL exception
-     */
-    private void closeConnection(Connection conn) throws SQLException {
-        db.closeConnection(conn);
-    }
-
-    /**
      * Gets the computer page.
      * @param offset the offset
      * @return the computer page
@@ -69,13 +60,11 @@ public enum ComputerDAO {
      */
     public Page<Computer> getComputerPage(int offset) throws SQLException, IllegalArgumentException {
         List<Computer> cpuList = new ArrayList<>();
-        Connection connection = null;
 
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try {
-                connection = getConnection();
+            try (Connection connection = getConnection()) {
                 ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE,
                         offset * COMPUTERS_PER_PAGE);
                 while (rs.next()) {
@@ -84,8 +73,6 @@ public enum ComputerDAO {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally {
-                closeConnection(connection);
             }
         }
 
@@ -101,13 +88,11 @@ public enum ComputerDAO {
      */
     public Computer getComputer(long id) throws SQLException, IllegalArgumentException {
 
-        Connection connection = null;
         Computer cpu = null;
         if (id < 1) {
             throw new IllegalArgumentException("id=" + id + ". Wrong id, must be > 0");
         } else {
-            try {
-                connection = getConnection();
+            try (Connection connection = getConnection()) {
                 ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_BY_ID, id);
 
                 while (rs.next()) {
@@ -115,8 +100,6 @@ public enum ComputerDAO {
                 }
             } catch (SQLException e) {
                 throw e;
-            } finally {
-                closeConnection(connection);
             }
         }
 
@@ -130,17 +113,13 @@ public enum ComputerDAO {
      * @throws SQLException the exception
      */
     public long createComputer(Computer cpu) throws SQLException {
-        Connection connection = null;
-        try {
-            connection = getConnection();
+        try (Connection connection = getConnection()) {
             return QueryMapper.INSTANCE.executeCreate(connection, CREATE, cpu.getName(),
                     cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                     cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
                     cpu.getCompany() == null ? null : cpu.getCompany().getId());
         } catch (SQLException e) {
             throw e;
-        } finally {
-            closeConnection(connection);
         }
     }
 
@@ -153,21 +132,17 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      */
     public boolean updateComputer(Computer cpu) throws SQLException, InvalidComputerIdException {
-        Connection connection = null;
+
         if (cpu.getId() <= 0) {
             throw new InvalidComputerIdException();
         } else {
-            try {
-                connection = getConnection();
-
+            try (Connection connection = getConnection()) {
                 return QueryMapper.INSTANCE.executeUpdate(connection, UPDATE, cpu.getName(),
                         cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                         cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
                         cpu.getCompany() == null ? null : cpu.getCompany().getId(), cpu.getId());
             } catch (SQLException e) {
                 throw e;
-            } finally {
-                closeConnection(connection);
             }
         }
     }
@@ -180,17 +155,14 @@ public enum ComputerDAO {
      * @return boolean for query success or failure
      */
     public boolean deleteComputer(long id) throws SQLException, InvalidComputerIdException {
-        Connection connection = null;
+
         if (id <= 0) {
             throw new InvalidComputerIdException();
         } else {
-            try {
-                connection = getConnection();
+            try (Connection connection = getConnection()) {
                 return QueryMapper.INSTANCE.executeUpdate(connection, DELETE, id);
             } catch (SQLException e) {
                 throw e;
-            } finally {
-                closeConnection(connection);
             }
         }
     }
@@ -202,9 +174,8 @@ public enum ComputerDAO {
      * @return the number of computers in the database
      */
     public int getComputerCount() throws SQLException, InvalidComputerIdException {
-        Connection connection = null;
-        try {
-            connection = getConnection();
+
+        try (Connection connection = getConnection()) {
             int count = -1;
 
             ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
@@ -214,8 +185,6 @@ public enum ComputerDAO {
             return count;
         } catch (SQLException e) {
             throw e;
-        } finally {
-            closeConnection(connection);
         }
     }
 
@@ -226,9 +195,7 @@ public enum ComputerDAO {
      * @return the number of computers in the database
      */
     public int getComputerPageCount() throws SQLException, InvalidComputerIdException {
-        Connection connection = null;
-        try {
-            connection = getConnection();
+        try (Connection connection = getConnection()) {
             int count = -1;
 
             ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, COUNT);
@@ -238,10 +205,6 @@ public enum ComputerDAO {
             return (int) Math.ceil(count / COMPUTERS_PER_PAGE);
         } catch (SQLException e) {
             throw e;
-        } finally {
-            closeConnection(connection);
         }
-
     }
-
 }
