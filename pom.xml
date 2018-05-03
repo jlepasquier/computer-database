@@ -7,17 +7,27 @@
    <version>0.0.1-SNAPSHOT</version>
    <packaging>war</packaging>
 
+
+   <properties>
+      <slf4j.version>1.6.4</slf4j.version>
+      <logback.version>1.0.1</logback.version>
+      <junit.version>4.12</junit.version>
+      <mysql.version>8.0.11</mysql.version>
+      <org.mockito.version>1.9.5</org.mockito.version>
+      <org.apache.taglibs.version>1.2.5</org.apache.taglibs.version>
+   </properties>
+
    <dependencies>
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <version>4.12</version>
+         <version>${junit.version}</version>
       </dependency>
 
       <dependency>
          <groupId>mysql</groupId>
          <artifactId>mysql-connector-java</artifactId>
-         <version>5.1.9</version>
+         <version>${mysql.version}</version>
       </dependency>
 
       <dependency>
@@ -41,33 +51,23 @@
       <dependency>
          <groupId>org.mockito</groupId>
          <artifactId>mockito-all</artifactId>
-         <version>1.9.5</version>
+         <version>${org.mockito.version}</version>
          <scope>test</scope>
       </dependency>
 
       <dependency>
          <groupId>org.apache.taglibs</groupId>
          <artifactId>taglibs-standard-spec</artifactId>
-         <version>1.2.5</version>
+         <version>${org.apache.taglibs.version}</version>
       </dependency>
 
       <dependency>
          <groupId>org.apache.taglibs</groupId>
          <artifactId>taglibs-standard-impl</artifactId>
-         <version>1.2.5</version>
+         <version>${org.apache.taglibs.version}</version>
       </dependency>
 
-      <dependency>
-         <groupId>mysql</groupId>
-         <artifactId>mysql-connector-java</artifactId>
-         <version>8.0.11</version>
-      </dependency>
    </dependencies>
-
-   <properties>
-      <slf4j.version>1.6.4</slf4j.version>
-      <logback.version>1.0.1</logback.version>
-   </properties>
 
    <build>
       <sourceDirectory>src</sourceDirectory>
