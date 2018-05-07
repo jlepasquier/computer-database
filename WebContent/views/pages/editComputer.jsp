@@ -6,7 +6,16 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
+			
+				<c:if test="${errorMessage != null}">
+           			<div class="alert alert-danger">
+                		<c:out value="${errorMessage}" /><br/>
+            		</div>
+        		</c:if>
+        		
+			
 				<div class="label label-default pull-right">id: <c:out value="${id}" /></div>
+				
 				<h1>Edit Computer</h1>
 
 				<form action="editComputer" method="POST">

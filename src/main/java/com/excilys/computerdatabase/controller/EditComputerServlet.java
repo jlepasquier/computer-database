@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyDTOMapper;
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -55,12 +56,13 @@ public class EditComputerServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/views/pages/editComputer.jsp").forward(request, response);
     }
 
-    /**
+    /**u
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String path = this.getServletContext().getContextPath();
         try {
             String computerName = request.getParameter("computerName");
             String introduced = request.getParameter("introduced");
@@ -68,20 +70,16 @@ public class EditComputerServlet extends HttpServlet {
             String companyId = request.getParameter("companyId");
             String id = request.getParameter("id");
 
-            System.out.println(computerName);
-            System.out.println(introduced);
-            System.out.println(discontinued);
-            System.out.println(companyId);
-            System.out.println(id);
-
             Computer computer = computerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
+            System.out.println(computer);
             computerService.updateComputer(computer);
-
-            String path = this.getServletContext().getContextPath();
+            
             response.sendRedirect(path + "/dashboard");
-        } catch (Exception e) { // TODO : change to custom exceptions
-            String path = this.getServletContext().getContextPath();
-            response.sendRedirect(path + "/editComputer");
+        } catch (Exception e) { 
+            System.out.println(e.getMessage());
+            String errorMessage = e.getMessage();
+            request.setAttribute("errorMessage", errorMessage);
+            doGet(request, response);
         }
     }
 

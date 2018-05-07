@@ -22,7 +22,7 @@ public class CLIController {
     private final CompanyService companyService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CLIController.class);
-    
+
     /**
      * Instantiates a new CLI controller.
      * @param cli the command line interface
@@ -136,7 +136,7 @@ public class CLIController {
     /**
      * Find a computer.
      * @param id the id
-     * @throws CDBException 
+     * @throws CDBException
      */
     public void find(Long id) {
         try {
@@ -152,15 +152,24 @@ public class CLIController {
      * @param id the id
      */
     public void delete(Long id) {
-        computerService.deleteComputer(id);
+        try {
+            computerService.deleteComputer(id);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
      * Updates a computer.
      * @param cpu the computer
+     * @throws CDBException
      */
     public void update(Computer cpu) {
-        computerService.updateComputer(cpu);
+        try {
+            computerService.updateComputer(cpu);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**

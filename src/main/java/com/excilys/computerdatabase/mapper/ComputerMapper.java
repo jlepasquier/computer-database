@@ -66,7 +66,7 @@ public enum ComputerMapper {
             throw new IllegalArgumentException();
         }
 
-        if (pintroduced != null) {
+        if (pintroduced != null && !pintroduced.equals("")) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -74,7 +74,7 @@ public enum ComputerMapper {
             }
         }
 
-        if (pdiscontinued != null) {
+        if (pdiscontinued != null && !pintroduced.equals("")) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -122,11 +122,14 @@ public enum ComputerMapper {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        System.out.println(pintroduced);
+        System.out.println(pdiscontinued);
+        
         if (pcomputerName == null) {
             throw new IllegalArgumentException();
         }
 
-        if (pintroduced != null) {
+        if (pintroduced != null && !pintroduced.equals("")) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -134,9 +137,9 @@ public enum ComputerMapper {
             }
         }
 
-        if (pdiscontinued != null) {
+        if (pdiscontinued != null && !pintroduced.equals("")) {
             try {
-                introduced = LocalDate.parse(pintroduced, format);
+                discontinued = LocalDate.parse(pdiscontinued, format);
             } catch (DateTimeParseException e) {
                 throw new InvalidDateFormatException();
             }

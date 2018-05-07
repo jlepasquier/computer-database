@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
 import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.mapper.ComputerDTOMapper;
