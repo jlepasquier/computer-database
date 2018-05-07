@@ -1,123 +1,115 @@
 package main.java.com.excilys.computerdatabase.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.model.Computer;
-
+import main.java.com.excilys.computerdatabase.validator.ComputerValidator;
+import main.java.com.excilys.computerdatabase.validator.IdValidator;
 
 /**
  * The Class ComputerService.
  */
 public class ComputerService {
 
-    /**
-     * Instantiates a new computer service.
-     */
-    public ComputerService() {
+    private final ComputerDAO computerDAO;
 
+    public ComputerService() {
+        this.computerDAO = ComputerDAO.INSTANCE;
     }
 
     /**
      * Gets the computer list from database.
-     *
      * @param page the page number
      * @return the computer list
      */
     public List<Computer> getComputerList(int page) {
-        try {
-            return ComputerDAO.INSTANCE.getComputerPage(page).getElements();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return computerDAO.getComputerPage(page).getElements();
     }
 
     /**
      * Gets a computer from its id.
-     *
      * @param id the id
      * @return the computer
+     * @throws CDBException
      */
-    public Computer getComputer(long id) {
-        try {
-            return ComputerDAO.INSTANCE.getComputer(id);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Computer getComputer(long id) throws CDBException {
+        Optional<Computer> cpu = computerDAO.getComputer(id);
+        if (cpu.isPresent()) {
+            return cpu.get();
+        } else {
+            throw new CDBException();
         }
-        return null;
     }
 
     /**
      * Creates a new computer to store in the database.
-     *
      * @param cpu the cpu
      * @return the id of the computer we created
+     * @throws CDBException
      */
-    public long createComputer(Computer cpu) {
-        try {
-            return ComputerDAO.INSTANCE.createComputer(cpu);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public long createComputer(Computer cpu) throws CDBException {
+
+        ComputerValidator.check(cpu);
+
+        Optional<Long> id = computerDAO.createComputer(cpu);
+        if (id.isPresent()) {
+            return id.get();
+        } else {
+            throw new CDBException();
         }
-        return -1;
+
     }
 
     /**
      * Updates a computer in the database.
-     *
      * @param cpu the cpu
      * @return the id of the computer we updated
      */
-    public boolean updateComputer(Computer cpu) {
-        try {
-            return ComputerDAO.INSTANCE.updateComputer(cpu);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean updateComputer(Computer cpu) throws CDBException {
+        ComputerValidator.check(cpu);
+        return computerDAO.updateComputer(cpu);
     }
 
     /**
      * Deletes a computer from its id.
-     *
      * @param id the id
+     * @throws CDBException
      */
-    public void deleteComputer(long id) {
-        try {
-            ComputerDAO.INSTANCE.deleteComputer(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void deleteComputer(long id) throws CDBException {
+        IdValidator.check(id);
+        computerDAO.deleteComputer(id);
     }
-    
+
     /**
      * Gets the number of computers in the database.
-     *
      * @return the number of computers in the database
+     * @throws CDBException
      */
-    public int getComputerCount() {
-        try {
-            return ComputerDAO.INSTANCE.getComputerCount();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Long getComputerCount() throws CDBException {
+        Optional<Long> count = computerDAO.getComputerCount();
+        if (count.isPresent()) {
+            return count.get();
+        } else {
+            throw new CDBException();
         }
-        return -1;
     }
-    
-    
+
     /**
      * Gets the number of computer pages.
-     *
      * @return Gets the number of pages.
+     * @throws CDBException
      */
-    public int getComputerPageCount() {
-        try {
-            return ComputerDAO.INSTANCE.getComputerPageCount();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Long getComputerPageCount() throws CDBException {
+        Optional<Long> count = computerDAO.getComputerPageCount();
+        if (count.isPresent()) {
+            return count.get();
+        } else {
+            throw new CDBException();
         }
-        return -1;
+
     }
 
 }

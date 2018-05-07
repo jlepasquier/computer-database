@@ -2,6 +2,10 @@ package main.java.com.excilys.computerdatabase.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
@@ -13,14 +17,11 @@ import main.java.com.excilys.computerdatabase.ui.CLI;
  */
 public class CLIController {
 
-    /** The command line interface. */
     private final CLI cli;
-
-    /** The computer service. */
     private final ComputerService computerService;
-
-    /** The company service. */
     private final CompanyService companyService;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CLIController.class);
 
     /**
      * Instantiates a new CLI controller.
@@ -28,10 +29,10 @@ public class CLIController {
      * @param computerService the computer service
      * @param companyService the company service
      */
-    public CLIController(CLI cli, ComputerService computerService, CompanyService companyService) {
+    public CLIController(CLI cli) {
         this.cli = cli;
-        this.computerService = computerService;
-        this.companyService = companyService;
+        this.computerService = new ComputerService();
+        this.companyService = new CompanyService();
     }
 
     /**
@@ -58,10 +59,10 @@ public class CLIController {
             findEveryComputer();
             break;
         case 2:
-            find(cli.readInt());
+            find(cli.readLong());
             break;
         case 3:
-            delete(cli.readInt());
+            delete(cli.readLong());
             break;
         case 4:
             update(cli.readCpuToUpdate());
@@ -135,26 +136,40 @@ public class CLIController {
     /**
      * Find a computer.
      * @param id the id
+     * @throws CDBException
      */
-    public void find(int id) {
-        Computer cpu = computerService.getComputer(id);
-        cli.printComputer(cpu);
+    public void find(Long id) {
+        try {
+            Computer cpu = computerService.getComputer(id);
+            cli.printComputer(cpu);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
      * Deletes a computer.
      * @param id the id
      */
-    public void delete(int id) {
-        computerService.deleteComputer(id);
+    public void delete(Long id) {
+        try {
+            computerService.deleteComputer(id);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
      * Updates a computer.
      * @param cpu the computer
+     * @throws CDBException
      */
     public void update(Computer cpu) {
-        computerService.updateComputer(cpu);
+        try {
+            computerService.updateComputer(cpu);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
@@ -162,7 +177,11 @@ public class CLIController {
      * @param cpu the computer
      */
     public void create(Computer cpu) {
-        computerService.createComputer(cpu);
+        try {
+            computerService.createComputer(cpu);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
 }

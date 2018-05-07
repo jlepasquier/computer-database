@@ -27,7 +27,7 @@ public enum ComputerDTOMapper {
                 } else {
                     dto.setIntroduced(introduced.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 }
-                
+
                 LocalDate discontinued = cpu.getDiscontinued();
                 if (discontinued == null) {
                     dto.setDiscontinued("");
@@ -36,7 +36,7 @@ public enum ComputerDTOMapper {
                 }
 
                 Company company = cpu.getCompany();
-                if (company==null) {
+                if (company == null) {
                     dto.setCompanyName("");
                 } else {
                     dto.setCompanyName(company.getName());

@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -15,26 +18,26 @@ import main.java.com.excilys.computerdatabase.persistence.Database;
  * The CompanyDAO singleton.
  */
 public enum CompanyDAO {
-    /** The singleton instance. */
     INSTANCE;
 
-    /** The database. */
     private final Database db;
+    private final QueryMapper queryMapper;
+    private final CompanyMapper companyMapper;
 
-    /** The query FIND_ALL. */
-    private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
-
-    /** The query FIND_ALL. */
-    private static final String FIND_ALL = "SELECT * from company";
-
-    /** The Constant COMPANIES_PER_PAGE. */
     private static final int COMPANIES_PER_PAGE = 10;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
+
+    private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
+    private static final String FIND_ALL = "SELECT * from company";
 
     /**
      * Instantiates a new company DAO.
      */
     CompanyDAO() {
         this.db = Database.INSTANCE;
+        this.queryMapper = QueryMapper.INSTANCE;
+        this.companyMapper = CompanyMapper.INSTANCE;
     }
 
     /**
@@ -47,15 +50,6 @@ public enum CompanyDAO {
     }
 
     /**
-     * Close connection.
-     * @param connection the connection
-     * @throws SQLException the SQL exception
-     */
-    private void closeConnection(Connection connection) throws SQLException {
-        db.closeConnection(connection);
-    }
-
-    /**
      * Gets the company page.
      * @param offset the offset
      * @return the company page
@@ -64,22 +58,19 @@ public enum CompanyDAO {
      */
     public Page<Company> getCompanyPage(int offset) throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
-        Connection connection = null;
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try {
-                connection = getConnection();
-                ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
+            try (Connection connection = getConnection()) {
+                ResultSet rs = queryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
                         offset * COMPANIES_PER_PAGE);
                 while (rs.next()) {
-                    Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                    Company company = companyMapper.createCompany(rs);
                     companyList.add(company);
                 }
             } catch (SQLException e) {
+                LOGGER.error("SQL error");
                 e.printStackTrace();
-            } finally {
-                closeConnection(connection);
             }
         }
 
@@ -95,18 +86,14 @@ public enum CompanyDAO {
      */
     public List<Company> getCompanyList() throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
-        Connection connection = null;
-        try {
-            connection = getConnection();
-            ResultSet rs = QueryMapper.INSTANCE.executeQuery(connection, FIND_ALL);
+        try (Connection connection = getConnection()) {
+            ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL);
             while (rs.next()) {
-                Company company = CompanyMapper.INSTANCE.createCompany(rs);
+                Company company = companyMapper.createCompany(rs);
                 companyList.add(company);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection(connection);
         }
 
         return companyList;

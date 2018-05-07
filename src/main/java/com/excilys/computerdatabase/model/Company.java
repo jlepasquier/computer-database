@@ -5,7 +5,7 @@ package main.java.com.excilys.computerdatabase.model;
  */
 public class Company {
 
-    private int id;
+    private Long id;
     private String name;
 
     /**
@@ -21,7 +21,7 @@ public class Company {
      * Gets the id.
      * @return the id
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class Company {
      * Sets the id.
      * @param id the new id
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,14 +54,14 @@ public class Company {
      */
     public static class Builder {
 
-        private int id;
+        private Long id;
         private String name;
 
         /**
          * Instantiates a new builder.
          * @param id the id, which is mandatory to build a new company
          */
-        public Builder(int id) {
+        public Builder(Long id) {
             if (id == 0) {
                 throw new IllegalArgumentException("id can not be equal to zero");
             }

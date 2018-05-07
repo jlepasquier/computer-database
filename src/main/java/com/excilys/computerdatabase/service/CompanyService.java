@@ -11,36 +11,33 @@ import main.java.com.excilys.computerdatabase.model.Company;
  */
 public class CompanyService {
 
-    /**
-     * Instantiates a new company service.
-     */
+    private final CompanyDAO companyDAO;
+    
     public CompanyService() {
-
+        this.companyDAO = CompanyDAO.INSTANCE;
     }
 
     /**
      * Gets a company page.
-     *
      * @param page the page
      * @return the company page
      */
     public List<Company> getCompanyList(int page) {
         try {
-            return CompanyDAO.INSTANCE.getCompanyPage(page).getElements();
+            return companyDAO.getCompanyPage(page).getElements();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ArrayList<Company>();
     }
-    
+
     /**
      * Gets the company list.
-     *
      * @return the company list
      */
     public List<Company> getCompanyList() {
         try {
-            return CompanyDAO.INSTANCE.getCompanyList();
+            return companyDAO.getCompanyList();
         } catch (Exception e) {
             e.printStackTrace();
         }

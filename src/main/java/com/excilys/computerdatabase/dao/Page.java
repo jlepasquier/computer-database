@@ -8,13 +8,8 @@ import java.util.List;
  */
 public class Page<T> {
 
-    /** The number of elements per page. */
     private int elementsPerPage;
-
-    /** The offset, or the number of the current page. */
     private int offset;
-
-    /** The elements. */
     private List<T> elements;
 
     /**

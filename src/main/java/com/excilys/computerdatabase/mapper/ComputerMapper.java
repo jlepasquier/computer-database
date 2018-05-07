@@ -15,8 +15,6 @@ import main.java.com.excilys.computerdatabase.model.Computer;
  * The ComputerMapper singleton.
  */
 public enum ComputerMapper {
-
-    /** The singleton instance. */
     INSTANCE;
 
     /**
@@ -27,14 +25,14 @@ public enum ComputerMapper {
      */
     public Computer createComputer(ResultSet rs) throws SQLException {
 
-        int id = rs.getInt("id");
+        Long id = rs.getLong("id");
         String name = rs.getString("cpuname");
         Date introducedDate = rs.getDate("introduced");
         LocalDate introduced = (introducedDate == null) ? null : introducedDate.toLocalDate();
         Date discontinuedDate = rs.getDate("discontinued");
         LocalDate discontinued = (discontinuedDate == null) ? null : discontinuedDate.toLocalDate();
         String companyName = rs.getString("companyname");
-        int companyId = rs.getInt("companyid");
+        Long companyId = rs.getLong("companyid");
         Company company = null;
         if (companyId != 0) {
             company = new Company.Builder(companyId).withName(companyName).build();
@@ -60,7 +58,7 @@ public enum ComputerMapper {
 
         LocalDate introduced = null;
         LocalDate discontinued = null;
-        int companyId;
+        Long companyId;
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -68,7 +66,7 @@ public enum ComputerMapper {
             throw new IllegalArgumentException();
         }
 
-        if (pintroduced != null) {
+        if (pintroduced != null && !pintroduced.equals("")) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -76,7 +74,7 @@ public enum ComputerMapper {
             }
         }
 
-        if (pdiscontinued != null) {
+        if (pdiscontinued != null && !pintroduced.equals("")) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -88,7 +86,7 @@ public enum ComputerMapper {
             throw new IllegalArgumentException();
         } else {
             try {
-                companyId = Integer.parseInt(pcompanyId);
+                companyId = Long.parseLong(pcompanyId);
             } catch (NumberFormatException e) {
                 throw e;
             }
@@ -119,16 +117,19 @@ public enum ComputerMapper {
 
         LocalDate introduced = null;
         LocalDate discontinued = null;
-        int companyId;
-        int id;
+        Long companyId;
+        Long id;
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        System.out.println(pintroduced);
+        System.out.println(pdiscontinued);
+        
         if (pcomputerName == null) {
             throw new IllegalArgumentException();
         }
 
-        if (pintroduced != null) {
+        if (pintroduced != null && !pintroduced.equals("")) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -136,9 +137,9 @@ public enum ComputerMapper {
             }
         }
 
-        if (pdiscontinued != null) {
+        if (pdiscontinued != null && !pintroduced.equals("")) {
             try {
-                introduced = LocalDate.parse(pintroduced, format);
+                discontinued = LocalDate.parse(pdiscontinued, format);
             } catch (DateTimeParseException e) {
                 throw new InvalidDateFormatException();
             }
@@ -148,7 +149,7 @@ public enum ComputerMapper {
             throw new IllegalArgumentException();
         } else {
             try {
-                companyId = Integer.parseInt(pcompanyId);
+                companyId = Long.parseLong(pcompanyId);
             } catch (NumberFormatException e) {
                 throw e;
             }
@@ -158,7 +159,7 @@ public enum ComputerMapper {
             throw new IllegalArgumentException();
         } else {
             try {
-                id = Integer.parseInt(pid);
+                id = Long.parseLong(pid);
             } catch (NumberFormatException e) {
                 throw e;
             }

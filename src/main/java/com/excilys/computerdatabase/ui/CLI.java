@@ -17,9 +17,7 @@ import main.java.com.excilys.computerdatabase.model.Computer;
  */
 public class CLI {
 
-    /** The scan. */
     private static Scanner scan;
-
 
     /**
      * Inits the view by enabling user interaction.
@@ -55,7 +53,6 @@ public class CLI {
 
     /**
      * Prints the computer data.
-     *
      * @param cpu the computer
      */
     public void printComputer(Computer cpu) {
@@ -64,7 +61,6 @@ public class CLI {
 
     /**
      * Template list printing.
-     *
      * @param <T> the generic type
      * @param list the list
      */
@@ -95,8 +91,20 @@ public class CLI {
     }
 
     /**
+     * Reads a long.
+     * @return the long
+     */
+    public Long readLong() {
+        try {
+            return Long.parseLong(readData());
+        } catch (Exception e) {
+            System.out.println("Entrez un nombre entier svp.");
+            return readLong();
+        }
+    }
+    
+    /**
      * Reads an integer.
-     *
      * @return the int
      */
     public int readInt() {
@@ -110,7 +118,6 @@ public class CLI {
 
     /**
      * Reads a string.
-     *
      * @return the string
      */
     public String readString() {
@@ -119,7 +126,6 @@ public class CLI {
 
     /**
      * Reads a date.
-     *
      * @return the date
      */
     public LocalDate readDate() {
@@ -134,12 +140,11 @@ public class CLI {
 
     /**
      * Reads computer data to update.
-     *
      * @return the computer
      */
     public Computer readCpuToUpdate() {
         System.out.println("ID de l'ordinateur ?");
-        int id = readInt();
+        Long id = readLong();
         System.out.println("Nom de l'ordinateur ?");
         String name = readString();
         System.out.println("Date de mise sur le marché ?");
@@ -147,7 +152,7 @@ public class CLI {
         System.out.println("Date de retrait du marché ?");
         LocalDate discontinued = readDate();
         System.out.println("ID de l'entreprise ?");
-        int compID = readInt();
+        Long compID = readLong();
         Company company = new Company.Builder(compID).build();
         return new Computer.Builder(name).withId(id).withCompany(company).withIntroduced(introduced)
                 .withDiscontinued(discontinued).build();
@@ -155,7 +160,6 @@ public class CLI {
 
     /**
      * Reads computer to create.
-     *
      * @return the computer
      */
     public Computer readCpuToCreate() {
@@ -166,7 +170,7 @@ public class CLI {
         System.out.println("Date de retrait du marché ?");
         LocalDate discontinued = readDate();
         System.out.println("ID de l'entreprise ?");
-        int compID = readInt();
+        Long compID = readLong();
         Company company = new Company.Builder(compID).build();
         return new Computer.Builder(name).withCompany(company).withIntroduced(introduced).withDiscontinued(discontinued)
                 .build();
