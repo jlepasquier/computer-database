@@ -16,7 +16,7 @@ import main.java.com.excilys.computerdatabase.exception.InvalidComputerIdExcepti
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
-import main.java.com.excilys.computerdatabase.persistence.Database;
+import main.java.com.excilys.computerdatabase.persistence.DataSource;
 
 /**
  * The singleton ComputerDAO.
@@ -24,7 +24,6 @@ import main.java.com.excilys.computerdatabase.persistence.Database;
 public enum ComputerDAO {
     INSTANCE;
 
-    private final Database db;
     private final QueryMapper queryMapper;
     private final ComputerMapper computerMapper;
 
@@ -43,18 +42,8 @@ public enum ComputerDAO {
      * Instantiates a new computer DAO.
      */
     ComputerDAO() {
-        this.db = Database.INSTANCE;
         this.queryMapper = QueryMapper.INSTANCE;
         this.computerMapper = ComputerMapper.INSTANCE;
-    }
-
-    /**
-     * Gets the connection.
-     * @return the connection
-     * @throws SQLException the SQL exception
-     */
-    private Connection getConnection() throws SQLException {
-        return db.getConnection();
     }
 
     /**
@@ -70,7 +59,7 @@ public enum ComputerDAO {
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try (Connection connection = getConnection()) {
+            try (Connection connection = DataSource.getConnection()) {
                 ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE,
                         offset * COMPUTERS_PER_PAGE);
                 while (rs.next()) {
@@ -99,7 +88,7 @@ public enum ComputerDAO {
         if (id < 1) {
             throw new IllegalArgumentException("id=" + id + ". Wrong id, must be > 0");
         } else {
-            try (Connection connection = getConnection()) {
+            try (Connection connection = DataSource.getConnection()) {
                 ResultSet rs = queryMapper.executeQuery(connection, FIND_BY_ID, id);
 
                 while (rs.next()) {
@@ -120,7 +109,7 @@ public enum ComputerDAO {
      */
     public Optional<Long> createComputer(Computer cpu) {
         Long cpuId = null;
-        try (Connection connection = getConnection()) {
+        try (Connection connection = DataSource.getConnection()) {
             cpuId = queryMapper.executeCreate(connection, CREATE, cpu.getName(),
                     cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                     cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
@@ -142,7 +131,7 @@ public enum ComputerDAO {
         if (cpu.getId() <= 0) {
             throw new InvalidComputerIdException();
         } else {
-            try (Connection connection = getConnection()) {
+            try (Connection connection = DataSource.getConnection()) {
                 return queryMapper.executeUpdate(connection, UPDATE, cpu.getName(),
                         cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                         cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
@@ -165,7 +154,7 @@ public enum ComputerDAO {
         if (id <= 0) {
             throw new InvalidComputerIdException();
         } else {
-            try (Connection connection = getConnection()) {
+            try (Connection connection = DataSource.getConnection()) {
                 return queryMapper.executeUpdate(connection, DELETE, id);
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
@@ -181,7 +170,7 @@ public enum ComputerDAO {
      */
     public Optional<Long> getComputerCount() throws InvalidComputerIdException {
         Long count = null;
-        try (Connection connection = getConnection()) {
+        try (Connection connection = DataSource.getConnection()) {
 
             ResultSet rs = queryMapper.executeQuery(connection, COUNT);
             while (rs.next()) {
@@ -203,7 +192,7 @@ public enum ComputerDAO {
     public Optional<Long> getComputerPageCount() throws InvalidComputerIdException {
         Long numberOfComputers = null;
         Long numberOfPages = null;
-        try (Connection connection = getConnection()) {
+        try (Connection connection = DataSource.getConnection()) {
 
             ResultSet rs = queryMapper.executeQuery(connection, COUNT);
             while (rs.next()) {

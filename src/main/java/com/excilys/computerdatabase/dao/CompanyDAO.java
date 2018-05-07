@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
-import main.java.com.excilys.computerdatabase.persistence.Database;
+import main.java.com.excilys.computerdatabase.persistence.DataSource;
 
 /**
  * The CompanyDAO singleton.
@@ -20,7 +20,6 @@ import main.java.com.excilys.computerdatabase.persistence.Database;
 public enum CompanyDAO {
     INSTANCE;
 
-    private final Database db;
     private final QueryMapper queryMapper;
     private final CompanyMapper companyMapper;
 
@@ -35,19 +34,10 @@ public enum CompanyDAO {
      * Instantiates a new company DAO.
      */
     CompanyDAO() {
-        this.db = Database.INSTANCE;
         this.queryMapper = QueryMapper.INSTANCE;
         this.companyMapper = CompanyMapper.INSTANCE;
     }
 
-    /**
-     * Gets the connection.
-     * @return the connection
-     * @throws SQLException the SQL exception
-     */
-    private Connection getConnection() throws SQLException {
-        return db.getConnection();
-    }
 
     /**
      * Gets the company page.
@@ -61,7 +51,7 @@ public enum CompanyDAO {
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try (Connection connection = getConnection()) {
+            try (Connection connection = DataSource.getConnection()) {
                 ResultSet rs = queryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
                         offset * COMPANIES_PER_PAGE);
                 while (rs.next()) {
@@ -86,7 +76,7 @@ public enum CompanyDAO {
      */
     public List<Company> getCompanyList() throws SQLException, IllegalArgumentException {
         List<Company> companyList = new ArrayList<>();
-        try (Connection connection = getConnection()) {
+        try (Connection connection = DataSource.getConnection()) {
             ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL);
             while (rs.next()) {
                 Company company = companyMapper.createCompany(rs);

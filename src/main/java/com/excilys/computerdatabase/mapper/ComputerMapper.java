@@ -121,9 +121,6 @@ public enum ComputerMapper {
         Long id;
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        System.out.println(pintroduced);
-        System.out.println(pdiscontinued);
         
         if (pcomputerName == null) {
             throw new IllegalArgumentException();

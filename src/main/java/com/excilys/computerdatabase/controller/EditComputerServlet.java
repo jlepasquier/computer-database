@@ -71,12 +71,10 @@ public class EditComputerServlet extends HttpServlet {
             String id = request.getParameter("id");
 
             Computer computer = computerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
-            System.out.println(computer);
             computerService.updateComputer(computer);
             
             response.sendRedirect(path + "/dashboard");
         } catch (Exception e) { 
-            System.out.println(e.getMessage());
             String errorMessage = e.getMessage();
             request.setAttribute("errorMessage", errorMessage);
             doGet(request, response);

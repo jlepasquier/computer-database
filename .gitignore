@@ -4,6 +4,8 @@
 ### Eclipse ###
 
 src/main/resources/config.properties
+src/main/resources/datasource.properties
+
 src/test/resources/config.properties
 
 .metadata
