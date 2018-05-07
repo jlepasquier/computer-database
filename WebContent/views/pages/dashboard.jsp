@@ -9,6 +9,7 @@
 <section id="main">
 	<div class="container">
 		<h1 id="homeTitle">
+			<i class="fas fa-desktop"></i> 
 			<c:out value="${computerCount}" />
 			Computers found
 		</h1>
@@ -22,9 +23,10 @@
 						class="btn btn-primary" />
 				</form>
 			</div>
+			
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="addComputer">Add
-					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+				<a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a>
+					<a class="btn btn-default" id="editComputer" href="#"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
 		</div>
@@ -38,23 +40,16 @@
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<!-- Variable declarations for passing labels as parameters -->
-					<!-- Table header for Computer Name -->
-
 					<th class="editMode" style="width: 60px; height: 22px;"><input
 						type="checkbox" id="selectall" /> <span
 						style="vertical-align: top;"> - <a href="#"
-							id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-								class="fa fa-trash-o fa-lg"></i>
+							id="deleteSelected" onclick="$.fn.deleteSelected();"> <i class="fas fa-trash-alt"></i>
 						</a>
 					</span></th>
 					<th>Computer name</th>
 					<th>Introduced date</th>
-					<!-- Table header for Discontinued Date -->
 					<th>Discontinued date</th>
-					<!-- Table header for Company -->
 					<th>Company</th>
-
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
@@ -63,8 +58,9 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="0"></td>
-						<td><a href="editComputer?id=<c:out value="${dto.getId()}" />" onclick=""><c:out
-									value="${dto.getName()}" /></a></td>
+						<td><a
+							href="editComputer?id=<c:out value="${dto.getId()}" />"
+							onclick=""><c:out value="${dto.getName()}" /></a></td>
 						<td><c:out value="${dto.getIntroduced()}" /></td>
 						<td><c:out value="${dto.getDiscontinued()}" /></td>
 						<td><c:out value="${dto.getCompanyName()}" /></td>
@@ -81,7 +77,7 @@
 		<button type="button" class="btn btn-default">50</button>
 		<button type="button" class="btn btn-default">100</button>
 	</div>
-	
+
 	<div class="container text-center">
 		<c:url var="searchUri" value="/dashboard?page=##" />
 		<paginator:display maxLinks="5" currPage="${page}"
