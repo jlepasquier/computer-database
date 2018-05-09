@@ -29,7 +29,6 @@ public class DashboardServlet extends HttpServlet {
     private final ComputerDTOMapper computerDTOMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
-    
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -49,10 +48,18 @@ public class DashboardServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        int page = pageToDisplay(request);
-        List<Computer> cpuList = computerService.getComputerList(page);
+
+        String page = request.getParameter("page");
+        String research = request.getParameter("search");
+
+        List<Computer> cpuList = getPage(page, research);
         List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
+
+        /*
+         * int page = pageToDisplay(request); List<Computer> cpuList =
+         * computerService.getComputerList(page); List<ComputerDTO> dtoList =
+         * computerDTOMapper.createDTOList(cpuList);
+         */
 
         Long totalPages, computerCount;
         try {
@@ -63,11 +70,9 @@ public class DashboardServlet extends HttpServlet {
             totalPages = 0L;
             computerCount = 0L;
         }
-        
-        String search = request.getParameter("search"); //TODO : test if necessary
-        
-        request.setAttribute("search", search);
+
         request.setAttribute("page", page);
+        request.setAttribute("search", research);
         request.setAttribute("dtoList", dtoList);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("computerCount", computerCount);
@@ -84,8 +89,8 @@ public class DashboardServlet extends HttpServlet {
      * @throws IOException the exception
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {     
-        
+            throws ServletException, IOException {
+
         String selection = request.getParameter("selection");
 
         for (String s : selection.split(",")) {
@@ -96,22 +101,32 @@ public class DashboardServlet extends HttpServlet {
                 LOGGER.error(e.getMessage());
             }
         }
-        
+
         doGet(request, response);
     }
 
-    private int pageToDisplay(HttpServletRequest request) {
+    private int pageToDisplay(String pageString) {
         int page;
-        String pageString = request.getParameter("page");
         if (pageString == null) {
             page = 0;
         } else {
-            page = Integer.parseInt(pageString)-1;
+            page = Integer.parseInt(pageString) - 1;
         }
         if (page < 1) {
             page = 0;
         }
         return page;
+    }
+
+    private List<Computer> getPage(String page, String research) {
+        List<Computer> cpuList;
+        if (research == null || research.equals("")) {
+            cpuList = computerService.getComputerList(pageToDisplay(page));
+        } else {
+            cpuList = computerService.searchComputer(research, pageToDisplay(page));
+        }
+        
+        return cpuList;
     }
 
 }

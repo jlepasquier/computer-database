@@ -28,6 +28,15 @@ public class ComputerService {
     public List<Computer> getComputerList(int page) {
         return computerDAO.getComputerPage(page).getElements();
     }
+    
+    /**
+     * Gets the computer list from database.
+     * @param page the page number
+     * @return the computer list
+     */
+    public List<Computer> searchComputer(String research, int offset) {
+        return computerDAO.searchComputer(research, offset).getElements();
+    }
 
     /**
      * Gets a computer from its id.

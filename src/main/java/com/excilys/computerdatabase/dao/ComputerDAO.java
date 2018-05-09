@@ -37,7 +37,8 @@ public enum ComputerDAO {
     private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
     private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
     private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
-
+    private static final String SEARCH = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ? LIMIT ? OFFSET ?";
+    
     /**
      * Instantiates a new computer DAO.
      */
@@ -161,6 +162,38 @@ public enum ComputerDAO {
                 return false;
             }
         }
+    }
+
+    /**
+     * Searches a computer.
+     * @param search the string containing the word to look for
+     * @param offset
+     * @throws InvalidComputerIdException exception
+     * @return the page of computers
+     */
+    public Page<Computer> searchComputer(String search, int offset) {
+
+        System.out.println("Search : " + search);
+        System.out.println("Offset : " + offset);
+
+        List<Computer> cpuList = new ArrayList<>();
+
+        if (offset < 0) {
+            throw new IllegalArgumentException();
+        } else {
+            try (Connection connection = DataSource.getConnection()) {
+                String searchString = "%" + search + "%";
+                ResultSet rs = queryMapper.executeQuery(connection, SEARCH, searchString, searchString, COMPUTERS_PER_PAGE, offset * COMPUTERS_PER_PAGE);
+                while (rs.next()) {
+                    Computer cpu = computerMapper.createComputer(rs);
+                    cpuList.add(cpu);
+                }
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+
+        return new Page<Computer>(COMPUTERS_PER_PAGE, offset, cpuList);
     }
 
     /**

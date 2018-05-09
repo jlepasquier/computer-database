@@ -9,38 +9,43 @@
 	<div class="container">
 		<h1 id="homeTitle">
 			<i class="fas fa-desktop"></i>
-			<c:out value="${computerCount}" /> Computers found
+			<c:out value="${computerCount}" />
+			Computers found
 		</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
-				<form id="searchForm" name="searchForm" action="dashboard" method="GET" class="form-inline">
-					<input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" /> 
-					<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+				<form id="searchForm" name="searchForm" action="dashboard"
+					method="GET" class="form-inline">
+					<input type="search" id="searchbox" name="search"
+						class="form-control" placeholder="Search name" /> <input
+						type="submit" id="searchsubmit" value="Filter by name"
+						class="btn btn-primary" />
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="addComputer">Add	Computer</a>
-				<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+				<a class="btn btn-success" id="addComputer" href="addComputer">Add
+					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
 		</div>
 	</div>
 
-	<form id="deleteForm" name="deleteform" action="dashboard" method="POST">
-		<input type="hidden" name="selection" id="selection" value="0"/>
+	<form id="deleteForm" name="deleteform" action="dashboard"
+		method="POST">
+		<input type="hidden" name="selection" id="selection" value="0" />
 	</form>
 
 	<div class="container" style="margin-top: 10px;">
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th class="editMode" style="width: 60px; height: 22px;">
-					<input type="checkbox" id="selectall" /> 
-					<span style="vertical-align: top;"> - 
-					<a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();"> 
-						<i class="fas fa-trash-alt"></i>
+					<th class="editMode" style="width: 60px; height: 22px;"><input
+						type="checkbox" id="selectall" /> <span
+						style="vertical-align: top;"> - <a href="#"
+							id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+								class="fas fa-trash-alt"></i>
 						</a>
-					</span>
-					</th>
+					</span></th>
 					<th>Computer name</th>
 					<th>Introduced date</th>
 					<th>Discontinued date</th>
@@ -69,15 +74,24 @@
 
 <footer class="navbar-fixed-bottom">
 	<div class="container text-center">
-		<c:url var="searchUri" value="/dashboard?search=${search}&page=##" />
-		<paginator:display maxLinks="5" currPage="${page}" totalPages="${totalPages}" uri="${searchUri}" />
+		<c:choose>
+			<c:when test='${search==null || search.equals("")}'>
+				<c:url var="searchUri" value="/dashboard?page=##" />
+			</c:when>
+			<c:otherwise>
+				<c:url var="searchUri" value="/dashboard?search=${search}&page=##" />
+			</c:otherwise>
+		</c:choose>
+
+		<paginator:display maxLinks="5" currPage="${page}"
+			totalPages="${totalPages}" uri="${searchUri}" />
 	</div>
 
-		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
-		</div>
+	<div class="btn-group btn-group-sm pull-right" role="group">
+		<button type="button" class="btn btn-default">10</button>
+		<button type="button" class="btn btn-default">50</button>
+		<button type="button" class="btn btn-default">100</button>
+	</div>
 </footer>
 
 
