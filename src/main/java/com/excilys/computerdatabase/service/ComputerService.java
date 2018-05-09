@@ -28,6 +28,15 @@ public class ComputerService {
     public List<Computer> getComputerList(int page) {
         return computerDAO.getComputerPage(page).getElements();
     }
+    
+    /**
+     * Gets the computer list from database.
+     * @param page the page number
+     * @return the computer list
+     */
+    public List<Computer> searchComputer(String research, int offset) {
+        return computerDAO.searchComputer(research, offset).getElements();
+    }
 
     /**
      * Gets a computer from its id.
@@ -109,7 +118,34 @@ public class ComputerService {
         } else {
             throw new CDBException();
         }
-
+    }
+    
+    /**
+     * Gets the number of computers in the search query.
+     * @return the number of computers in the search query
+     * @throws CDBException
+     */
+    public Long getSearchComputerCount(String search, int offset) throws CDBException {
+        Optional<Long> count = computerDAO.getSearchComputerCount(search, offset);
+        if (count.isPresent()) {
+            return count.get();
+        } else {
+            throw new CDBException();
+        }
+    }
+    
+    /**
+     * Gets the number of computers in the database.
+     * @return the number of computers in the database
+     * @throws CDBException
+     */
+    public Long getSearchComputerPageCount(String search) throws CDBException {
+        Optional<Long> count = computerDAO.getSearchComputerPageCount(search);
+        if (count.isPresent()) {
+            return count.get();
+        } else {
+            throw new CDBException();
+        }
     }
 
 }

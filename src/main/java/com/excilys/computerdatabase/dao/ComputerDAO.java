@@ -37,7 +37,10 @@ public enum ComputerDAO {
     private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
     private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
     private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
-
+    private static final String SEARCH = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ? ORDER BY cpu.name LIMIT ? OFFSET ? ";
+    private static final String SEARCH_COUNT = "SELECT COUNT(*) FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ?";
+    
+    
     /**
      * Instantiates a new computer DAO.
      */
@@ -164,6 +167,35 @@ public enum ComputerDAO {
     }
 
     /**
+     * Searches a computer.
+     * @param search the string containing the word to look for
+     * @param offset
+     * @throws InvalidComputerIdException exception
+     * @return the page of computers
+     */
+    public Page<Computer> searchComputer(String search, int offset) {
+
+        List<Computer> cpuList = new ArrayList<>();
+
+        if (offset < 0) {
+            throw new IllegalArgumentException();
+        } else {
+            try (Connection connection = DataSource.getConnection()) {
+                String searchString = "%" + search + "%";
+                ResultSet rs = queryMapper.executeQuery(connection, SEARCH, searchString, searchString, COMPUTERS_PER_PAGE, offset * COMPUTERS_PER_PAGE);
+                while (rs.next()) {
+                    Computer cpu = computerMapper.createComputer(rs);
+                    cpuList.add(cpu);
+                }
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+
+        return new Page<Computer>(COMPUTERS_PER_PAGE, offset, cpuList);
+    }
+
+    /**
      * Gets the number of computers in the database.
      * @throws InvalidComputerIdException exception
      * @return the number of computers in the database
@@ -195,6 +227,57 @@ public enum ComputerDAO {
         try (Connection connection = DataSource.getConnection()) {
 
             ResultSet rs = queryMapper.executeQuery(connection, COUNT);
+            while (rs.next()) {
+                numberOfComputers = rs.getLong(1);
+            }
+            numberOfPages = (long) Math.ceil(numberOfComputers / COMPUTERS_PER_PAGE);
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.ofNullable(numberOfPages);
+    }
+    
+    
+    
+    
+    
+    /**
+     * Gets the number of computers returned by the search query
+     * @param search the string containing the word to look for
+     * @param offset
+     * @throws InvalidComputerIdException exception
+     * @return the number of computers
+     */
+    public Optional<Long> getSearchComputerCount(String search, int offset) {
+        Long count = null;
+        try (Connection connection = DataSource.getConnection()) {
+
+            String searchString = "%" + search + "%";
+            ResultSet rs = queryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
+            while (rs.next()) {
+                count = rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        return Optional.ofNullable(count);
+    }
+
+    
+    /**
+     * Gets the number of computers in the database.
+     * @throws InvalidComputerIdException exception
+     * @return the number of computers in the database
+     */
+    public Optional<Long> getSearchComputerPageCount(String search) throws InvalidComputerIdException {
+        Long numberOfComputers = null;
+        Long numberOfPages = null;
+        try (Connection connection = DataSource.getConnection()) {
+
+            String searchString = "%" + search + "%";
+            ResultSet rs = queryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
             while (rs.next()) {
                 numberOfComputers = rs.getLong(1);
             }
