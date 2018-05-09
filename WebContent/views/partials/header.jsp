@@ -9,7 +9,7 @@
 <meta charset="utf-8">
 <!-- Bootstrap -->
 <link href="${root}/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="${root}/css/font-awesome.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
 <link href="${root}/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>

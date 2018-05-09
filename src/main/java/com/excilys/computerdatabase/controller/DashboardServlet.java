@@ -21,7 +21,7 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 /**
  * Servlet implementation class DashboardServlet.
  */
-@WebServlet(urlPatterns = { "/dashboard", "/index" })
+@WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -49,11 +49,9 @@ public class DashboardServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         int page = pageToDisplay(request);
-
         List<Computer> cpuList = computerService.getComputerList(page);
-
         List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
 
         Long totalPages, computerCount;
@@ -65,7 +63,10 @@ public class DashboardServlet extends HttpServlet {
             totalPages = 0L;
             computerCount = 0L;
         }
-
+        
+        String search = request.getParameter("search"); //TODO : test if necessary
+        
+        request.setAttribute("search", search);
         request.setAttribute("page", page);
         request.setAttribute("dtoList", dtoList);
         request.setAttribute("totalPages", totalPages);
@@ -83,7 +84,19 @@ public class DashboardServlet extends HttpServlet {
      * @throws IOException the exception
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {     
+        
+        String selection = request.getParameter("selection");
+
+        for (String s : selection.split(",")) {
+            int id = Integer.parseInt(s);
+            try {
+                computerService.deleteComputer(id);
+            } catch (CDBException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+        
         doGet(request, response);
     }
 
@@ -91,12 +104,12 @@ public class DashboardServlet extends HttpServlet {
         int page;
         String pageString = request.getParameter("page");
         if (pageString == null) {
-            page = 1;
+            page = 0;
         } else {
-            page = Integer.parseInt(pageString);
+            page = Integer.parseInt(pageString)-1;
         }
         if (page < 1) {
-            page = 1;
+            page = 0;
         }
         return page;
     }

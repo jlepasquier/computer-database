@@ -4,7 +4,21 @@
   <servlet>
     <servlet-name>DashboardServlet</servlet-name>
     <servlet-class>main.java.com.excilys.computerdatabase.controller.DashboardServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
+  
+    <servlet>
+    <servlet-name>EditComputerServlet</servlet-name>
+    <servlet-class>main.java.com.excilys.computerdatabase.controller.EditComputerServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  
+    <servlet>
+    <servlet-name>AddComputerServlet</servlet-name>
+    <servlet-class>main.java.com.excilys.computerdatabase.controller.AddComputerServlet</servlet-class>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.css</url-pattern>

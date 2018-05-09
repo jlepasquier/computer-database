@@ -14,6 +14,7 @@ $(function() {
 	});
 });
 
+
 $("input[name='introduced']").change(function() {
 	$("input[name='discontinued']").attr("min", $(this).val());
 })
