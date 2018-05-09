@@ -118,7 +118,20 @@ public class ComputerService {
         } else {
             throw new CDBException();
         }
-
+    }
+    
+    /**
+     * Gets the number of computers in the search query.
+     * @return the number of computers in the search query
+     * @throws CDBException
+     */
+    public Long getSearchComputerCount(String search, int offset) throws CDBException {
+        Optional<Long> count = computerDAO.getSearchComputerCount(search, offset);
+        if (count.isPresent()) {
+            return count.get();
+        } else {
+            throw new CDBException();
+        }
     }
 
 }

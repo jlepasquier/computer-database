@@ -49,35 +49,14 @@ public class DashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String page = request.getParameter("page");
         String research = request.getParameter("search");
+        boolean researchPage = !(research == null || research.equals(""));
 
-        List<Computer> cpuList = getPage(page, research);
-        List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
-
-        /*
-         * int page = pageToDisplay(request); List<Computer> cpuList =
-         * computerService.getComputerList(page); List<ComputerDTO> dtoList =
-         * computerDTOMapper.createDTOList(cpuList);
-         */
-
-        Long totalPages, computerCount;
-        try {
-            totalPages = computerService.getComputerPageCount();
-            computerCount = computerService.getComputerCount();
-        } catch (CDBException e) {
-            LOGGER.error(e.getMessage());
-            totalPages = 0L;
-            computerCount = 0L;
+        if (researchPage) {
+            renderResearchPage(request, response);
+        } else {
+            renderDashboard(request, response);
         }
-
-        request.setAttribute("page", page);
-        request.setAttribute("search", research);
-        request.setAttribute("dtoList", dtoList);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("computerCount", computerCount);
-
-        this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
     }
 
     /**
@@ -105,7 +84,59 @@ public class DashboardServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    private int pageToDisplay(String pageString) {
+    private void renderDashboard(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int page = pageStringToInt(request.getParameter("page"));
+
+        List<Computer> cpuList = computerService.getComputerList(page);
+        List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
+
+        Long totalPages, computerCount;
+        try {
+            totalPages = computerService.getComputerPageCount();
+            computerCount = computerService.getComputerCount();
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+            totalPages = 0L;
+            computerCount = 0L;
+        }
+
+        request.setAttribute("page", page);
+        request.setAttribute("dtoList", dtoList);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("computerCount", computerCount);
+
+        this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
+    }
+
+    private void renderResearchPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int page = pageStringToInt(request.getParameter("page"));
+        String research = request.getParameter("search");
+
+        List<Computer> cpuList = computerService.searchComputer(research, page);
+        List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
+
+        Long totalPages, computerCount;
+        try {
+            totalPages = computerService.getComputerPageCount();
+            computerCount = computerService.getSearchComputerCount(research, page);
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
+            totalPages = 0L;
+            computerCount = 0L;
+        }
+
+        request.setAttribute("page", page);
+        request.setAttribute("dtoList", dtoList);
+        request.setAttribute("search", research);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("computerCount", computerCount);
+
+        this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
+
+    }
+
+    private int pageStringToInt(String pageString) {
         int page;
         if (pageString == null) {
             page = 0;
@@ -116,17 +147,6 @@ public class DashboardServlet extends HttpServlet {
             page = 0;
         }
         return page;
-    }
-
-    private List<Computer> getPage(String page, String research) {
-        List<Computer> cpuList;
-        if (research == null || research.equals("")) {
-            cpuList = computerService.getComputerList(pageToDisplay(page));
-        } else {
-            cpuList = computerService.searchComputer(research, pageToDisplay(page));
-        }
-        
-        return cpuList;
     }
 
 }
