@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
-import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyDTOMapper;
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -62,7 +61,6 @@ public class EditComputerServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = this.getServletContext().getContextPath();
         try {
             String computerName = request.getParameter("computerName");
             String introduced = request.getParameter("introduced");
@@ -72,7 +70,8 @@ public class EditComputerServlet extends HttpServlet {
 
             Computer computer = computerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
             computerService.updateComputer(computer);
-            
+
+            String path = this.getServletContext().getContextPath();
             response.sendRedirect(path + "/dashboard");
         } catch (Exception e) { 
             String errorMessage = e.getMessage();

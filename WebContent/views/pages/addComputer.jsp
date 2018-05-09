@@ -45,4 +45,6 @@
 	</div>
 </section>
 
+<%@include file="../partials/imports.jsp"%>
+<script src="${root}/js/formValidation.js"></script>
 <%@include file="../partials/footer.jsp"%>
