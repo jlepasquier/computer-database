@@ -265,4 +265,27 @@ public enum ComputerDAO {
         return Optional.ofNullable(count);
     }
 
+    
+    /**
+     * Gets the number of computers in the database.
+     * @throws InvalidComputerIdException exception
+     * @return the number of computers in the database
+     */
+    public Optional<Long> getSearchComputerPageCount(String search) throws InvalidComputerIdException {
+        Long numberOfComputers = null;
+        Long numberOfPages = null;
+        try (Connection connection = DataSource.getConnection()) {
+
+            String searchString = "%" + search + "%";
+            ResultSet rs = queryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
+            while (rs.next()) {
+                numberOfComputers = rs.getLong(1);
+            }
+            numberOfPages = (long) Math.ceil(numberOfComputers / COMPUTERS_PER_PAGE);
+
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.ofNullable(numberOfPages);
+    }
 }

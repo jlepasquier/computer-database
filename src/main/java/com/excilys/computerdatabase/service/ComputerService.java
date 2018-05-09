@@ -133,5 +133,19 @@ public class ComputerService {
             throw new CDBException();
         }
     }
+    
+    /**
+     * Gets the number of computers in the database.
+     * @return the number of computers in the database
+     * @throws CDBException
+     */
+    public Long getSearchComputerPageCount(String search) throws CDBException {
+        Optional<Long> count = computerDAO.getSearchComputerPageCount(search);
+        if (count.isPresent()) {
+            return count.get();
+        } else {
+            throw new CDBException();
+        }
+    }
 
 }

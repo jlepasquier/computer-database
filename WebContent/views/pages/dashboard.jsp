@@ -12,6 +12,9 @@
 			<c:out value="${computerCount}" />
 			Computers found
 		</h1>
+		<c:if test='${search!=null && !search.equals("")}'>
+		<h2><i class="fas fa-search"></i> Research : <c:out value="${search}"/></h2>
+		</c:if>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" name="searchForm" action="dashboard"

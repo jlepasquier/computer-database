@@ -39,7 +39,7 @@ public class Paginator extends SimpleTagSupport {
                 out.write("<li><a href=\"#\" aria-label=\"Previous\"> <span aria-hidden=\"true\">&laquo;</span> </a>");
             }
 
-            for (int i = pgStart; i < pgEnd; i++) {
+            for (int i = pgStart; i <= pgEnd; i++) {
                 out.write(constructLink(i));
             }
 
