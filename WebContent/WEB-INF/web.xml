@@ -14,8 +14,6 @@
       <servlet-class>main.java.com.excilys.computerdatabase.controller.EditComputerServlet</servlet-class>
    </servlet>
 
-
-
    <servlet-mapping>
       <servlet-name>default</servlet-name>
       <url-pattern>*.css</url-pattern>
@@ -36,4 +34,11 @@
       <error-code>500</error-code>
       <location>/ExceptionHandler</location>
    </error-page>
+
+   <jsp-config>
+      <jsp-property-group>
+         <url-pattern>*.jsp</url-pattern>
+         <trim-directive-whitespaces>true</trim-directive-whitespaces>
+      </jsp-property-group>
+   </jsp-config>
 </web-app>

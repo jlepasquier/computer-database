@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyDTOMapper;
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -23,7 +24,7 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
+
     private final CompanyService companyService;
     private final ComputerService computerService;
     private final ComputerMapper computerMapper;
@@ -46,16 +47,28 @@ public class EditComputerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Company> companyList = companyService.getCompanyList();
-        List<CompanyDTO> dtoList = companyDTOMapper.createDTOList(companyList);
+        try {
+            long id = Long.parseLong(request.getParameter("id"));
 
-        request.setAttribute("companyList", dtoList);
-        request.setAttribute("id", request.getParameter("id"));
+            Computer computer = computerService.getComputer(id);
+            List<Company> companyList = companyService.getCompanyList();
+            List<CompanyDTO> companyDtoList = companyDTOMapper.createDTOList(companyList);
+
+            request.setAttribute("id", id);
+            request.setAttribute("companyList", companyDtoList);
+            request.setAttribute("computer", computer);
+
+        } catch (CDBException e) {
+            String errorMessage = e.getMessage();
+            request.setAttribute("errorMessage", errorMessage);
+            doGet(request, response);
+        }
 
         this.getServletContext().getRequestDispatcher("/views/pages/editComputer.jsp").forward(request, response);
     }
 
-    /**u
+    /**
+     * u
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
      */
@@ -73,7 +86,7 @@ public class EditComputerServlet extends HttpServlet {
 
             String path = this.getServletContext().getContextPath();
             response.sendRedirect(path + "/dashboard");
-        } catch (Exception e) { 
+        } catch (Exception e) {
             String errorMessage = e.getMessage();
             request.setAttribute("errorMessage", errorMessage);
             doGet(request, response);
