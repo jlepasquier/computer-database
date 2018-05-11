@@ -44,9 +44,8 @@
 				<tr>
 					<th class="editMode" style="width: 60px; height: 22px;"><input
 						type="checkbox" id="selectall" /> <span
-						style="vertical-align: top;"> - <a href="#"
-							id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-								class="fas fa-trash-alt"></i>
+						style="vertical-align: top;"><a href="#" hidden="true"
+							id="deleteSelected" onclick="$.fn.deleteSelected();"> - <i class="fas fa-trash-alt"></i>
 						</a>
 					</span></th>
 					<th>Computer name</th>

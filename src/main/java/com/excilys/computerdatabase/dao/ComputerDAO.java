@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import main.java.com.excilys.computerdatabase.exception.InvalidComputerIdException;
+import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
@@ -129,10 +129,10 @@ public enum ComputerDAO {
      * @return boolean if the update was successful or not
      * @throws InvalidComputerIdException exception
      */
-    public boolean updateComputer(Computer cpu) throws InvalidComputerIdException {
+    public boolean updateComputer(Computer cpu) throws InvalidIdException {
 
         if (cpu.getId() <= 0) {
-            throw new InvalidComputerIdException();
+            throw new InvalidIdException();
         } else {
             try (Connection connection = DataSource.getConnection()) {
                 return queryMapper.executeUpdate(connection, UPDATE, cpu.getName(),
@@ -152,10 +152,10 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      * @return boolean for query success or failure
      */
-    public boolean deleteComputer(Long id) throws InvalidComputerIdException {
+    public boolean deleteComputer(Long id) throws InvalidIdException {
 
         if (id <= 0) {
-            throw new InvalidComputerIdException();
+            throw new InvalidIdException();
         } else {
             try (Connection connection = DataSource.getConnection()) {
                 return queryMapper.executeUpdate(connection, DELETE, id);
@@ -200,7 +200,7 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      * @return the number of computers in the database
      */
-    public Optional<Long> getComputerCount() throws InvalidComputerIdException {
+    public Optional<Long> getComputerCount() throws InvalidIdException {
         Long count = null;
         try (Connection connection = DataSource.getConnection()) {
 
@@ -221,7 +221,7 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      * @return the number of computers in the database
      */
-    public Optional<Long> getComputerPageCount() throws InvalidComputerIdException {
+    public Optional<Long> getComputerPageCount() throws InvalidIdException {
         Long numberOfComputers = null;
         Long numberOfPages = null;
         try (Connection connection = DataSource.getConnection()) {
@@ -271,7 +271,7 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      * @return the number of computers in the database
      */
-    public Optional<Long> getSearchComputerPageCount(String search) throws InvalidComputerIdException {
+    public Optional<Long> getSearchComputerPageCount(String search) throws InvalidIdException {
         Long numberOfComputers = null;
         Long numberOfPages = null;
         try (Connection connection = DataSource.getConnection()) {
