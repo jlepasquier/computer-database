@@ -1,14 +1,17 @@
 package main.java.com.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import main.java.com.excilys.computerdatabase.exception.InvalidComputerIdException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -27,8 +30,10 @@ public enum CompanyDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
-    private static final String FIND_PAGE = "SELECT * from company LIMIT ? OFFSET ?";
-    private static final String FIND_ALL = "SELECT * from company";
+    private static final String FIND_PAGE = "SELECT * FROM company LIMIT ? OFFSET ?";
+    private static final String FIND_ALL = "SELECT * FROM company";
+    private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
+    private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
 
     /**
      * Instantiates a new company DAO.
@@ -37,7 +42,6 @@ public enum CompanyDAO {
         this.queryMapper = QueryMapper.INSTANCE;
         this.companyMapper = CompanyMapper.INSTANCE;
     }
-
 
     /**
      * Gets the company page.
@@ -83,10 +87,19 @@ public enum CompanyDAO {
                 companyList.add(company);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return companyList;
     }
 
+    public boolean deleteCompany(Long id) {
+        try (Connection connection = DataSource.getConnection()) {
+            queryMapper.executeUpdate(connection, DELETE_COMPUTERS, id);
+            return queryMapper.executeUpdate(connection, DELETE_COMPANY, id);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            return false;
+        }
+    }
 }

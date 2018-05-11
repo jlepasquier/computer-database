@@ -48,6 +48,7 @@ public class CLI {
         System.out.println("4 - Mettre à jour les informations d'un ordinateur");
         System.out.println("5 - Créer un nouvel ordinateur");
         System.out.println("6 - Voir la liste des entreprises");
+        System.out.println("7 - Supprimer une entreprise");
         System.out.println("---------------------------------------------------------------");
     }
 

@@ -12,7 +12,7 @@ import main.java.com.excilys.computerdatabase.model.Company;
 public class CompanyService {
 
     private final CompanyDAO companyDAO;
-    
+
     public CompanyService() {
         this.companyDAO = CompanyDAO.INSTANCE;
     }
@@ -42,5 +42,9 @@ public class CompanyService {
             e.printStackTrace();
         }
         return new ArrayList<Company>();
+    }
+
+    public boolean deleteCompany(Long id) {
+        return companyDAO.deleteCompany(id);
     }
 }

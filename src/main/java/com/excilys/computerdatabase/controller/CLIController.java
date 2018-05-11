@@ -73,6 +73,9 @@ public class CLIController {
         case 6:
             findEveryCompany();
             break;
+        case 7:
+            deleteCompany(cli.readLong());
+            break;
         default:
             break;
         }
@@ -131,6 +134,14 @@ public class CLIController {
                 currentPage -= 1;
             }
         } while (!exit);
+    }
+
+    /**
+     * Deletes a company.
+     * @param id the id
+     */
+    public void deleteCompany(Long id) {
+        companyService.deleteCompany(id);
     }
 
     /**
