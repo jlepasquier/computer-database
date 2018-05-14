@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
@@ -34,6 +33,7 @@ public class CompanyDAOTest {
     @After
     public void tearDown() {
         companyDAO = null;
+        computerDAO = null;
     }
 
     /*** GetCompanyList ***/
@@ -41,7 +41,7 @@ public class CompanyDAOTest {
     public void testGetCompanyList() {
         assertTrue(true);
         List<Company> list = companyDAO.getCompanyList();
-        assertTrue(list.size() == 2);
+        assertTrue(list.size() > 0);
     }
 
     /*** GetCompanyPage ***/
@@ -67,14 +67,13 @@ public class CompanyDAOTest {
 
     /*** deleteCompany ***/
     @Test
-    @Ignore
     public void testDeleteCompany() throws InvalidIdException {
         Long id = 1L;
         Optional<Long> computersBefore = computerDAO.getComputerCount();
         int companiesBefore = companyDAO.getCompanyList().size();
 
         boolean result = companyDAO.deleteCompany(id);
-        assertTrue(result); //FAILS HERE
+        assertTrue(result);
 
         Optional<Long> computersAfter = computerDAO.getComputerCount();
         int companiesAfter = companyDAO.getCompanyList().size();
@@ -83,7 +82,7 @@ public class CompanyDAOTest {
         assertTrue(companiesBefore > companiesAfter);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidIdException.class)
     public void testDeleteCompanyNegativeId() throws InvalidIdException {
         Long id = -1L;
         Long computersBefore = computerDAO.getComputerCount().get();
