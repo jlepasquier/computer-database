@@ -82,14 +82,14 @@ public enum ComputerDAO {
      * @param id the id
      * @return the computer
      * @throws SQLException the exception
-     * @throws IllegalArgumentException the exception
+     * @throws InvalidIdException the exception
      */
-    public Optional<Computer> getComputer(long id) throws IllegalArgumentException {
+    public Optional<Computer> getComputer(long id) throws InvalidIdException {
 
         Computer cpu = null;
 
         if (id < 1) {
-            throw new IllegalArgumentException("id=" + id + ". Wrong id, must be > 0");
+            throw new InvalidIdException();
         } else {
             try (Connection connection = DataSource.getConnection()) {
                 ResultSet rs = queryMapper.executeQuery(connection, FIND_BY_ID, id);

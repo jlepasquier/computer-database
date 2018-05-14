@@ -3,21 +3,18 @@ package test.java.com.excilys.computerdatabase.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.dao.Page;
-import main.java.com.excilys.computerdatabase.model.Company;
+import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
 /**
@@ -67,11 +64,25 @@ public class ComputerDAOTest {
     /**
      * Test method for
      * {@link main.java.com.excilys.computerdatabase.dao.ComputerDAO#getComputer(int)}.
-     * @throws SQLException the exception
+     * @throws InvalidIdException 
      */
     @Test
-    public void testGetComputer() throws SQLException {
+    public void testGetComputer() throws InvalidIdException {
         assertNotNull(ComputerDAO.INSTANCE.getComputer(2));
+    }
+
+    /**
+     * Test method for
+     * {@link main.java.com.excilys.computerdatabase.dao.ComputerDAO#getComputer(int)}.
+     * @throws InvalidIdException 
+     * @throws SQLException the exception
+     */
+
+    @Test(expected=InvalidIdException.class)
+    public void testGetComputerNegativeId() throws InvalidIdException {
+        long id = -1l;
+        Optional<Computer> cpu = computerDAO.getComputer(id);
+        assertFalse(cpu.isPresent());
     }
 
     /**
@@ -79,22 +90,11 @@ public class ComputerDAOTest {
      * {@link main.java.com.excilys.computerdatabase.dao.ComputerDAO#getComputer(int)}.
      * @throws SQLException the exception
      */
-    /*
-     * @Test(expected = IllegalArgumentException.class) public void
-     * testGetComputerNegativeId() throws SQLException { long id = -1l; //Computer
-     * cpu = ComputerDAO.INSTANCE.getComputer(id); //assertNull(cpu); }
-     */
-
-    /**
-     * Test method for
-     * {@link main.java.com.excilys.computerdatabase.dao.ComputerDAO#getComputer(int)}.
-     * @throws SQLException the exception
-     */
     @Test
-    public void testGetComputerInvalidId() throws SQLException {
+    public void testGetComputerInvalidId() throws InvalidIdException {
         int id = 10000;
-        // Computer cpu = ComputerDAO.INSTANCE.getComputer(id);
-        // assertNull(cpu);
+        Optional<Computer> cpu = computerDAO.getComputer(id);
+        assertFalse(cpu.isPresent());
     }
 
     /*******************************************************************************/
