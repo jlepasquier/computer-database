@@ -1,6 +1,7 @@
 package main.java.com.excilys.computerdatabase.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,10 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-<<<<<<< HEAD
-=======
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
->>>>>>> feature/UnitTests
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -92,15 +90,35 @@ public enum CompanyDAO {
      * @return whether the deletion was succesful
      */
     public boolean deleteCompany(Long id) throws InvalidIdException {
-        if (id<0) {
+        boolean result = false;
+        if (id < 0) {
             throw new InvalidIdException();
         }
-        try (Connection connection = DataSource.getConnection()) {
-            queryMapper.executeUpdate(connection, DELETE_COMPUTERS, id);
-            return queryMapper.executeUpdate(connection, DELETE_COMPANY, id);
+        try (Connection connection = DataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMPANY,
+                        ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+
+            try (PreparedStatement preparedStatement2 = connection.prepareStatement(DELETE_COMPUTERS,
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+                connection.setAutoCommit(false);
+                connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+                preparedStatement2.setLong(1, id);
+                preparedStatement2.executeUpdate();
+                preparedStatement.setLong(1, id);
+
+                if (preparedStatement.executeUpdate() == 1) {
+                    result = true;
+                }
+                connection.commit();
+            }
+
+            
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            return false;
+            LOGGER.debug(e.getMessage());
+            result = false;
         }
+
+        return result;
     }
 }
