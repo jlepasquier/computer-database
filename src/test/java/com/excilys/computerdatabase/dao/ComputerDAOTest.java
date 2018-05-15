@@ -212,32 +212,32 @@ public class ComputerDAOTest {
      * @throws InvalidComputerIdException exception
      * @throws SQLException exception
      */
-    /*
-     * @Test public void testDeleteComputer() throws SQLException,
-     * InvalidComputerIdException {
-     * //assertTrue(ComputerDAO.INSTANCE.deleteComputer(1)); }
-     */
+
+    @Test
+    public void testDeleteComputer() throws InvalidIdException {
+        assertTrue(computerDAO.deleteComputer(5L));
+    }
 
     /**
      * Test for the DeleteComputer method.
      * @throws InvalidComputerIdException exception
      * @throws SQLException exception
      */
-    /*
-     * @Test(expected = InvalidComputerIdException.class) public void
-     * testDeleteComputerNegativeId() throws SQLException,
-     * InvalidComputerIdException {
-     * //assertFalse(ComputerDAO.INSTANCE.deleteComputer(-10000)); }
-     */
+
+    @Test(expected = InvalidIdException.class)
+    public void testDeleteComputerNegativeId() throws InvalidIdException {
+        assertFalse(computerDAO.deleteComputer(-10000L));
+    }
 
     /**
      * Test for the UpdateComputer method. Should fail because id isnt in DB
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
-    /*
-     * @Test public void testDeleteComputerInvalidId() throws SQLException,
-     * InvalidComputerIdException {
-     * //assertFalse(ComputerDAO.INSTANCE.deleteComputer(10000)); }
-     */
+
+    @Test
+    public void testDeleteComputerInvalidId() throws InvalidIdException {
+        assertFalse(computerDAO.deleteComputer(10000L));
+    }
+
 }
