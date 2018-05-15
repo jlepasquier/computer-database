@@ -123,7 +123,7 @@ public class ComputerDAOTest {
 
         Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id.get());
         assertTrue(cpuFromDatabase.isPresent());
-        
+
         assertEquals(cpu, cpuFromDatabase.get());
     }
 
@@ -133,14 +133,14 @@ public class ComputerDAOTest {
      */
     @Test
     public void testCreateComputerIncompleteComputer() throws InvalidIdException {
-        
+
         Computer cpu = new Computer.Builder("CreateEmptyCpu2").build();
         Optional<Long> id = computerDAO.createComputer(cpu);
         assertTrue(id.isPresent());
-        
+
         Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id.get());
         assertTrue(cpuFromDatabase.isPresent());
-        
+
         assertEquals(cpu, cpuFromDatabase.get());
     }
 
@@ -153,15 +153,19 @@ public class ComputerDAOTest {
      * @throws IllegalArgumentException exception
      * @throws InvalidComputerIdException exception
      */
-    /*
-     * @Test public void testUpdateComputer() throws IllegalArgumentException,
-     * SQLException, InvalidComputerIdException { long id = 2; Computer cpu = new
-     * Computer.Builder("TestUpdate").withId(id).build(); boolean result =
-     * ComputerDAO.INSTANCE.updateComputer(cpu); assertTrue(result); Computer
-     * cpuFromDatabase = ComputerDAO.INSTANCE.getComputer(id);
-     * 
-     * assertEquals(cpu, cpuFromDatabase); }
-     */
+
+    @Test
+    public void testUpdateComputer() throws InvalidIdException {
+        long id = 2;
+        Computer cpu = new Computer.Builder("TestUpdate").withId(id).build();
+
+        boolean result = computerDAO.updateComputer(cpu);
+        assertTrue(result);
+
+        Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id);
+        assertTrue(cpuFromDatabase.isPresent());
+        assertEquals(cpu, cpuFromDatabase.get());
+    }
 
     /**
      * Test for the UpdateComputer method. Should fail because we didn't specify the
@@ -169,37 +173,36 @@ public class ComputerDAOTest {
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
-    /*
-     * @Test(expected = InvalidComputerIdException.class) public void
-     * testUpdateComputerWithoutId() throws SQLException, InvalidComputerIdException
-     * { Computer cpu = new Computer.Builder("TestUpdateFail").build();
-     * assertFalse(ComputerDAO.INSTANCE.updateComputer(cpu)); }
-     */
+
+    @Test(expected = InvalidIdException.class)
+    public void testUpdateComputerWithoutId() throws InvalidIdException {
+        Computer cpu = new Computer.Builder("TestUpdateFail").build();
+        assertFalse(computerDAO.updateComputer(cpu));
+    }
 
     /**
      * Test for the UpdateComputer method. Should fail because id isnt in DB
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
-    /*
-     * @Test public void testUpdateComputerInvalidId() throws SQLException,
-     * InvalidComputerIdException { Computer cpu = new
-     * Computer.Builder("TestUpdateFail").withId(9999999).build();
-     * assertFalse(ComputerDAO.INSTANCE.updateComputer(cpu)); }
-     */
+
+    @Test
+    public void testUpdateComputerInvalidId() throws InvalidIdException {
+        Computer cpu = new Computer.Builder("TestUpdateFail").withId(9999999L).build();
+        assertFalse(computerDAO.updateComputer(cpu));
+    }
 
     /**
      * Test for the UpdateComputer method. Should fail because id isnt in DB
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
-    /*
-     * @Test(expected = InvalidComputerIdException.class) public void
-     * testUpdateComputerNegativeId() throws SQLException,
-     * InvalidComputerIdException { Computer cpu = new
-     * Computer.Builder("TestUpdateFail").withId(-10).build();
-     * assertFalse(ComputerDAO.INSTANCE.updateComputer(cpu)); }
-     */
+
+    @Test(expected = InvalidIdException.class)
+    public void testUpdateComputerNegativeId() throws SQLException, InvalidIdException {
+        Computer cpu = new Computer.Builder("TestUpdateFail").withId(-10L).build();
+        assertFalse(computerDAO.updateComputer(cpu));
+    }
 
     /*******************************************************************************/
     /*******************************************************************************/

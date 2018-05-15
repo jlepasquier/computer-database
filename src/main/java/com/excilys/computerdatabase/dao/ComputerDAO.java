@@ -131,7 +131,7 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      */
     public boolean updateComputer(Computer cpu) throws InvalidIdException {
-
+        System.out.println(cpu);
         if (cpu.getId() <= 0) {
             throw new InvalidIdException();
         } else {
