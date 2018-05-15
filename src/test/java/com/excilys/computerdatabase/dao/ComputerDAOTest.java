@@ -105,43 +105,43 @@ public class ComputerDAOTest {
 
     /**
      * Test for the CreateComputer method.
-     * @throws SQLException exception
-     * @throws InvalidIdException 
+     * @throws InvalidIdException
      */
     @Test
     public void testCreateComputer() throws InvalidIdException {
-        
+
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Company company = new Company.Builder(2L).withName("Thinking Machines").build();
         LocalDate introduced = LocalDate.parse("17/05/1995", format);
         LocalDate discontinued = LocalDate.parse("17/05/1996", format);
 
-        Computer cpu = new Computer.Builder("CreateEmptyCpu").withId(10L).withCompany(company).withIntroduced(introduced)
-                .withDiscontinued(discontinued).build();
+        Computer cpu = new Computer.Builder("CreateEmptyCpu").withId(10L).withCompany(company)
+                .withIntroduced(introduced).withDiscontinued(discontinued).build();
 
         Optional<Long> id = computerDAO.createComputer(cpu);
-        
         assertTrue(id.isPresent());
-        
+
         Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id.get());
         assertTrue(cpuFromDatabase.isPresent());
+        
         assertEquals(cpu, cpuFromDatabase.get());
-
     }
 
     /**
      * Test for the CreateComputer method.
-     * @throws SQLException exception
+     * @throws InvalidIdException exception
      */
     @Test
-    public void testCreateComputerIncompleteComputer() throws SQLException {
-        /*
-         * Computer cpu = new Computer.Builder("CreateEmptyCpu2").build(); long id =
-         * ComputerDAO.INSTANCE.createComputer(cpu); Computer cpuFromDatabase =
-         * ComputerDAO.INSTANCE.getComputer(id);
-         * 
-         * assertEquals(cpu, cpuFromDatabase);
-         */
+    public void testCreateComputerIncompleteComputer() throws InvalidIdException {
+        
+        Computer cpu = new Computer.Builder("CreateEmptyCpu2").build();
+        Optional<Long> id = computerDAO.createComputer(cpu);
+        assertTrue(id.isPresent());
+        
+        Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id.get());
+        assertTrue(cpuFromDatabase.isPresent());
+        
+        assertEquals(cpu, cpuFromDatabase.get());
     }
 
     /*******************************************************************************/
