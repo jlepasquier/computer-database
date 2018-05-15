@@ -3,18 +3,20 @@ package test.java.com.excilys.computerdatabase.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.dao.Page;
-import main.java.com.excilys.computerdatabase.exception.InvalidComputerIdException;
+import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
@@ -22,6 +24,18 @@ import main.java.com.excilys.computerdatabase.model.Computer;
  * @author Julien Lepasquier
  */
 public class ComputerDAOTest {
+
+    private ComputerDAO computerDAO;
+
+    @Before
+    public void setUp() {
+        computerDAO = ComputerDAO.INSTANCE;
+    }
+
+    @After
+    public void tearDown() {
+        computerDAO = null;
+    }
 
     /**
      * Test method for
@@ -31,7 +45,7 @@ public class ComputerDAOTest {
      */
     @Test
     public void testGetComputerPage() throws IllegalArgumentException, SQLException {
-        Page<Computer> page = ComputerDAO.INSTANCE.getComputerPage(0);
+        Page<Computer> page = computerDAO.getComputerPage(0);
         assertTrue(page.getElements().size() > 0);
     }
 
@@ -43,7 +57,7 @@ public class ComputerDAOTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testGetComputerPageNegativeOffset() throws IllegalArgumentException, SQLException {
-        Page<Computer> page = ComputerDAO.INSTANCE.getComputerPage(-1);
+        Page<Computer> page = computerDAO.getComputerPage(-1);
         assertEquals(page.getElements().size(), 0);
     }
 
@@ -53,23 +67,25 @@ public class ComputerDAOTest {
     /**
      * Test method for
      * {@link main.java.com.excilys.computerdatabase.dao.ComputerDAO#getComputer(int)}.
-     * @throws SQLException the exception
+     * @throws InvalidIdException
      */
     @Test
-    public void testGetComputer() throws SQLException {
-        assertNotNull(ComputerDAO.INSTANCE.getComputer(2));
+    public void testGetComputer() throws InvalidIdException {
+        assertNotNull(computerDAO.getComputer(2));
     }
 
     /**
      * Test method for
      * {@link main.java.com.excilys.computerdatabase.dao.ComputerDAO#getComputer(int)}.
+     * @throws InvalidIdException
      * @throws SQLException the exception
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetComputerNegativeId() throws SQLException {
+
+    @Test(expected = InvalidIdException.class)
+    public void testGetComputerNegativeId() throws InvalidIdException {
         long id = -1l;
-        //Computer cpu = ComputerDAO.INSTANCE.getComputer(id);
-        //assertNull(cpu);
+        Optional<Computer> cpu = computerDAO.getComputer(id);
+        assertFalse(cpu.isPresent());
     }
 
     /**
@@ -78,10 +94,10 @@ public class ComputerDAOTest {
      * @throws SQLException the exception
      */
     @Test
-    public void testGetComputerInvalidId() throws SQLException {
+    public void testGetComputerInvalidId() throws InvalidIdException {
         int id = 10000;
-        //Computer cpu = ComputerDAO.INSTANCE.getComputer(id);
-        //assertNull(cpu);
+        Optional<Computer> cpu = computerDAO.getComputer(id);
+        assertFalse(cpu.isPresent());
     }
 
     /*******************************************************************************/
@@ -89,35 +105,43 @@ public class ComputerDAOTest {
 
     /**
      * Test for the CreateComputer method.
-     * @throws SQLException exception
+     * @throws InvalidIdException
      */
     @Test
-    public void testCreateComputer() throws SQLException {
-        /*DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        Company company = new Company.Builder(1).withName("Apple Inc.").build();
+    public void testCreateComputer() throws InvalidIdException {
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        Company company = new Company.Builder(2L).withName("Thinking Machines").build();
         LocalDate introduced = LocalDate.parse("17/05/1995", format);
         LocalDate discontinued = LocalDate.parse("17/05/1996", format);
 
-        Computer cpu = new Computer.Builder("CreateEmptyCpu").withId(10).withCompany(company).withIntroduced(introduced)
-                .withDiscontinued(discontinued).build();
+        Computer cpu = new Computer.Builder("CreateEmptyCpu").withId(10L).withCompany(company)
+                .withIntroduced(introduced).withDiscontinued(discontinued).build();
 
-        long id = ComputerDAO.INSTANCE.createComputer(cpu);
-        Computer cpuFromDatabase = ComputerDAO.INSTANCE.getComputer(id);
+        Optional<Long> id = computerDAO.createComputer(cpu);
+        assertTrue(id.isPresent());
 
-        assertEquals(cpuFromDatabase, cpu);*/
+        Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id.get());
+        assertTrue(cpuFromDatabase.isPresent());
+
+        assertEquals(cpu, cpuFromDatabase.get());
     }
 
     /**
      * Test for the CreateComputer method.
-     * @throws SQLException exception
+     * @throws InvalidIdException exception
      */
     @Test
-    public void testCreateComputerIncompleteComputer() throws SQLException {
-       /* Computer cpu = new Computer.Builder("CreateEmptyCpu2").build();
-        long id = ComputerDAO.INSTANCE.createComputer(cpu);
-        Computer cpuFromDatabase = ComputerDAO.INSTANCE.getComputer(id);
+    public void testCreateComputerIncompleteComputer() throws InvalidIdException {
 
-        assertEquals(cpu, cpuFromDatabase);*/
+        Computer cpu = new Computer.Builder("CreateEmptyCpu2").build();
+        Optional<Long> id = computerDAO.createComputer(cpu);
+        assertTrue(id.isPresent());
+
+        Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id.get());
+        assertTrue(cpuFromDatabase.isPresent());
+
+        assertEquals(cpu, cpuFromDatabase.get());
     }
 
     /*******************************************************************************/
@@ -129,15 +153,18 @@ public class ComputerDAOTest {
      * @throws IllegalArgumentException exception
      * @throws InvalidComputerIdException exception
      */
-    @Test
-    public void testUpdateComputer() throws IllegalArgumentException, SQLException, InvalidComputerIdException {
-        /*long id = 2;
-        Computer cpu = new Computer.Builder("TestUpdate").withId(id).build();
-        boolean result = ComputerDAO.INSTANCE.updateComputer(cpu);
-        assertTrue(result);
-        Computer cpuFromDatabase = ComputerDAO.INSTANCE.getComputer(id);
 
-        assertEquals(cpu, cpuFromDatabase);*/
+    @Test
+    public void testUpdateComputer() throws InvalidIdException {
+        long id = 2;
+        Computer cpu = new Computer.Builder("TestUpdate").withId(id).build();
+
+        boolean result = computerDAO.updateComputer(cpu);
+        assertTrue(result);
+
+        Optional<Computer> cpuFromDatabase = computerDAO.getComputer(id);
+        assertTrue(cpuFromDatabase.isPresent());
+        assertEquals(cpu, cpuFromDatabase.get());
     }
 
     /**
@@ -146,10 +173,11 @@ public class ComputerDAOTest {
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
-    @Test(expected = InvalidComputerIdException.class)
-    public void testUpdateComputerWithoutId() throws SQLException, InvalidComputerIdException {
+
+    @Test(expected = InvalidIdException.class)
+    public void testUpdateComputerWithoutId() throws InvalidIdException {
         Computer cpu = new Computer.Builder("TestUpdateFail").build();
-        assertFalse(ComputerDAO.INSTANCE.updateComputer(cpu));
+        assertFalse(computerDAO.updateComputer(cpu));
     }
 
     /**
@@ -157,10 +185,11 @@ public class ComputerDAOTest {
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
+
     @Test
-    public void testUpdateComputerInvalidId() throws SQLException, InvalidComputerIdException {
-        /*Computer cpu = new Computer.Builder("TestUpdateFail").withId(9999999).build();
-        assertFalse(ComputerDAO.INSTANCE.updateComputer(cpu));*/
+    public void testUpdateComputerInvalidId() throws InvalidIdException {
+        Computer cpu = new Computer.Builder("TestUpdateFail").withId(9999999L).build();
+        assertFalse(computerDAO.updateComputer(cpu));
     }
 
     /**
@@ -168,10 +197,11 @@ public class ComputerDAOTest {
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
-    @Test(expected = InvalidComputerIdException.class)
-    public void testUpdateComputerNegativeId() throws SQLException, InvalidComputerIdException {
-        /*Computer cpu = new Computer.Builder("TestUpdateFail").withId(-10).build();
-        assertFalse(ComputerDAO.INSTANCE.updateComputer(cpu));*/
+
+    @Test(expected = InvalidIdException.class)
+    public void testUpdateComputerNegativeId() throws SQLException, InvalidIdException {
+        Computer cpu = new Computer.Builder("TestUpdateFail").withId(-10L).build();
+        assertFalse(computerDAO.updateComputer(cpu));
     }
 
     /*******************************************************************************/
@@ -182,9 +212,10 @@ public class ComputerDAOTest {
      * @throws InvalidComputerIdException exception
      * @throws SQLException exception
      */
+
     @Test
-    public void testDeleteComputer() throws SQLException, InvalidComputerIdException {
-        //assertTrue(ComputerDAO.INSTANCE.deleteComputer(1));
+    public void testDeleteComputer() throws InvalidIdException {
+        assertTrue(computerDAO.deleteComputer(5L));
     }
 
     /**
@@ -192,9 +223,10 @@ public class ComputerDAOTest {
      * @throws InvalidComputerIdException exception
      * @throws SQLException exception
      */
-    @Test(expected = InvalidComputerIdException.class)
-    public void testDeleteComputerNegativeId() throws SQLException, InvalidComputerIdException {
-        //assertFalse(ComputerDAO.INSTANCE.deleteComputer(-10000));
+
+    @Test(expected = InvalidIdException.class)
+    public void testDeleteComputerNegativeId() throws InvalidIdException {
+        assertFalse(computerDAO.deleteComputer(-10000L));
     }
 
     /**
@@ -202,8 +234,10 @@ public class ComputerDAOTest {
      * @throws SQLException exception
      * @throws InvalidComputerIdException exception
      */
+
     @Test
-    public void testDeleteComputerInvalidId() throws SQLException, InvalidComputerIdException {
-        //assertFalse(ComputerDAO.INSTANCE.deleteComputer(10000));
+    public void testDeleteComputerInvalidId() throws InvalidIdException {
+        assertFalse(computerDAO.deleteComputer(10000L));
     }
+
 }

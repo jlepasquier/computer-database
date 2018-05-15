@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
+import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
 
 /**
@@ -45,6 +46,11 @@ public class CompanyService {
     }
 
     public boolean deleteCompany(Long id) {
-        return companyDAO.deleteCompany(id);
+        try {
+            return companyDAO.deleteCompany(id);
+        } catch (InvalidIdException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

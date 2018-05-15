@@ -111,7 +111,7 @@ public class Computer {
     public static class Builder {
 
         /** The id. */
-        private Long id;
+        private Long id = 0L;
 
         /** The name. */
         private String name;
