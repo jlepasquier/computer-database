@@ -119,6 +119,7 @@ public enum ComputerDAO {
                     cpu.getCompany() == null ? null : cpu.getCompany().getId());
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
+            e.printStackTrace();
         }
         return Optional.ofNullable(cpuId);
     }
