@@ -75,6 +75,12 @@
 </section>
 
 <footer class="navbar-fixed-bottom">
+	<div class="btn-group btn-group-sm pull-right" role="group">
+		<button type="button" class="btn btn-default" disabled>10</button>
+		<button type="button" class="btn btn-default">50</button>
+		<button type="button" class="btn btn-default">100</button>
+	</div>
+	
 	<div class="container text-center">
 		<c:choose>
 			<c:when test='${search==null || search.equals("")}'>
@@ -87,12 +93,6 @@
 
 		<paginator:display maxLinks="5" currPage="${page}"
 			totalPages="${totalPages}" uri="${searchUri}" />
-	</div>
-
-	<div class="btn-group btn-group-sm pull-right" role="group">
-		<button type="button" class="btn btn-default">10</button>
-		<button type="button" class="btn btn-default">50</button>
-		<button type="button" class="btn btn-default">100</button>
 	</div>
 </footer>
 
