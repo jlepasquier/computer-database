@@ -1,4 +1,6 @@
-package main.java.com.excilys.computerdatabase.controller;
+package main.java.com.excilys.computerdatabase.servlet;
+
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.SUCCESFUL_CREATION;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,11 +71,14 @@ public class AddComputerServlet extends HttpServlet {
             Computer computer = computerMapper.createComputer(computerName, introduced, discontinued, companyId);
             computerService.createComputer(computer);
 
-            String path = this.getServletContext().getContextPath();
-            response.sendRedirect(path + "/dashboard");
-        } catch (Exception e) { // TODO : change to custom exceptions
-            String path = this.getServletContext().getContextPath();
-            response.sendRedirect(path + "/addComputer");
+            request.setAttribute("success", true);
+            request.setAttribute("userMessage", SUCCESFUL_CREATION);
+            doGet(request, response);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            request.setAttribute("success", false);
+            request.setAttribute("userMessage", errorMessage);
+            doGet(request, response);
         }
     }
 

@@ -1,4 +1,4 @@
-package main.java.com.excilys.computerdatabase.controller;
+package main.java.com.excilys.computerdatabase.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;

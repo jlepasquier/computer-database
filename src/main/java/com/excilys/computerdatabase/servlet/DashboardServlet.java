@@ -1,4 +1,4 @@
-package main.java.com.excilys.computerdatabase.controller;
+package main.java.com.excilys.computerdatabase.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,7 +72,7 @@ public class DashboardServlet extends HttpServlet {
 
         String selection = request.getParameter("selection");
 
-        for (String s : selection.split(",")) {
+        for (String s : selection.split(",")) { //@TODO 
             int id = Integer.parseInt(s);
             try {
                 computerService.deleteComputer(id);
@@ -95,12 +95,13 @@ public class DashboardServlet extends HttpServlet {
         try {
             totalPages = computerService.getComputerPageCount();
             computerCount = computerService.getComputerCount();
+            request.setAttribute("page", page);
         } catch (CDBException e) {
             LOGGER.error(e.getMessage());
             totalPages = 0L;
             computerCount = 0L;
         }
-
+        
         request.setAttribute("page", page);
         request.setAttribute("dtoList", dtoList);
         request.setAttribute("totalPages", totalPages);
