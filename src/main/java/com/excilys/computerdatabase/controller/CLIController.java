@@ -164,7 +164,7 @@ public class CLIController {
      */
     public void delete(Long id) {
         try {
-            computerService.deleteComputer(id);
+            computerService.deleteComputers(id.toString());
         } catch (CDBException e) {
             LOGGER.error(e.getMessage());
         }

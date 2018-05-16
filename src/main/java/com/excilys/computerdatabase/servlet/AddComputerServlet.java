@@ -1,6 +1,6 @@
 package main.java.com.excilys.computerdatabase.servlet;
 
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.SUCCESFUL_CREATION;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_SUCCESS;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,7 +72,7 @@ public class AddComputerServlet extends HttpServlet {
             computerService.createComputer(computer);
 
             request.setAttribute("success", true);
-            request.setAttribute("userMessage", SUCCESFUL_CREATION);
+            request.setAttribute("userMessage", CREATION_SUCCESS);
             doGet(request, response);
         } catch (Exception e) {
             String errorMessage = e.getMessage();

@@ -2,9 +2,10 @@ package main.java.com.excilys.computerdatabase.servlet.enums;
 
 public enum UserMessage {
 
-    SUCCESFUL_UPDATE("The computer has been succesfully updated."),
-    SUCCESFUL_CREATION("The computer has been succesfully added.");
-    
+    UPDATE_SUCCESS("The computer has been succesfully updated."),
+    CREATION_SUCCESS("The computer has been succesfully added."),
+    DELETION_SUCCESS("The computers have been succesfully removed."),
+    DELETION_FAIL("The computer deletion failed.");
 
     private final String message;
 

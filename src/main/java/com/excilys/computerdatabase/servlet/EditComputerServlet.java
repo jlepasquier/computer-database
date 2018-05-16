@@ -18,7 +18,7 @@ import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
 
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.SUCCESFUL_UPDATE;;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;;;
 
 /**
  * Servlet implementation class editComputerServlet
@@ -87,7 +87,7 @@ public class EditComputerServlet extends HttpServlet {
             computerService.updateComputer(computer);
             
             request.setAttribute("success", true);
-            request.setAttribute("userMessage", SUCCESFUL_UPDATE);
+            request.setAttribute("userMessage", UPDATE_SUCCESS);
             doGet(request, response);
         } catch (Exception e) {
             String errorMessage = e.getMessage();

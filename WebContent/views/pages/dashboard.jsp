@@ -7,6 +7,8 @@
 
 <section id="main">
 	<div class="container">
+	
+		<%@include file="../partials/displayUserMessage.jsp"%>
 		
 		<h1 id="homeTitle">
 			<i class="fas fa-desktop"></i>
