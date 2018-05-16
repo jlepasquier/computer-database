@@ -215,7 +215,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testDeleteComputer() throws InvalidIdException {
-        assertTrue(computerDAO.deleteComputer(5L));
+        assertTrue(computerDAO.deleteComputers("5"));
     }
 
     /**
@@ -226,7 +226,7 @@ public class ComputerDAOTest {
 
     @Test(expected = InvalidIdException.class)
     public void testDeleteComputerNegativeId() throws InvalidIdException {
-        assertFalse(computerDAO.deleteComputer(-10000L));
+        assertFalse(computerDAO.deleteComputers("-10000"));
     }
 
     /**
@@ -237,7 +237,9 @@ public class ComputerDAOTest {
 
     @Test
     public void testDeleteComputerInvalidId() throws InvalidIdException {
-        assertFalse(computerDAO.deleteComputer(10000L));
+        assertFalse(computerDAO.deleteComputers("10000"));
     }
+    
+    //@TODO add tests for several inputs
 
 }

@@ -87,9 +87,8 @@ public class ComputerService {
      * @param id the id
      * @throws CDBException
      */
-    public void deleteComputer(long id) throws CDBException {
-        IdValidator.check(id);
-        computerDAO.deleteComputer(id);
+    public boolean deleteComputers(String ids) throws CDBException {
+        return computerDAO.deleteComputers(IdValidator.checkList(ids));
     }
 
     /**

@@ -71,6 +71,6 @@ public enum QueryMapper {
 
         int updatedLines = preparedStatement.executeUpdate();
 
-        return (updatedLines == 1);
+        return (updatedLines > 0);
     }
 }

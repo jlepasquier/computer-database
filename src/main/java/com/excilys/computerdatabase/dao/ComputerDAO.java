@@ -35,7 +35,7 @@ public enum ComputerDAO {
     private static final String UPDATE = "UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id=?";
     private static final String FIND_ALL = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id LIMIT ? OFFSET ?";
     private static final String FIND_BY_ID = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.id=?";
-    private static final String DELETE = "DELETE FROM `computer` WHERE id=?";
+    private static final String DELETE = "DELETE FROM `computer` WHERE id IN %s";
     private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
     private static final String SEARCH = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ? ORDER BY cpu.name LIMIT ? OFFSET ? ";
     private static final String SEARCH_COUNT = "SELECT COUNT(*) FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ?";
@@ -152,18 +152,15 @@ public enum ComputerDAO {
      * @throws InvalidComputerIdException exception
      * @return boolean for query success or failure
      */
-    public boolean deleteComputer(Long id) throws InvalidIdException {
+    public boolean deleteComputers(String ids) throws InvalidIdException {
 
-        if (id <= 0) {
-            throw new InvalidIdException();
-        } else {
-            try (Connection connection = DataSource.getConnection()) {
-                return queryMapper.executeUpdate(connection, DELETE, id);
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage());
-                return false;
-            }
+        try (Connection connection = DataSource.getConnection()) {
+            return queryMapper.executeUpdate(connection, String.format(DELETE, ids));
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            return false;
         }
+        
     }
 
     /**

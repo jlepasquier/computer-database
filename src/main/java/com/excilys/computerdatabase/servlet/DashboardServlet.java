@@ -1,4 +1,4 @@
-package main.java.com.excilys.computerdatabase.controller;
+package main.java.com.excilys.computerdatabase.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +17,9 @@ import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
+
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_SUCCESS;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_FAIL;;
 
 /**
  * Servlet implementation class DashboardServlet.
@@ -70,15 +73,18 @@ public class DashboardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String selection = request.getParameter("selection");
+        String ids = request.getParameter("selection");
 
-        for (String s : selection.split(",")) {
-            int id = Integer.parseInt(s);
-            try {
-                computerService.deleteComputer(id);
-            } catch (CDBException e) {
-                LOGGER.error(e.getMessage());
+        try {
+            if (computerService.deleteComputers(ids)) {
+                request.setAttribute("success", true);
+                request.setAttribute("userMessage", DELETION_SUCCESS);
+            } else {
+                request.setAttribute("success", false);
+                request.setAttribute("userMessage", DELETION_FAIL);
             }
+        } catch (CDBException e) {
+            LOGGER.error(e.getMessage());
         }
 
         doGet(request, response);
@@ -95,6 +101,7 @@ public class DashboardServlet extends HttpServlet {
         try {
             totalPages = computerService.getComputerPageCount();
             computerCount = computerService.getComputerCount();
+            request.setAttribute("page", page);
         } catch (CDBException e) {
             LOGGER.error(e.getMessage());
             totalPages = 0L;
@@ -109,7 +116,8 @@ public class DashboardServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/views/pages/dashboard.jsp").forward(request, response);
     }
 
-    private void renderResearchPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void renderResearchPage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         int page = pageStringToInt(request.getParameter("page"));
         String research = request.getParameter("search");
 

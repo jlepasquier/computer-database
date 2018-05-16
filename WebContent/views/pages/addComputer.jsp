@@ -6,6 +6,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
+			
+				<%@include file="../partials/displayUserMessage.jsp"%>
+			
 				<h1>Add Computer</h1>
 				<form action="addComputer" method="POST">
 					<fieldset>

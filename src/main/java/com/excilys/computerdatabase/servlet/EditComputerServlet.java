@@ -1,4 +1,4 @@
-package main.java.com.excilys.computerdatabase.controller;
+package main.java.com.excilys.computerdatabase.servlet;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +17,8 @@ import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
+
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;;;
 
 /**
  * Servlet implementation class editComputerServlet
@@ -60,7 +62,7 @@ public class EditComputerServlet extends HttpServlet {
 
         } catch (CDBException e) {
             String errorMessage = e.getMessage();
-            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("userMessage", errorMessage);
             doGet(request, response);
         }
 
@@ -83,12 +85,14 @@ public class EditComputerServlet extends HttpServlet {
 
             Computer computer = computerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
             computerService.updateComputer(computer);
-
-            String path = this.getServletContext().getContextPath();
-            response.sendRedirect(path + "/dashboard");
+            
+            request.setAttribute("success", true);
+            request.setAttribute("userMessage", UPDATE_SUCCESS);
+            doGet(request, response);
         } catch (Exception e) {
             String errorMessage = e.getMessage();
-            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("success", false);
+            request.setAttribute("userMessage", errorMessage);
             doGet(request, response);
         }
     }

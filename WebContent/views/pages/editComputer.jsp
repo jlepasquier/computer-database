@@ -7,13 +7,7 @@
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
 
-				<c:if test="${errorMessage != null}">
-					<div class="alert alert-danger">
-						<c:out value="${errorMessage}" />
-						<br />
-					</div>
-				</c:if>
-
+				<%@include file="../partials/displayUserMessage.jsp"%>
 
 				<div class="label label-default pull-right">
 					id:
