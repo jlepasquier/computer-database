@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -12,27 +13,19 @@ import main.java.com.excilys.computerdatabase.service.CompanyService;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
 import main.java.com.excilys.computerdatabase.ui.CLI;
 
-/**
- * The Class CLIController.
- */
+@Controller
 public class CLIController {
-
-    private final CLI cli;
-    private ComputerService computerService;
-    private CompanyService companyService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CLIController.class);
 
-    /**
-     * Instantiates a new CLI controller.
-     * @param cli the command line interface
-     * @param computerService the computer service
-     * @param companyService the company service
-     */
-    public CLIController(CLI cli) {
+    private CLI cli;
+    private ComputerService computerService;
+    private CompanyService companyService;
+
+    public CLIController(CLI cli, ComputerService computerService, CompanyService companyService) {
         this.cli = cli;
-        // this.computerService = new ComputerService();
-        // this.companyService = new CompanyService();
+        this.computerService = computerService;
+        this.companyService = companyService;
     }
 
     /**

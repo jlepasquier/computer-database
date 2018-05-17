@@ -9,12 +9,12 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
-/**
- * The Class CLI.
- */
+@Component
 public class CLI {
 
     private static Scanner scan;
