@@ -16,9 +16,6 @@ public class Main {
      * @param args Command line arguments
      */
     public static void main(String[] args) {
-//        CLI cli = new CLI();
-//        CLIController controller = new CLIController(cli);
-
         @SuppressWarnings("resource")
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
