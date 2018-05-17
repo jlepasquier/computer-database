@@ -146,7 +146,6 @@ public class ComputerDAO {
      * @return boolean for query success or failure
      */
     public boolean deleteComputers(String ids) throws InvalidIdException {
-
         try (Connection connection = dataSource.getConnection()) {
             return QueryMapper.executeUpdate(connection, String.format(DELETE, ids));
         } catch (SQLException e) {

@@ -54,6 +54,7 @@
          <version>${logback.version}</version>
       </dependency>
 
+      <!-- MOCKITO -->
       <dependency>
          <groupId>org.mockito</groupId>
          <artifactId>mockito-all</artifactId>
@@ -61,6 +62,7 @@
          <scope>test</scope>
       </dependency>
 
+      <!-- TAGLIBS -->
       <dependency>
          <groupId>org.apache.taglibs</groupId>
          <artifactId>taglibs-standard-spec</artifactId>
@@ -73,12 +75,15 @@
          <version>${org.apache.taglibs.version}</version>
       </dependency>
 
+      <!-- HIKARICP -->
       <dependency>
          <groupId>com.zaxxer</groupId>
          <artifactId>HikariCP</artifactId>
          <version>${com.zaxxer.version}</version>
       </dependency>
 
+
+      <!-- SERVLETS -->
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>javax.servlet-api</artifactId>
@@ -99,6 +104,8 @@
          <scope>provided</scope>
       </dependency>
 
+
+      <!-- SPRING -->
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
@@ -115,6 +122,13 @@
          <groupId>org.springframework</groupId>
          <artifactId>spring-web</artifactId>
          <version>${org.springframework.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${org.springframework.version}</version>
+         <scope>test</scope>
       </dependency>
    </dependencies>
 

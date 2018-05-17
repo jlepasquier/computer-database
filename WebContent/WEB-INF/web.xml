@@ -9,11 +9,6 @@
       <servlet-class>main.java.com.excilys.computerdatabase.controller.DashboardServlet</servlet-class>
    </servlet>
 
-   <servlet>
-      <servlet-name>EditComputerServlet</servlet-name>
-      <servlet-class>main.java.com.excilys.computerdatabase.controller.EditComputerServlet</servlet-class>
-   </servlet>
-
    <servlet-mapping>
       <servlet-name>default</servlet-name>
       <url-pattern>*.css</url-pattern>
