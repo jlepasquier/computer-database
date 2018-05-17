@@ -26,8 +26,6 @@ public class CompanyDAOTest {
 
     @Before
     public void setUp() {
-        companyDAO = CompanyDAO.INSTANCE;
-        computerDAO = ComputerDAO.INSTANCE;
     }
 
     @After

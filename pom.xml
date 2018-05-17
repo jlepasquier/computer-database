@@ -16,6 +16,11 @@
       <org.mockito.version>1.9.5</org.mockito.version>
       <org.apache.taglibs.version>1.2.5</org.apache.taglibs.version>
       <com.zaxxer.version>2.4.0</com.zaxxer.version>
+
+      <javax.servlet.version>3.1.0</javax.servlet.version>
+      <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
+      <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
+      <org.springframework.version>4.3.14.RELEASE</org.springframework.version>
    </properties>
 
    <dependencies>
@@ -77,21 +82,39 @@
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>javax.servlet-api</artifactId>
-         <version>3.1.0</version>
+         <version>${javax.servlet.version}</version>
          <scope>provided</scope>
       </dependency>
 
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>jstl</artifactId>
-         <version>1.2</version>
+         <version>${javax.servlet.jstl.version}</version>
       </dependency>
 
       <dependency>
          <groupId>javax.servlet.jsp</groupId>
          <artifactId>javax.servlet.jsp-api</artifactId>
-         <version>2.3.1</version>
+         <version>${javax.servlet.jsp.version}</version>
          <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-context</artifactId>
+         <version>${org.springframework.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-core</artifactId>
+         <version>${org.springframework.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-web</artifactId>
+         <version>${org.springframework.version}</version>
       </dependency>
    </dependencies>
 

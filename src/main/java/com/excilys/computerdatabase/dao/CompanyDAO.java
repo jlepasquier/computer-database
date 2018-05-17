@@ -7,23 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
-import main.java.com.excilys.computerdatabase.persistence.DataSource;
 
-/**
- * The CompanyDAO singleton.
- */
-public enum CompanyDAO {
-    INSTANCE;
-
-    private final QueryMapper queryMapper;
-    private final CompanyMapper companyMapper;
+@Repository("companyDAO")
+public class CompanyDAO {
+    
+    @Autowired
+    private DataSource dataSource;
+    
+    public CompanyDAO (DataSource pdataSource) {
+        dataSource = pdataSource;
+    }
 
     private static final int COMPANIES_PER_PAGE = 10;
 
@@ -35,24 +39,16 @@ public enum CompanyDAO {
     private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
 
     /**
-     * Instantiates a new company DAO.
-     */
-    private CompanyDAO() {
-        this.queryMapper = QueryMapper.INSTANCE;
-        this.companyMapper = CompanyMapper.INSTANCE;
-    }
-
-    /**
      * Gets the list of all companies.
      * @param offset the offset
      * @return the company page
      */
     public List<Company> getCompanyList() {
         List<Company> companyList = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection()) {
-            ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL);
+        try (Connection connection = dataSource.getConnection()) {
+            ResultSet rs = QueryMapper.executeQuery(connection, FIND_ALL);
             while (rs.next()) {
-                Company company = companyMapper.createCompany(rs);
+                Company company = CompanyMapper.createCompany(rs);
                 companyList.add(company);
             }
         } catch (SQLException e) {
@@ -70,11 +66,11 @@ public enum CompanyDAO {
     public Page<Company> getCompanyPage(int offset) {
         List<Company> companyList = new ArrayList<>();
 
-        try (Connection connection = DataSource.getConnection()) {
-            ResultSet rs = queryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
+        try (Connection connection = dataSource.getConnection()) {
+            ResultSet rs = QueryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
                     offset * COMPANIES_PER_PAGE);
             while (rs.next()) {
-                Company company = companyMapper.createCompany(rs);
+                Company company = CompanyMapper.createCompany(rs);
                 companyList.add(company);
             }
         } catch (SQLException e) {
@@ -94,7 +90,7 @@ public enum CompanyDAO {
         if (id < 0) {
             throw new InvalidIdException();
         }
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMPANY,
                         ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 

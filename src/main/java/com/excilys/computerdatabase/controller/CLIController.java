@@ -18,8 +18,8 @@ import main.java.com.excilys.computerdatabase.ui.CLI;
 public class CLIController {
 
     private final CLI cli;
-    private final ComputerService computerService;
-    private final CompanyService companyService;
+    private ComputerService computerService;
+    private CompanyService companyService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CLIController.class);
 
@@ -31,8 +31,8 @@ public class CLIController {
      */
     public CLIController(CLI cli) {
         this.cli = cli;
-        this.computerService = new ComputerService();
-        this.companyService = new CompanyService();
+        // this.computerService = new ComputerService();
+        // this.companyService = new CompanyService();
     }
 
     /**

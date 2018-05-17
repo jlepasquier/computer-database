@@ -9,24 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
-import main.java.com.excilys.computerdatabase.persistence.DataSource;
 
-/**
- * The singleton ComputerDAO.
- */
-public enum ComputerDAO {
-    INSTANCE;
+@Repository("computerDAO")
+public class ComputerDAO {
 
-    private final QueryMapper queryMapper;
-    private final ComputerMapper computerMapper;
+    private DataSource dataSource;
 
+    ComputerDAO(DataSource pdataSource) {
+        dataSource = pdataSource;
+    }
+    
     private static final int COMPUTERS_PER_PAGE = 25;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
@@ -39,15 +41,6 @@ public enum ComputerDAO {
     private static final String COUNT = "SELECT COUNT(*) FROM `computer`";
     private static final String SEARCH = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ? ORDER BY cpu.name LIMIT ? OFFSET ? ";
     private static final String SEARCH_COUNT = "SELECT COUNT(*) FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ?";
-    
-    
-    /**
-     * Instantiates a new computer DAO.
-     */
-    ComputerDAO() {
-        this.queryMapper = QueryMapper.INSTANCE;
-        this.computerMapper = ComputerMapper.INSTANCE;
-    }
 
     /**
      * Gets the computer page.
@@ -62,11 +55,11 @@ public enum ComputerDAO {
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try (Connection connection = DataSource.getConnection()) {
-                ResultSet rs = queryMapper.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE,
+            try (Connection connection = dataSource.getConnection()) {
+                ResultSet rs = QueryMapper.executeQuery(connection, FIND_ALL, COMPUTERS_PER_PAGE,
                         offset * COMPUTERS_PER_PAGE);
                 while (rs.next()) {
-                    Computer cpu = computerMapper.createComputer(rs);
+                    Computer cpu = ComputerMapper.createComputer(rs);
                     cpuList.add(cpu);
                 }
             } catch (SQLException e) {
@@ -91,11 +84,11 @@ public enum ComputerDAO {
         if (id < 1) {
             throw new InvalidIdException();
         } else {
-            try (Connection connection = DataSource.getConnection()) {
-                ResultSet rs = queryMapper.executeQuery(connection, FIND_BY_ID, id);
+            try (Connection connection = dataSource.getConnection()) {
+                ResultSet rs = QueryMapper.executeQuery(connection, FIND_BY_ID, id);
 
                 while (rs.next()) {
-                    cpu = computerMapper.createComputer(rs);
+                    cpu = ComputerMapper.createComputer(rs);
                 }
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
@@ -112,8 +105,8 @@ public enum ComputerDAO {
      */
     public Optional<Long> createComputer(Computer cpu) {
         Long cpuId = null;
-        try (Connection connection = DataSource.getConnection()) {
-            cpuId = queryMapper.executeCreate(connection, CREATE, cpu.getName(),
+        try (Connection connection = dataSource.getConnection()) {
+            cpuId = QueryMapper.executeCreate(connection, CREATE, cpu.getName(),
                     cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                     cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
                     cpu.getCompany() == null ? null : cpu.getCompany().getId());
@@ -134,8 +127,8 @@ public enum ComputerDAO {
         if (cpu.getId() <= 0) {
             throw new InvalidIdException();
         } else {
-            try (Connection connection = DataSource.getConnection()) {
-                return queryMapper.executeUpdate(connection, UPDATE, cpu.getName(),
+            try (Connection connection = dataSource.getConnection()) {
+                return QueryMapper.executeUpdate(connection, UPDATE, cpu.getName(),
                         cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
                         cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
                         cpu.getCompany() == null ? null : cpu.getCompany().getId(), cpu.getId());
@@ -154,13 +147,13 @@ public enum ComputerDAO {
      */
     public boolean deleteComputers(String ids) throws InvalidIdException {
 
-        try (Connection connection = DataSource.getConnection()) {
-            return queryMapper.executeUpdate(connection, String.format(DELETE, ids));
+        try (Connection connection = dataSource.getConnection()) {
+            return QueryMapper.executeUpdate(connection, String.format(DELETE, ids));
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
             return false;
         }
-        
+
     }
 
     /**
@@ -177,11 +170,12 @@ public enum ComputerDAO {
         if (offset < 0) {
             throw new IllegalArgumentException();
         } else {
-            try (Connection connection = DataSource.getConnection()) {
+            try (Connection connection = dataSource.getConnection()) {
                 String searchString = "%" + search + "%";
-                ResultSet rs = queryMapper.executeQuery(connection, SEARCH, searchString, searchString, COMPUTERS_PER_PAGE, offset * COMPUTERS_PER_PAGE);
+                ResultSet rs = QueryMapper.executeQuery(connection, SEARCH, searchString, searchString,
+                        COMPUTERS_PER_PAGE, offset * COMPUTERS_PER_PAGE);
                 while (rs.next()) {
-                    Computer cpu = computerMapper.createComputer(rs);
+                    Computer cpu = ComputerMapper.createComputer(rs);
                     cpuList.add(cpu);
                 }
             } catch (SQLException e) {
@@ -199,9 +193,9 @@ public enum ComputerDAO {
      */
     public Optional<Long> getComputerCount() throws InvalidIdException {
         Long count = null;
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
 
-            ResultSet rs = queryMapper.executeQuery(connection, COUNT);
+            ResultSet rs = QueryMapper.executeQuery(connection, COUNT);
             while (rs.next()) {
                 count = rs.getLong(1);
             }
@@ -221,9 +215,9 @@ public enum ComputerDAO {
     public Optional<Long> getComputerPageCount() throws InvalidIdException {
         Long numberOfComputers = null;
         Long numberOfPages = null;
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
 
-            ResultSet rs = queryMapper.executeQuery(connection, COUNT);
+            ResultSet rs = QueryMapper.executeQuery(connection, COUNT);
             while (rs.next()) {
                 numberOfComputers = rs.getLong(1);
             }
@@ -234,11 +228,7 @@ public enum ComputerDAO {
         }
         return Optional.ofNullable(numberOfPages);
     }
-    
-    
-    
-    
-    
+
     /**
      * Gets the number of computers returned by the search query
      * @param search the string containing the word to look for
@@ -248,10 +238,10 @@ public enum ComputerDAO {
      */
     public Optional<Long> getSearchComputerCount(String search, int offset) {
         Long count = null;
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
 
             String searchString = "%" + search + "%";
-            ResultSet rs = queryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
+            ResultSet rs = QueryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
             while (rs.next()) {
                 count = rs.getLong(1);
             }
@@ -262,7 +252,6 @@ public enum ComputerDAO {
         return Optional.ofNullable(count);
     }
 
-    
     /**
      * Gets the number of computers in the database.
      * @throws InvalidComputerIdException exception
@@ -271,10 +260,10 @@ public enum ComputerDAO {
     public Optional<Long> getSearchComputerPageCount(String search) throws InvalidIdException {
         Long numberOfComputers = null;
         Long numberOfPages = null;
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
 
             String searchString = "%" + search + "%";
-            ResultSet rs = queryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
+            ResultSet rs = QueryMapper.executeQuery(connection, SEARCH_COUNT, searchString, searchString);
             while (rs.next()) {
                 numberOfComputers = rs.getLong(1);
             }

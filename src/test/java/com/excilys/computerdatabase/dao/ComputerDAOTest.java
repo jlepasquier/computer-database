@@ -29,7 +29,6 @@ public class ComputerDAOTest {
 
     @Before
     public void setUp() {
-        computerDAO = ComputerDAO.INSTANCE;
     }
 
     @After

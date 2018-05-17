@@ -9,10 +9,9 @@ import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
-public enum ComputerDTOMapper {
-    INSTANCE;
+public class ComputerDTOMapper {
 
-    public List<ComputerDTO> createDTOList(List<Computer> cpuList) {
+    public static List<ComputerDTO> createDTOList(List<Computer> cpuList) {
         List<ComputerDTO> dtoList = new ArrayList<ComputerDTO>();
 
         for (Computer cpu : cpuList) {

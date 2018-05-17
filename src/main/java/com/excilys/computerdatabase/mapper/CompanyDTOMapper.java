@@ -6,10 +6,9 @@ import java.util.List;
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
 import main.java.com.excilys.computerdatabase.model.Company;
 
-public enum CompanyDTOMapper {
-    INSTANCE;
+public class CompanyDTOMapper {
 
-    public List<CompanyDTO> createDTOList(List<Company> companyList) {
+    public static List<CompanyDTO> createDTOList(List<Company> companyList) {
         List<CompanyDTO> dtoList = new ArrayList<CompanyDTO>();
 
         for (Company company : companyList) {

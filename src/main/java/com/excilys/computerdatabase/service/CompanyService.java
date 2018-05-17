@@ -3,19 +3,19 @@ package main.java.com.excilys.computerdatabase.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
 
-/**
- * The Class CompanyService.
- */
+@Service("companyService")
 public class CompanyService {
 
-    private final CompanyDAO companyDAO;
+    private CompanyDAO companyDAO;
 
-    public CompanyService() {
-        this.companyDAO = CompanyDAO.INSTANCE;
+    public CompanyService(CompanyDAO pcompanyDAO) {
+        companyDAO = pcompanyDAO;
     }
 
     /**

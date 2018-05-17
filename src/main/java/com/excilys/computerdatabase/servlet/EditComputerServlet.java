@@ -1,13 +1,19 @@
 package main.java.com.excilys.computerdatabase.servlet;
 
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;
+
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
 import main.java.com.excilys.computerdatabase.exception.CDBException;
@@ -16,9 +22,7 @@ import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
-import main.java.com.excilys.computerdatabase.service.ComputerService;
-
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;;;
+import main.java.com.excilys.computerdatabase.service.ComputerService;;;
 
 /**
  * Servlet implementation class editComputerServlet
@@ -27,19 +31,23 @@ import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.U
 public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private final CompanyService companyService;
-    private final ComputerService computerService;
-    private final ComputerMapper computerMapper;
-    private final CompanyDTOMapper companyDTOMapper;
+    @Autowired
+    private  CompanyService companyService;
+    @Autowired
+    private  ComputerService computerService;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EditComputerServlet() {
-        companyService = new CompanyService();
-        computerService = new ComputerService();
-        computerMapper = ComputerMapper.INSTANCE;
-        companyDTOMapper = CompanyDTOMapper.INSTANCE;
+        //companyService = new CompanyService();
+        //computerService = new ComputerService();
+    }
+    
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     /**
@@ -54,7 +62,7 @@ public class EditComputerServlet extends HttpServlet {
 
             Computer computer = computerService.getComputer(id);
             List<Company> companyList = companyService.getCompanyList();
-            List<CompanyDTO> companyDtoList = companyDTOMapper.createDTOList(companyList);
+            List<CompanyDTO> companyDtoList = CompanyDTOMapper.createDTOList(companyList);
 
             request.setAttribute("id", id);
             request.setAttribute("companyList", companyDtoList);
@@ -83,7 +91,7 @@ public class EditComputerServlet extends HttpServlet {
             String companyId = request.getParameter("companyId");
             String id = request.getParameter("id");
 
-            Computer computer = computerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
+            Computer computer = ComputerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
             computerService.updateComputer(computer);
             
             request.setAttribute("success", true);

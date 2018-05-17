@@ -14,8 +14,7 @@ import main.java.com.excilys.computerdatabase.model.Computer;
 /**
  * The ComputerMapper singleton.
  */
-public enum ComputerMapper {
-    INSTANCE;
+public class ComputerMapper {
 
     /**
      * Creates a computer from a result set.
@@ -23,7 +22,7 @@ public enum ComputerMapper {
      * @return the computer
      * @throws SQLException the SQL exception
      */
-    public Computer createComputer(ResultSet rs) throws SQLException {
+    public static Computer createComputer(ResultSet rs) throws SQLException {
 
         Long id = rs.getLong("id");
         String name = rs.getString("cpuname");
@@ -53,7 +52,7 @@ public enum ComputerMapper {
      * @throws InvalidDateFormatException the exception
      * @throws NumberFormatException the exception
      */
-    public Computer createComputer(String pcomputerName, String pintroduced, String pdiscontinued, String pcompanyId)
+    public static Computer createComputer(String pcomputerName, String pintroduced, String pdiscontinued, String pcompanyId)
             throws IllegalArgumentException, InvalidDateFormatException, NumberFormatException {
 
         LocalDate introduced = null;
@@ -112,7 +111,7 @@ public enum ComputerMapper {
      * @throws InvalidDateFormatException the exception
      * @throws NumberFormatException the exception
      */
-    public Computer createComputer(String pid, String pcomputerName, String pintroduced, String pdiscontinued,
+    public static Computer createComputer(String pid, String pcomputerName, String pintroduced, String pdiscontinued,
             String pcompanyId) throws IllegalArgumentException, InvalidDateFormatException, NumberFormatException {
 
         LocalDate introduced = null;
