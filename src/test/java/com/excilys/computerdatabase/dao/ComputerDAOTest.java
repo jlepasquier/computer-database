@@ -13,23 +13,31 @@ import java.util.Optional;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.dao.Page;
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
+import main.java.com.excilys.computerdatabase.spring.AppConfig;
+import main.java.com.excilys.computerdatabase.validator.IdValidator;
 
-/**
- * @author Julien Lepasquier
- */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
 public class ComputerDAOTest {
 
+    @Autowired
     private ComputerDAO computerDAO;
 
     @Before
     public void setUp() {
-        computerDAO = ComputerDAO.INSTANCE;
+
     }
 
     @After
@@ -209,13 +217,16 @@ public class ComputerDAOTest {
 
     /**
      * Test for the DeleteComputer method.
+     * @throws CDBException 
+     * @throws CDBException 
      * @throws InvalidComputerIdException exception
      * @throws SQLException exception
      */
 
     @Test
-    public void testDeleteComputer() throws InvalidIdException {
-        assertTrue(computerDAO.deleteComputers("5"));
+    public void testDeleteComputer() throws CDBException  {
+        String ids = IdValidator.checkList("5");
+        assertTrue(computerDAO.deleteComputers(ids));
     }
 
     /**
@@ -224,9 +235,10 @@ public class ComputerDAOTest {
      * @throws SQLException exception
      */
 
-    @Test(expected = InvalidIdException.class)
-    public void testDeleteComputerNegativeId() throws InvalidIdException {
-        assertFalse(computerDAO.deleteComputers("-10000"));
+    @Test
+    public void testDeleteComputerNegativeId() throws CDBException {
+        String ids = IdValidator.checkList("-10000");
+        assertFalse(computerDAO.deleteComputers(ids));
     }
 
     /**
@@ -236,10 +248,11 @@ public class ComputerDAOTest {
      */
 
     @Test
-    public void testDeleteComputerInvalidId() throws InvalidIdException {
-        assertFalse(computerDAO.deleteComputers("10000"));
+    public void testDeleteComputerInvalidId() throws CDBException {
+        String ids = IdValidator.checkList("10000");
+        assertFalse(computerDAO.deleteComputers(ids));
     }
-    
-    //@TODO add tests for several inputs
+
+    // @TODO add tests for several inputs
 
 }

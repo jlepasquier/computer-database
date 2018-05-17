@@ -6,11 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * The QueryMapper singleton.
- */
-public enum QueryMapper {
-    INSTANCE;
+public class QueryMapper {
 
     /**
      * Executes a query.
@@ -20,7 +16,7 @@ public enum QueryMapper {
      * @return the result set of the query
      * @throws SQLException the SQL exception
      */
-    public ResultSet executeQuery(Connection connection, String query, Object... args) throws SQLException {
+    public static ResultSet executeQuery(Connection connection, String query, Object... args) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         for (int i = 0; i < args.length; i++) {
@@ -37,7 +33,7 @@ public enum QueryMapper {
      * @return the id of the line we created o
      * @throws SQLException the SQL exception
      */
-    public long executeCreate(Connection connection, String query, Object... args) throws SQLException {
+    public static long executeCreate(Connection connection, String query, Object... args) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         for (int i = 0; i < args.length; i++) {
@@ -62,7 +58,7 @@ public enum QueryMapper {
      * @return boolean if the update was successful or not
      * @throws SQLException the SQL exception
      */
-    public boolean executeUpdate(Connection connection, String query, Object... args) throws SQLException {
+    public static boolean executeUpdate(Connection connection, String query, Object... args) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         for (int i = 0; i < args.length; i++) {

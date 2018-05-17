@@ -8,8 +8,7 @@ import main.java.com.excilys.computerdatabase.model.Company;
 /**
  * The CompanyMapper singleton.
  */
-public enum CompanyMapper {
-    INSTANCE;
+public class CompanyMapper {
 
     /**
      * Creates a company from a result set.
@@ -17,7 +16,7 @@ public enum CompanyMapper {
      * @return the company
      * @throws SQLException the SQL exception
      */
-    public Company createCompany(ResultSet rs) throws SQLException {
+    public static Company createCompany(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String name = rs.getString("name");
         return new Company.Builder(id).withName(name).build();

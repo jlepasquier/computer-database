@@ -9,25 +9,34 @@ import java.util.Optional;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.dao.Page;
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
+import main.java.com.excilys.computerdatabase.spring.AppConfig;
 
 /**
  * @author Julien Lepasquier
  */
-public class CompanyDAOTest {
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=AppConfig.class, loader=AnnotationConfigContextLoader.class)
+public class CompanyDAOTest {
+    
+    @Autowired
     private CompanyDAO companyDAO;
+    @Autowired
     private ComputerDAO computerDAO;
 
     @Before
     public void setUp() {
-        companyDAO = CompanyDAO.INSTANCE;
-        computerDAO = ComputerDAO.INSTANCE;
     }
 
     @After

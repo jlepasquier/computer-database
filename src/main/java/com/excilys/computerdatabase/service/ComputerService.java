@@ -3,6 +3,8 @@ package main.java.com.excilys.computerdatabase.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.model.Computer;
@@ -12,12 +14,13 @@ import main.java.com.excilys.computerdatabase.validator.IdValidator;
 /**
  * The Class ComputerService.
  */
+@Service("computerService")
 public class ComputerService {
 
-    private final ComputerDAO computerDAO;
+    private ComputerDAO computerDAO;
 
-    public ComputerService() {
-        this.computerDAO = ComputerDAO.INSTANCE;
+    public ComputerService(ComputerDAO pcomputerDAO) {
+        computerDAO = pcomputerDAO;
     }
 
     /**

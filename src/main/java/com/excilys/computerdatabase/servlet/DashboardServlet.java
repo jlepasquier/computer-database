@@ -1,8 +1,12 @@
 package main.java.com.excilys.computerdatabase.servlet;
 
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_FAIL;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_SUCCESS;
+
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
 import main.java.com.excilys.computerdatabase.exception.CDBException;
@@ -18,27 +24,23 @@ import main.java.com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
 
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_SUCCESS;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_FAIL;;
-
-/**
- * Servlet implementation class DashboardServlet.
- */
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final ComputerService computerService;
-    private final ComputerDTOMapper computerDTOMapper;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    @Autowired
+    private ComputerService computerService;
+    
     public DashboardServlet() {
-        computerService = new ComputerService();
-        computerDTOMapper = ComputerDTOMapper.INSTANCE;
+        super();
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     /**
@@ -95,7 +97,7 @@ public class DashboardServlet extends HttpServlet {
         int page = pageStringToInt(request.getParameter("page"));
 
         List<Computer> cpuList = computerService.getComputerList(page);
-        List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
+        List<ComputerDTO> dtoList = ComputerDTOMapper.createDTOList(cpuList);
 
         Long totalPages, computerCount;
         try {
@@ -122,7 +124,7 @@ public class DashboardServlet extends HttpServlet {
         String research = request.getParameter("search");
 
         List<Computer> cpuList = computerService.searchComputer(research, page);
-        List<ComputerDTO> dtoList = computerDTOMapper.createDTOList(cpuList);
+        List<ComputerDTO> dtoList = ComputerDTOMapper.createDTOList(cpuList);
 
         Long totalPages, computerCount;
         try {

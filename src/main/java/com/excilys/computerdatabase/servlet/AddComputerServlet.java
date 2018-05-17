@@ -5,11 +5,15 @@ import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.C
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
 import main.java.com.excilys.computerdatabase.mapper.CompanyDTOMapper;
@@ -26,21 +30,25 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 public class AddComputerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final ComputerService computerService;
-    private final CompanyService companyService;
-    private final CompanyDTOMapper companyDTOMapper;
-    private final ComputerMapper computerMapper;
+    
+    @Autowired
+    private ComputerService computerService;
+    @Autowired
+    private CompanyService companyService;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AddComputerServlet() {
-        companyService = new CompanyService();
-        computerService = new ComputerService();
-        companyDTOMapper = CompanyDTOMapper.INSTANCE;
-        computerMapper = ComputerMapper.INSTANCE;
+        super();
     }
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
+    
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -49,7 +57,7 @@ public class AddComputerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         List<Company> companyList = companyService.getCompanyList();
-        List<CompanyDTO> dtoList = companyDTOMapper.createDTOList(companyList);
+        List<CompanyDTO> dtoList = CompanyDTOMapper.createDTOList(companyList);
         request.setAttribute("companyList", dtoList);
 
         this.getServletContext().getRequestDispatcher("/views/pages/addComputer.jsp").forward(request, response);
@@ -68,7 +76,7 @@ public class AddComputerServlet extends HttpServlet {
             String discontinued = request.getParameter("discontinued");
             String companyId = request.getParameter("companyId");
 
-            Computer computer = computerMapper.createComputer(computerName, introduced, discontinued, companyId);
+            Computer computer = ComputerMapper.createComputer(computerName, introduced, discontinued, companyId);
             computerService.createComputer(computer);
 
             request.setAttribute("success", true);
