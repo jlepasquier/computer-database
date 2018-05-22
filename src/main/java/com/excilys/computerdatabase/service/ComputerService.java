@@ -127,8 +127,8 @@ public class ComputerService {
      * @return the number of computers in the search query
      * @throws CDBException
      */
-    public Long getSearchComputerCount(String search, int offset) throws CDBException {
-        Optional<Long> count = computerDAO.getSearchComputerCount(search, offset);
+    public Long getSearchComputerCount(String search) throws CDBException {
+        Optional<Long> count = computerDAO.getSearchComputerCount(search);
         if (count.isPresent()) {
             return count.get();
         } else {

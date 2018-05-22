@@ -129,7 +129,7 @@ public class DashboardServlet extends HttpServlet {
         Long totalPages, computerCount;
         try {
             totalPages = computerService.getSearchComputerPageCount(research);
-            computerCount = computerService.getSearchComputerCount(research, page);
+            computerCount = computerService.getSearchComputerCount(research);
         } catch (CDBException e) {
             LOGGER.error(e.getMessage());
             totalPages = 0L;

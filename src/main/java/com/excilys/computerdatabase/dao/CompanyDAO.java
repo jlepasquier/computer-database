@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
@@ -21,13 +21,9 @@ import main.java.com.excilys.computerdatabase.model.Company;
 
 @Repository("companyDAO")
 public class CompanyDAO {
-    
-    @Autowired
+
     private DataSource dataSource;
-    
-    public CompanyDAO (DataSource pdataSource) {
-        dataSource = pdataSource;
-    }
+    private JdbcTemplate jdbcTemplate;
 
     private static final int COMPANIES_PER_PAGE = 10;
 
@@ -38,24 +34,20 @@ public class CompanyDAO {
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
     private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
 
+    public CompanyDAO(DataSource pDataSource) {
+        dataSource = pDataSource;
+        jdbcTemplate = new JdbcTemplate(pDataSource);
+    }
+
     /**
      * Gets the list of all companies.
      * @param offset the offset
      * @return the company page
      */
     public List<Company> getCompanyList() {
-        List<Company> companyList = new ArrayList<>();
-        try (Connection connection = dataSource.getConnection()) {
-            ResultSet rs = QueryMapper.executeQuery(connection, FIND_ALL);
-            while (rs.next()) {
-                Company company = CompanyMapper.createCompany(rs);
-                companyList.add(company);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-
-        return companyList;
+        return jdbcTemplate.query(FIND_ALL, (resultSet, rowNum) -> {
+            return CompanyMapper.createCompany(resultSet);
+        });
     }
 
     /**
@@ -64,19 +56,18 @@ public class CompanyDAO {
      * @return the company page
      */
     public Page<Company> getCompanyPage(int offset) {
-        List<Company> companyList = new ArrayList<>();
-
-        try (Connection connection = dataSource.getConnection()) {
-            ResultSet rs = QueryMapper.executeQuery(connection, FIND_PAGE, COMPANIES_PER_PAGE,
-                    offset * COMPANIES_PER_PAGE);
-            while (rs.next()) {
-                Company company = CompanyMapper.createCompany(rs);
-                companyList.add(company);
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        List<Company> companyList;
+        try {
+            companyList = jdbcTemplate.query(FIND_PAGE,
+                    preparedStatement -> {
+                        QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE,
+                                offset * COMPANIES_PER_PAGE);
+                    }, (resultSet, rowNum) -> {
+                        return CompanyMapper.createCompany(resultSet);
+                    });
+        } catch (Exception e) {
+            companyList = new ArrayList<>();
         }
-
         return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
     }
 
@@ -109,7 +100,6 @@ public class CompanyDAO {
                 connection.commit();
             }
 
-            
         } catch (SQLException e) {
             LOGGER.debug(e.getMessage());
             result = false;
