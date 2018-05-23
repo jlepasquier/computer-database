@@ -26,7 +26,7 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;;;
 /**
  * Servlet implementation class editComputerServlet
  */
-@WebServlet("/editComputer")
+//@WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
