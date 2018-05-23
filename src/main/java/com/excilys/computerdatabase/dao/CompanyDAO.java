@@ -11,8 +11,13 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
@@ -24,6 +29,7 @@ public class CompanyDAO {
 
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
+    PlatformTransactionManager transactionManager;
 
     private static final int COMPANIES_PER_PAGE = 10;
 
@@ -34,9 +40,10 @@ public class CompanyDAO {
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
     private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
 
-    public CompanyDAO(DataSource pDataSource) {
+    public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager) {
         dataSource = pDataSource;
         jdbcTemplate = new JdbcTemplate(pDataSource);
+        transactionManager = pPlatformTransactionManager;
     }
 
     /**
@@ -58,13 +65,11 @@ public class CompanyDAO {
     public Page<Company> getCompanyPage(int offset) {
         List<Company> companyList;
         try {
-            companyList = jdbcTemplate.query(FIND_PAGE,
-                    preparedStatement -> {
-                        QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE,
-                                offset * COMPANIES_PER_PAGE);
-                    }, (resultSet, rowNum) -> {
-                        return CompanyMapper.createCompany(resultSet);
-                    });
+            companyList = jdbcTemplate.query(FIND_PAGE, preparedStatement -> {
+                QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE, offset * COMPANIES_PER_PAGE);
+            }, (resultSet, rowNum) -> {
+                return CompanyMapper.createCompany(resultSet);
+            });
         } catch (Exception e) {
             companyList = new ArrayList<>();
         }
@@ -76,35 +81,19 @@ public class CompanyDAO {
      * @param id the id of the company to delete
      * @return whether the deletion was succesful
      */
-    public boolean deleteCompany(Long id) throws InvalidIdException {
-        boolean result = false;
-        if (id < 0) {
-            throw new InvalidIdException();
+    public boolean deleteCompany(Long id) {
+
+        TransactionDefinition def = new DefaultTransactionDefinition();
+        TransactionStatus status = transactionManager.getTransaction(def);
+
+        try {
+            jdbcTemplate.update(DELETE_COMPUTERS, id);
+            int updatedRows = jdbcTemplate.update(DELETE_COMPANY, id);
+            transactionManager.commit(status);
+            return (updatedRows > 0);
+        } catch (DataAccessException e) {
+            transactionManager.rollback(status);
+            return false;
         }
-        try (Connection connection = dataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_COMPANY,
-                        ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-
-            try (PreparedStatement preparedStatement2 = connection.prepareStatement(DELETE_COMPUTERS,
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-                connection.setAutoCommit(false);
-                connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-
-                preparedStatement2.setLong(1, id);
-                preparedStatement2.executeUpdate();
-                preparedStatement.setLong(1, id);
-
-                if (preparedStatement.executeUpdate() == 1) {
-                    result = true;
-                }
-                connection.commit();
-            }
-
-        } catch (SQLException e) {
-            LOGGER.debug(e.getMessage());
-            result = false;
-        }
-
-        return result;
     }
 }
