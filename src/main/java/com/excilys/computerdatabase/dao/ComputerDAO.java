@@ -9,8 +9,6 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -28,8 +26,6 @@ public class ComputerDAO {
     private JdbcTemplate jdbcTemplate;
 
     private static final int COMPUTERS_PER_PAGE = 25;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
     private static final String CREATE = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?,?,?,?)";
     private static final String UPDATE = "UPDATE `computer` SET `name`=?,`introduced`=?,`discontinued`=?,`company_id`=? WHERE id=?";

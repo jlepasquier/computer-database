@@ -1,16 +1,10 @@
 package main.java.com.excilys.computerdatabase.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,7 +13,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
 import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -27,13 +20,10 @@ import main.java.com.excilys.computerdatabase.model.Company;
 @Repository("companyDAO")
 public class CompanyDAO {
 
-    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
     PlatformTransactionManager transactionManager;
 
     private static final int COMPANIES_PER_PAGE = 10;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     private static final String FIND_ALL = "SELECT * FROM company";
     private static final String FIND_PAGE = "SELECT * FROM company LIMIT ? OFFSET ?";
@@ -41,7 +31,6 @@ public class CompanyDAO {
     private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
 
     public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager) {
-        dataSource = pDataSource;
         jdbcTemplate = new JdbcTemplate(pDataSource);
         transactionManager = pPlatformTransactionManager;
     }
