@@ -55,7 +55,7 @@ public class CompanyDAO {
         List<Company> companyList;
         try {
             companyList = jdbcTemplate.query(FIND_PAGE, preparedStatement -> {
-                QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE, offset * COMPANIES_PER_PAGE);
+                QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE, (offset-1) * COMPANIES_PER_PAGE);
             }, (resultSet, rowNum) -> {
                 return CompanyMapper.createCompany(resultSet);
             });

@@ -1,7 +1,9 @@
 package main.java.com.excilys.computerdatabase.springmvc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,26 +37,39 @@ public class ComputerController {
     public ModelAndView getDashboard(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
             @RequestParam(value = "search", defaultValue = DEFAULT_SEARCH) String search) {
 
-        ModelAndView modelAndView = new ModelAndView("dashboard");
-
-        List<Computer> cpuList = computerService.getComputerList(page);
-        List<ComputerDTO> dtoList = ComputerDTOMapper.createDTOList(cpuList);
-
-        Long totalPages, computerCount;
+        List<Computer> cpuList;
+        Long totalPages;
+        Long computerCount;
         try {
-            totalPages = computerService.getComputerPageCount();
-            computerCount = computerService.getComputerCount();
+            if (StringUtils.isBlank(search)) {
+                cpuList = computerService.getComputerList(page);
+                totalPages = computerService.getComputerPageCount();
+                computerCount = computerService.getComputerCount();
+            } else {
+                cpuList = computerService.searchComputer(search, page);
+                totalPages = computerService.getSearchComputerPageCount(search);
+                computerCount = computerService.getSearchComputerCount(search);
+            }
         } catch (CDBException e) {
+            cpuList = new ArrayList<>();
             totalPages = 0L;
             computerCount = 0L;
         }
+        
+        List<ComputerDTO> dtoList = ComputerDTOMapper.createDTOList(cpuList);
 
+        ModelAndView modelAndView = new ModelAndView("dashboard");
+        setModelAndView(modelAndView, page, search, dtoList,totalPages, computerCount);
+
+        return modelAndView;
+    }
+
+    public void setModelAndView(ModelAndView modelAndView, int page, String search, List<ComputerDTO> dtoList, Long totalPages, Long computerCount) {
         modelAndView.addObject("page", page);
+        modelAndView.addObject("search", search);
         modelAndView.addObject("dtoList", dtoList);
         modelAndView.addObject("totalPages", totalPages);
         modelAndView.addObject("computerCount", computerCount);
-
-        return modelAndView;
     }
 
 }

@@ -51,7 +51,7 @@ public class ComputerDAO {
         List<Computer> computerList;
         try {
             computerList = jdbcTemplate.query(FIND_PAGE, preparedStatement -> {
-                QueryMapper.prepareStatement(preparedStatement, COMPUTERS_PER_PAGE, offset * COMPUTERS_PER_PAGE);
+                QueryMapper.prepareStatement(preparedStatement, COMPUTERS_PER_PAGE, (offset-1) * COMPUTERS_PER_PAGE);
             }, (resultSet, rowNum) -> {
                 return ComputerMapper.createComputer(resultSet);
             });
@@ -139,7 +139,7 @@ public class ComputerDAO {
             String searchString = "%" + search + "%";
             computerList = jdbcTemplate.query(SEARCH, preparedStatement -> {
                 QueryMapper.prepareStatement(preparedStatement, searchString, searchString, COMPUTERS_PER_PAGE,
-                        offset * COMPUTERS_PER_PAGE);
+                        (offset -1) * COMPUTERS_PER_PAGE);
             }, (resultSet, rowNum) -> {
                 return ComputerMapper.createComputer(resultSet);
             });
