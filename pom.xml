@@ -151,11 +151,15 @@
                <target>1.8</target>
             </configuration>
          </plugin>
+
          <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <version>3.0.0</version>
             <configuration>
-               <warSourceDirectory>WebContent</warSourceDirectory>
+               <!-- <warSourceDirectory>WebContent</warSourceDirectory> -->
+               <warSourceDirectory>src/main/webapp</warSourceDirectory>
+               <warName>computer-database</warName>
+               <failOnMissingWebXml>false</failOnMissingWebXml>
             </configuration>
          </plugin>
 
@@ -226,6 +230,6 @@
          </plugin>
       </plugins>
 
-
+   <finalName>computer-database</finalName>
    </build>
 </project>

@@ -23,7 +23,7 @@ import main.java.com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
 
-@WebServlet("/dashboard")
+//@WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
