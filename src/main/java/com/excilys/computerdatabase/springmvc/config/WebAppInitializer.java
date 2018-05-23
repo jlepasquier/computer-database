@@ -1,4 +1,4 @@
-package main.java.com.excilys.computerdatabase.spring;
+package main.java.com.excilys.computerdatabase.springmvc.config;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -21,7 +21,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { AppConfig.class };
+        return new Class[] { WebAppConfig.class };
     }
 
     @Override

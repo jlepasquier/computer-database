@@ -1,4 +1,4 @@
-package main.java.com.excilys.computerdatabase.spring;
+package main.java.com.excilys.computerdatabase.springmvc.config;
 
 import javax.sql.DataSource;
 
@@ -20,7 +20,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "main.java.com.excilys.computerdatabase")
-public class AppConfig implements WebMvcConfigurer {
+public class WebAppConfig implements WebMvcConfigurer {
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
