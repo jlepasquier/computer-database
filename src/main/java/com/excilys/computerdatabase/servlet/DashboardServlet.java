@@ -30,11 +30,11 @@ public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(DashboardServlet.class);
 
-    @Autowired
     private ComputerService computerService;
     
-    public DashboardServlet() {
+    public DashboardServlet(ComputerService computerService) {
         super();
+        this.computerService = computerService;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class DashboardServlet extends HttpServlet {
         Long totalPages, computerCount;
         try {
             totalPages = computerService.getSearchComputerPageCount(research);
-            computerCount = computerService.getSearchComputerCount(research, page);
+            computerCount = computerService.getSearchComputerCount(research);
         } catch (CDBException e) {
             LOGGER.error(e.getMessage());
             totalPages = 0L;

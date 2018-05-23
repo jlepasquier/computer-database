@@ -1,12 +1,10 @@
 package main.java.com.excilys.computerdatabase.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import main.java.com.excilys.computerdatabase.dao.CompanyDAO;
-import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
 
 @Service("companyService")
@@ -24,12 +22,7 @@ public class CompanyService {
      * @return the company page
      */
     public List<Company> getCompanyList(int page) {
-        try {
-            return companyDAO.getCompanyPage(page).getElements();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<Company>();
+        return companyDAO.getCompanyPage(page).getElements();
     }
 
     /**
@@ -37,20 +30,10 @@ public class CompanyService {
      * @return the company list
      */
     public List<Company> getCompanyList() {
-        try {
-            return companyDAO.getCompanyList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<Company>();
+        return companyDAO.getCompanyList();
     }
 
     public boolean deleteCompany(Long id) {
-        try {
-            return companyDAO.deleteCompany(id);
-        } catch (InvalidIdException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return companyDAO.deleteCompany(id);
     }
 }

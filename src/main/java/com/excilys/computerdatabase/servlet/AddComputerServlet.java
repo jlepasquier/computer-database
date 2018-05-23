@@ -31,16 +31,16 @@ public class AddComputerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     
-    @Autowired
     private ComputerService computerService;
-    @Autowired
     private CompanyService companyService;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddComputerServlet() {
+    public AddComputerServlet(ComputerService computerService, CompanyService companyService) {
         super();
+        this.computerService = computerService;
+        this.companyService = companyService;
     }
 
     @Override

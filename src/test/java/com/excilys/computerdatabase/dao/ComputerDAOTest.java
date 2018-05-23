@@ -63,7 +63,7 @@ public class ComputerDAOTest {
      * @throws SQLException the exception
      * @throws IllegalArgumentException the exception
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetComputerPageNegativeOffset() throws IllegalArgumentException, SQLException {
         Page<Computer> page = computerDAO.getComputerPage(-1);
         assertEquals(page.getElements().size(), 0);
@@ -78,7 +78,7 @@ public class ComputerDAOTest {
      * @throws InvalidIdException
      */
     @Test
-    public void testGetComputer() throws InvalidIdException {
+    public void testGetComputer() {
         assertNotNull(computerDAO.getComputer(2));
     }
 
@@ -89,8 +89,8 @@ public class ComputerDAOTest {
      * @throws SQLException the exception
      */
 
-    @Test(expected = InvalidIdException.class)
-    public void testGetComputerNegativeId() throws InvalidIdException {
+    @Test
+    public void testGetComputerNegativeId() {
         long id = -1l;
         Optional<Computer> cpu = computerDAO.getComputer(id);
         assertFalse(cpu.isPresent());
@@ -102,7 +102,7 @@ public class ComputerDAOTest {
      * @throws SQLException the exception
      */
     @Test
-    public void testGetComputerInvalidId() throws InvalidIdException {
+    public void testGetComputerInvalidId() {
         int id = 10000;
         Optional<Computer> cpu = computerDAO.getComputer(id);
         assertFalse(cpu.isPresent());
@@ -116,7 +116,7 @@ public class ComputerDAOTest {
      * @throws InvalidIdException
      */
     @Test
-    public void testCreateComputer() throws InvalidIdException {
+    public void testCreateComputer() {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Company company = new Company.Builder(2L).withName("Thinking Machines").build();
@@ -140,7 +140,7 @@ public class ComputerDAOTest {
      * @throws InvalidIdException exception
      */
     @Test
-    public void testCreateComputerIncompleteComputer() throws InvalidIdException {
+    public void testCreateComputerIncompleteComputer() {
 
         Computer cpu = new Computer.Builder("CreateEmptyCpu2").build();
         Optional<Long> id = computerDAO.createComputer(cpu);
@@ -163,7 +163,7 @@ public class ComputerDAOTest {
      */
 
     @Test
-    public void testUpdateComputer() throws InvalidIdException {
+    public void testUpdateComputer() {
         long id = 2;
         Computer cpu = new Computer.Builder("TestUpdate").withId(id).build();
 
@@ -182,8 +182,8 @@ public class ComputerDAOTest {
      * @throws InvalidComputerIdException exception
      */
 
-    @Test(expected = InvalidIdException.class)
-    public void testUpdateComputerWithoutId() throws InvalidIdException {
+    @Test
+    public void testUpdateComputerWithoutId() {
         Computer cpu = new Computer.Builder("TestUpdateFail").build();
         assertFalse(computerDAO.updateComputer(cpu));
     }
@@ -195,7 +195,7 @@ public class ComputerDAOTest {
      */
 
     @Test
-    public void testUpdateComputerInvalidId() throws InvalidIdException {
+    public void testUpdateComputerInvalidId() {
         Computer cpu = new Computer.Builder("TestUpdateFail").withId(9999999L).build();
         assertFalse(computerDAO.updateComputer(cpu));
     }
@@ -206,8 +206,8 @@ public class ComputerDAOTest {
      * @throws InvalidComputerIdException exception
      */
 
-    @Test(expected = InvalidIdException.class)
-    public void testUpdateComputerNegativeId() throws SQLException, InvalidIdException {
+    @Test
+    public void testUpdateComputerNegativeId() {
         Computer cpu = new Computer.Builder("TestUpdateFail").withId(-10L).build();
         assertFalse(computerDAO.updateComputer(cpu));
     }
@@ -217,14 +217,14 @@ public class ComputerDAOTest {
 
     /**
      * Test for the DeleteComputer method.
-     * @throws CDBException 
-     * @throws CDBException 
+     * @throws CDBException
+     * @throws CDBException
      * @throws InvalidComputerIdException exception
      * @throws SQLException exception
      */
 
     @Test
-    public void testDeleteComputer() throws CDBException  {
+    public void testDeleteComputer() throws CDBException {
         String ids = IdValidator.checkList("5");
         assertTrue(computerDAO.deleteComputers(ids));
     }

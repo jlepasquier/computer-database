@@ -31,19 +31,18 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;;;
 public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    @Autowired
-    private  CompanyService companyService;
-    @Autowired
-    private  ComputerService computerService;
+    private CompanyService companyService;
+    private ComputerService computerService;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditComputerServlet() {
-        //companyService = new CompanyService();
-        //computerService = new ComputerService();
+    public EditComputerServlet(ComputerService computerService, CompanyService companyService) {
+        super();
+        this.computerService = computerService;
+        this.companyService = companyService;
     }
-    
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -93,7 +92,7 @@ public class EditComputerServlet extends HttpServlet {
 
             Computer computer = ComputerMapper.createComputer(id, computerName, introduced, discontinued, companyId);
             computerService.updateComputer(computer);
-            
+
             request.setAttribute("success", true);
             request.setAttribute("userMessage", UPDATE_SUCCESS);
             doGet(request, response);

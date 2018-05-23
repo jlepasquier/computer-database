@@ -91,7 +91,7 @@ public class CompanyDAOTest {
         assertTrue(companiesBefore > companiesAfter);
     }
 
-    @Test(expected = InvalidIdException.class)
+    @Test
     public void testDeleteCompanyNegativeId() throws InvalidIdException {
         Long id = -1L;
         Long computersBefore = computerDAO.getComputerCount().get();
