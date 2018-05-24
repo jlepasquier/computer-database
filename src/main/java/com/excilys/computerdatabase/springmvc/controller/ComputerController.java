@@ -52,8 +52,8 @@ public class ComputerController {
             @RequestParam(value = "search", defaultValue = DEFAULT_SEARCH) String search) {
 
         List<Computer> cpuList;
-        Long totalPages;
-        Long computerCount;
+        Long totalPages, computerCount;
+        
         try {
             if (StringUtils.isBlank(search)) {
                 cpuList = computerService.getComputerList(page);
@@ -85,11 +85,9 @@ public class ComputerController {
 
         try {
             Computer computer = computerService.getComputer(id);
-            List<Company> companyList = companyService.getCompanyList();
-            List<CompanyDTO> companyDtoList = CompanyDTOMapper.createDTOList(companyList);
-
+            
+            addCompanyList(modelAndView);
             modelAndView.addObject("id", id);
-            modelAndView.addObject("companyList", companyDtoList);
             modelAndView.addObject("computer", computer);
         } catch (CDBException e) {
             String errorMessage = e.getMessage();
@@ -120,9 +118,7 @@ public class ComputerController {
     public ModelAndView getAddComputer() {
 
         ModelAndView modelAndView = new ModelAndView("addComputer");
-        List<Company> companyList = companyService.getCompanyList();
-        List<CompanyDTO> companyDtoList = CompanyDTOMapper.createDTOList(companyList);
-        modelAndView.addObject("companyList", companyDtoList);
+        addCompanyList(modelAndView);
         modelAndView.addObject("computerDTO", new ComputerDTO());
         return modelAndView;
     }
@@ -145,6 +141,12 @@ public class ComputerController {
         return modelAndView;
     }
     
+    
+    private void addCompanyList(ModelAndView modelAndView) {
+        List<Company> companyList = companyService.getCompanyList();
+        List<CompanyDTO> companyDtoList = CompanyDTOMapper.createDTOList(companyList);
+        modelAndView.addObject("companyList", companyDtoList);
+    }
     
     private void setSuccessAttributes(RedirectAttributes attributes, UserMessage userMessage) {
         attributes.addFlashAttribute("success", true);
