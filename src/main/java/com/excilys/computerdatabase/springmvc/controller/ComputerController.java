@@ -1,14 +1,13 @@
 package main.java.com.excilys.computerdatabase.springmvc.controller;
 
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_SUCCESS;
 import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_FAIL;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_SUCCESS;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_FAIL;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_SUCCESS;
 import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_FAIL;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -55,7 +54,7 @@ public class ComputerController {
 
         List<Computer> cpuList;
         Long totalPages, computerCount;
-        
+
         try {
             if (StringUtils.isBlank(search)) {
                 cpuList = computerService.getComputerList(page);
@@ -87,7 +86,7 @@ public class ComputerController {
 
         try {
             Computer computer = computerService.getComputer(id);
-            
+
             addCompanyList(modelAndView);
             modelAndView.addObject("id", id);
             modelAndView.addObject("computer", computer);
@@ -101,16 +100,23 @@ public class ComputerController {
     }
 
     @RequestMapping(value = "/editComputer", method = RequestMethod.POST)
-    private ModelAndView postEditComputer(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
-            RedirectAttributes attributes) {
+    private ModelAndView postEditComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDto,
+            BindingResult bindingResult, RedirectAttributes attributes) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/editComputer?id=" + computerDto.getId());
+
+        if (bindingResult.hasErrors()) {
+            String error = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage())
+                    .collect(Collectors.joining("\n"));
+            setFailureAttributes(attributes, error);
+            return modelAndView;
+        }
 
         try {
             computerService.updateComputer(ComputerDTOMapper.fromDTO(computerDto));
             setSuccessAttributes(attributes, UPDATE_SUCCESS);
         } catch (CDBException e) {
-            setFailureAttributes(attributes, UPDATE_FAIL + "\n" +  e.getMessage());
+            setFailureAttributes(attributes, UPDATE_FAIL + "\n" + e.getMessage());
         }
 
         return modelAndView;
@@ -124,43 +130,45 @@ public class ComputerController {
         modelAndView.addObject("computerDTO", new ComputerDTO());
         return modelAndView;
     }
-    
-    
+
     @RequestMapping(value = "/addComputer", method = RequestMethod.POST)
-    private ModelAndView postAddComputer(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
-            RedirectAttributes attributes) {
+    private ModelAndView postAddComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDto,
+            BindingResult bindingResult, RedirectAttributes attributes) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/addComputer");
 
+        if (bindingResult.hasErrors()) {
+            String error = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage())
+                    .collect(Collectors.joining("\n"));
+            setFailureAttributes(attributes, error);
+            return modelAndView;
+        }
         try {
             computerService.createComputer(ComputerDTOMapper.fromDTO(computerDto));
             setSuccessAttributes(attributes, CREATION_SUCCESS);
         } catch (CDBException e) {
             e.printStackTrace();
-            setFailureAttributes(attributes, CREATION_FAIL + "\n" +  e.getMessage());
+            setFailureAttributes(attributes, CREATION_FAIL + "\n" + e.getMessage());
         }
 
         return modelAndView;
     }
-    
-    
+
     private void addCompanyList(ModelAndView modelAndView) {
         List<Company> companyList = companyService.getCompanyList();
         List<CompanyDTO> companyDtoList = CompanyDTOMapper.createDTOList(companyList);
         modelAndView.addObject("companyList", companyDtoList);
     }
-    
+
     private void setSuccessAttributes(RedirectAttributes attributes, UserMessage userMessage) {
         attributes.addFlashAttribute("success", true);
         attributes.addFlashAttribute("userMessage", userMessage);
     }
-    
+
     private void setFailureAttributes(RedirectAttributes attributes, String userMessage) {
         attributes.addFlashAttribute("success", false);
         attributes.addFlashAttribute("userMessage", userMessage);
     }
-    
-    
 
     private void setModelAndView(ModelAndView modelAndView, int page, String search, List<ComputerDTO> dtoList,
             Long totalPages, Long computerCount) {

@@ -1,9 +1,14 @@
 package main.java.com.excilys.computerdatabase.dto;
 
+import javax.validation.constraints.Size;
+
 public class ComputerDTO {
 
     Long id;
+    
+    @Size(min=2, max=10) 
     String name;
+    
     String introduced;
     String discontinued;
     Long companyId;
