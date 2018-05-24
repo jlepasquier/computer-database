@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
+import main.java.com.excilys.computerdatabase.exception.InvalidDateFormatException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
@@ -36,8 +37,10 @@ public class ComputerDTOMapper {
 
                 Company company = cpu.getCompany();
                 if (company == null) {
-                    dto.setCompanyName("");
+                    dto.setCompanyName(null);
+                    dto.setCompanyId(null);
                 } else {
+                    dto.setCompanyId(company.getId());
                     dto.setCompanyName(company.getName());
                 }
                 dtoList.add(dto);
@@ -46,4 +49,12 @@ public class ComputerDTOMapper {
 
         return dtoList;
     }
+    
+    
+    
+    public static Computer fromDTO(ComputerDTO dto)
+            throws NumberFormatException, IllegalArgumentException, InvalidDateFormatException {
+        return ComputerMapper.createComputer(dto.getId().toString(), dto.getName(), dto.getIntroduced(), dto.getDiscontinued(), dto.getCompanyId().toString());
+    }
+    
 }

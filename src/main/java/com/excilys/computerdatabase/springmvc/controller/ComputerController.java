@@ -1,15 +1,19 @@
 package main.java.com.excilys.computerdatabase.springmvc.controller;
 
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
@@ -84,6 +88,26 @@ public class ComputerController {
         } catch (CDBException e) {
             String errorMessage = e.getMessage();
             modelAndView.addObject("userMessage", errorMessage);
+        }
+
+        modelAndView.addObject("computerDTO", new ComputerDTO());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/editComputer", method = RequestMethod.POST)
+    public ModelAndView postEdit(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
+            RedirectAttributes attributes) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/editComputer?id=" + computerDto.getId());
+
+        try {
+            computerService.updateComputer(ComputerDTOMapper.fromDTO(computerDto));
+            attributes.addFlashAttribute("success", true);
+            attributes.addFlashAttribute("userMessage", UPDATE_SUCCESS);
+        } catch (CDBException e) {
+            String errorMessage = e.getMessage();
+            attributes.addFlashAttribute("success", false);
+            attributes.addFlashAttribute("userMessage", errorMessage);
         }
 
         return modelAndView;
