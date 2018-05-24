@@ -6,6 +6,7 @@ public class ComputerDTO {
     String name;
     String introduced;
     String discontinued;
+    Long companyId;
     String companyName;
 
     public ComputerDTO() {
@@ -17,12 +18,13 @@ public class ComputerDTO {
      * @param discontinued
      * @param company
      */
-    public ComputerDTO(Long computerId, String computerName, String introduced, String discontinued, String company) {
+    public ComputerDTO(Long computerId, String computerName, String introduced, String discontinued, Long companyId, String companyName) {
         this.id = computerId;
         this.name = computerName;
         this.introduced = introduced;
         this.discontinued = discontinued;
-        this.companyName = company;
+        this.companyId = companyId;
+        this.companyName = companyName;
     }
 
     /**
@@ -95,4 +97,13 @@ public class ComputerDTO {
         this.companyName = company;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    
 }

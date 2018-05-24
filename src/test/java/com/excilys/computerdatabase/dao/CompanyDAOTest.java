@@ -20,14 +20,14 @@ import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.dao.Page;
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
-import main.java.com.excilys.computerdatabase.spring.AppConfig;
+import main.java.com.excilys.computerdatabase.springmvc.config.WebAppConfig;
 
 /**
  * @author Julien Lepasquier
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=AppConfig.class, loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes=WebAppConfig.class, loader=AnnotationConfigContextLoader.class)
 public class CompanyDAOTest {
     
     @Autowired

@@ -1,6 +1,11 @@
 package main.java.com.excilys.computerdatabase.servlet;
 
 import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_SUCCESS;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_FAIL;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_SUCCESS;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.DELETION_FAIL;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;
+import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_FAIL;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
@@ -26,7 +30,7 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;
 /**
  * Servlet implementation class addComputerServlet
  */
-@WebServlet(asyncSupported = false, name = "AddComputerServlet", urlPatterns = { "/addComputer" })
+//@WebServlet(asyncSupported = false, name = "AddComputerServlet", urlPatterns = { "/addComputer" })
 public class AddComputerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

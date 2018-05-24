@@ -25,11 +25,11 @@ import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
-import main.java.com.excilys.computerdatabase.spring.AppConfig;
+import main.java.com.excilys.computerdatabase.springmvc.config.WebAppConfig;
 import main.java.com.excilys.computerdatabase.validator.IdValidator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = WebAppConfig.class, loader = AnnotationConfigContextLoader.class)
 public class ComputerDAOTest {
 
     @Autowired

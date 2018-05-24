@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import main.java.com.excilys.computerdatabase.dto.CompanyDTO;
@@ -27,7 +26,7 @@ import main.java.com.excilys.computerdatabase.service.ComputerService;;;
 /**
  * Servlet implementation class editComputerServlet
  */
-@WebServlet("/editComputer")
+//@WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
