@@ -48,7 +48,7 @@ public class ComputerController {
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public ModelAndView getDashboard(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
+    private ModelAndView getDashboard(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE) int page,
             @RequestParam(value = "search", defaultValue = DEFAULT_SEARCH) String search) {
 
         List<Computer> cpuList;
@@ -79,7 +79,7 @@ public class ComputerController {
     }
 
     @RequestMapping(value = "/editComputer", method = RequestMethod.GET)
-    public ModelAndView getEditComputer(@RequestParam(value = "id", required = true) long id) {
+    private ModelAndView getEditComputer(@RequestParam(value = "id", required = true) long id) {
 
         ModelAndView modelAndView = new ModelAndView("editComputer");
 
@@ -99,7 +99,7 @@ public class ComputerController {
     }
 
     @RequestMapping(value = "/editComputer", method = RequestMethod.POST)
-    public ModelAndView postEditComputer(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
+    private ModelAndView postEditComputer(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
             RedirectAttributes attributes) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/editComputer?id=" + computerDto.getId());
@@ -115,7 +115,7 @@ public class ComputerController {
     }
 
     @RequestMapping(value = "/addComputer", method = RequestMethod.GET)
-    public ModelAndView getAddComputer() {
+    private ModelAndView getAddComputer() {
 
         ModelAndView modelAndView = new ModelAndView("addComputer");
         addCompanyList(modelAndView);
@@ -125,7 +125,7 @@ public class ComputerController {
     
     
     @RequestMapping(value = "/addComputer", method = RequestMethod.POST)
-    public ModelAndView postAddComputer(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
+    private ModelAndView postAddComputer(@ModelAttribute("computerDTO") ComputerDTO computerDto, BindingResult binding,
             RedirectAttributes attributes) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/addComputer");
