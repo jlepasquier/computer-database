@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.com.excilys.computerdatabase.dto.ComputerDTO;
+import main.java.com.excilys.computerdatabase.exception.CDBException;
 import main.java.com.excilys.computerdatabase.exception.InvalidDateFormatException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
@@ -25,14 +26,14 @@ public class ComputerDTOMapper {
                 if (introduced == null) {
                     dto.setIntroduced("");
                 } else {
-                    dto.setIntroduced(introduced.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    dto.setIntroduced(introduced.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 }
 
                 LocalDate discontinued = cpu.getDiscontinued();
                 if (discontinued == null) {
                     dto.setDiscontinued("");
                 } else {
-                    dto.setDiscontinued(discontinued.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    dto.setDiscontinued(discontinued.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 }
 
                 Company company = cpu.getCompany();
@@ -49,12 +50,18 @@ public class ComputerDTOMapper {
 
         return dtoList;
     }
-    
-    
-    
+
     public static Computer fromDTO(ComputerDTO dto)
-            throws NumberFormatException, IllegalArgumentException, InvalidDateFormatException {
-        return ComputerMapper.createComputer(dto.getId().toString(), dto.getName(), dto.getIntroduced(), dto.getDiscontinued(), dto.getCompanyId().toString());
+            throws NumberFormatException, IllegalArgumentException, CDBException {
+        if (dto == null) {
+            throw new CDBException();
+        } else if (dto.getId() == null) {
+            return ComputerMapper.createComputer(dto.getName(), dto.getIntroduced(), dto.getDiscontinued(),
+                    dto.getCompanyId().toString());
+        } else {
+            return ComputerMapper.createComputer(dto.getId().toString(), dto.getName(), dto.getIntroduced(),
+                    dto.getDiscontinued(), dto.getCompanyId().toString());
+        }
     }
-    
+
 }
