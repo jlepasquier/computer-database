@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import main.java.com.excilys.computerdatabase.exception.InvalidDateFormatException;
 import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
@@ -52,8 +54,8 @@ public class ComputerMapper {
      * @throws InvalidDateFormatException the exception
      * @throws NumberFormatException the exception
      */
-    public static Computer createComputer(String pcomputerName, String pintroduced, String pdiscontinued, String pcompanyId)
-            throws IllegalArgumentException, InvalidDateFormatException, NumberFormatException {
+    public static Computer createComputer(String pcomputerName, String pintroduced, String pdiscontinued,
+            String pcompanyId) throws IllegalArgumentException, InvalidDateFormatException, NumberFormatException {
 
         LocalDate introduced = null;
         LocalDate discontinued = null;
@@ -65,7 +67,7 @@ public class ComputerMapper {
             throw new IllegalArgumentException();
         }
 
-        if (pintroduced != null && !pintroduced.equals("")) {
+        if (StringUtils.isNotBlank(pintroduced)) {
             try {
                 introduced = LocalDate.parse(pintroduced, format);
             } catch (DateTimeParseException e) {
@@ -73,9 +75,9 @@ public class ComputerMapper {
             }
         }
 
-        if (pdiscontinued != null && !pintroduced.equals("")) {
+        if (StringUtils.isNotBlank(pdiscontinued)) {
             try {
-                introduced = LocalDate.parse(pintroduced, format);
+                discontinued = LocalDate.parse(pdiscontinued, format);
             } catch (DateTimeParseException e) {
                 throw new InvalidDateFormatException();
             }
@@ -114,60 +116,20 @@ public class ComputerMapper {
     public static Computer createComputer(String pid, String pcomputerName, String pintroduced, String pdiscontinued,
             String pcompanyId) throws IllegalArgumentException, InvalidDateFormatException, NumberFormatException {
 
-        LocalDate introduced = null;
-        LocalDate discontinued = null;
-        Long companyId;
         Long id;
-
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        
-        if (pcomputerName == null) {
-            throw new IllegalArgumentException();
-        }
-
-        if (pintroduced != null && !pintroduced.equals("")) {
-            try {
-                introduced = LocalDate.parse(pintroduced, format);
-            } catch (DateTimeParseException e) {
-                throw new InvalidDateFormatException();
-            }
-        }
-
-        if (pdiscontinued != null && !pintroduced.equals("")) {
-            try {
-                discontinued = LocalDate.parse(pdiscontinued, format);
-            } catch (DateTimeParseException e) {
-                throw new InvalidDateFormatException();
-            }
-        }
-
-        if (pcompanyId == null) {
-            throw new IllegalArgumentException();
-        } else {
-            try {
-                companyId = Long.parseLong(pcompanyId);
-            } catch (NumberFormatException e) {
-                throw e;
-            }
-        }
-
         if (pid == null) {
             throw new IllegalArgumentException();
-        } else {
-            try {
-                id = Long.parseLong(pid);
-            } catch (NumberFormatException e) {
-                throw e;
-            }
         }
 
-        Company company = null;
-        if (companyId != 0) {
-            company = new Company.Builder(companyId).build();
+        Computer computer = createComputer(pcomputerName, pintroduced, pdiscontinued, pcompanyId);
+        try {
+            id = Long.parseLong(pid);
+            computer.setId(id);
+        } catch (NumberFormatException e) {
+            throw e;
         }
 
-        return new Computer.Builder(pcomputerName).withId(id).withCompany(company).withIntroduced(introduced)
-                .withDiscontinued(discontinued).build();
+        return computer;
     }
 
 }

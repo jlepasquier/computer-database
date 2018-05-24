@@ -10,6 +10,8 @@ import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.U
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
