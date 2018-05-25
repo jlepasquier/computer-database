@@ -1,17 +1,27 @@
 package main.java.com.excilys.computerdatabase.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-public class ComputerDTO {
+import org.springframework.format.annotation.DateTimeFormat;
 
+public class ComputerDTO {
+    
+    @Min(1)
     Long id;
     
-    @Size(min=2, max=10) 
+    @Size(min=2, max=30) 
     String name;
     
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     String introduced;
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     String discontinued;
+    
+    @Min(1)
     Long companyId;
+    
     String companyName;
 
     public ComputerDTO() {
