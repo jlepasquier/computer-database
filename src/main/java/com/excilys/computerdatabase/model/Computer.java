@@ -12,6 +12,10 @@ public class Computer {
     private LocalDate introduced;
     private LocalDate discontinued;
     private Company company;
+    
+    public Computer() {
+        
+    }
 
     /**
      * Instantiates a new computer.

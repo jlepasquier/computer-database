@@ -3,6 +3,12 @@ package main.java.com.excilys.computerdatabase.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
 import org.springframework.dao.DataAccessException;
@@ -20,8 +26,10 @@ import main.java.com.excilys.computerdatabase.model.Company;
 @Repository("companyDAO")
 public class CompanyDAO {
 
+    @PersistenceContext
+    private EntityManager entityManager;
     private JdbcTemplate jdbcTemplate;
-    PlatformTransactionManager transactionManager;
+    private PlatformTransactionManager transactionManager;
 
     private static final int COMPANIES_PER_PAGE = 10;
 
@@ -30,9 +38,11 @@ public class CompanyDAO {
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
     private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
 
-    public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager) {
+    public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager,
+            EntityManager pEntityManager) {
         jdbcTemplate = new JdbcTemplate(pDataSource);
         transactionManager = pPlatformTransactionManager;
+        entityManager = pEntityManager;
     }
 
     /**
@@ -41,9 +51,11 @@ public class CompanyDAO {
      * @return the company page
      */
     public List<Company> getCompanyList() {
-        return jdbcTemplate.query(FIND_ALL, (resultSet, rowNum) -> {
-            return CompanyMapper.createCompany(resultSet);
-        });
+        CriteriaQuery<Company> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(Company.class);
+        Root<Company> company = criteriaQuery.from(Company.class);
+        criteriaQuery.select(company);
+        TypedQuery<Company> q = entityManager.createQuery(criteriaQuery);
+        return q.getResultList();
     }
 
     /**
@@ -55,7 +67,7 @@ public class CompanyDAO {
         List<Company> companyList;
         try {
             companyList = jdbcTemplate.query(FIND_PAGE, preparedStatement -> {
-                QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE, (offset-1) * COMPANIES_PER_PAGE);
+                QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE, (offset - 1) * COMPANIES_PER_PAGE);
             }, (resultSet, rowNum) -> {
                 return CompanyMapper.createCompany(resultSet);
             });
