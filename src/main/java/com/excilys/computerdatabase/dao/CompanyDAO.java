@@ -1,12 +1,12 @@
 package main.java.com.excilys.computerdatabase.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
@@ -67,11 +67,11 @@ public class CompanyDAO {
         CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
         Root<Company> company = criteriaQuery.from(Company.class);
         criteriaQuery.select(company);
-        
+
         TypedQuery<Company> query = entityManager.createQuery(criteriaQuery)
                 .setFirstResult((offset - 1) * COMPANIES_PER_PAGE).setMaxResults(COMPANIES_PER_PAGE);
         List<Company> companyList = query.getResultList();
-        
+
         return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
     }
 
@@ -81,18 +81,23 @@ public class CompanyDAO {
      * @return whether the deletion was succesful
      */
     public boolean deleteCompany(Long id) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaDelete<Company> delete = cb.createCriteriaDelete(Company.class);
+        Root<Company> company = delete.from(Company.class);
+        delete.where(cb.equal(company.get("id"), id));
+        return entityManager.createQuery(delete).executeUpdate() > 0;
 
-        TransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(def);
-
-        try {
-            jdbcTemplate.update(DELETE_COMPUTERS, id);
-            int updatedRows = jdbcTemplate.update(DELETE_COMPANY, id);
-            transactionManager.commit(status);
-            return (updatedRows > 0);
-        } catch (DataAccessException e) {
-            transactionManager.rollback(status);
-            return false;
-        }
+        // TransactionDefinition def = new DefaultTransactionDefinition();
+        // TransactionStatus status = transactionManager.getTransaction(def);
+        //
+        // try {
+        // jdbcTemplate.update(DELETE_COMPUTERS, id);
+        // int updatedRows = jdbcTemplate.update(DELETE_COMPANY, id);
+        // transactionManager.commit(status);
+        // return (updatedRows > 0);
+        // } catch (DataAccessException e) {
+        // transactionManager.rollback(status);
+        // return false;
+        // }
     }
 }
