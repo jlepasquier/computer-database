@@ -1,9 +1,9 @@
 package main.java.com.excilys.computerdatabase.springmvc.controller;
 
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_FAIL;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.CREATION_SUCCESS;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_FAIL;
-import static main.java.com.excilys.computerdatabase.servlet.enums.UserMessage.UPDATE_SUCCESS;
+import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.CREATION_FAIL;
+import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.CREATION_SUCCESS;
+import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.UPDATE_FAIL;
+import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.UPDATE_SUCCESS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
-import main.java.com.excilys.computerdatabase.servlet.enums.UserMessage;
+import main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage;
 
 @Controller
 @RequestMapping("/")

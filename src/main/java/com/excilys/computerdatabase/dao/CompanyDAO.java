@@ -19,8 +19,6 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import main.java.com.excilys.computerdatabase.mapper.CompanyMapper;
-import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Company;
 
 @Repository("companyDAO")
@@ -51,7 +49,8 @@ public class CompanyDAO {
      * @return the company page
      */
     public List<Company> getCompanyList() {
-        CriteriaQuery<Company> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(Company.class);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
         Root<Company> company = criteriaQuery.from(Company.class);
         criteriaQuery.select(company);
         TypedQuery<Company> q = entityManager.createQuery(criteriaQuery);
@@ -63,17 +62,16 @@ public class CompanyDAO {
      * @param offset the offset
      * @return the company page
      */
-    public Page<Company> getCompanyPage(int offset) {
-        List<Company> companyList;
-        try {
-            companyList = jdbcTemplate.query(FIND_PAGE, preparedStatement -> {
-                QueryMapper.prepareStatement(preparedStatement, COMPANIES_PER_PAGE, (offset - 1) * COMPANIES_PER_PAGE);
-            }, (resultSet, rowNum) -> {
-                return CompanyMapper.createCompany(resultSet);
-            });
-        } catch (Exception e) {
-            companyList = new ArrayList<>();
-        }
+    public Page<Company> getCompanyPage(int offset) {       
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
+        Root<Company> company = criteriaQuery.from(Company.class);
+        criteriaQuery.select(company);
+        TypedQuery<Company> q = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((offset - 1) * COMPANIES_PER_PAGE)
+                .setMaxResults(COMPANIES_PER_PAGE);
+        List<Company> companyList = q.getResultList();
+        companyList = new ArrayList<>();
         return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
     }
 
