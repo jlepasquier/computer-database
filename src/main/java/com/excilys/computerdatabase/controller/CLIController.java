@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import main.java.com.excilys.computerdatabase.exception.CDBException;
@@ -11,6 +13,7 @@ import main.java.com.excilys.computerdatabase.model.Company;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.service.CompanyService;
 import main.java.com.excilys.computerdatabase.service.ComputerService;
+import main.java.com.excilys.computerdatabase.springmvc.config.AppConfig;
 import main.java.com.excilys.computerdatabase.ui.CLI;
 
 @Controller
@@ -27,10 +30,16 @@ public class CLIController {
         this.computerService = computerService;
         this.companyService = companyService;
     }
+    
+    
+    public static void main(String[] args) {
+        @SuppressWarnings("resource")
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-    /**
-     * Start, entry point.
-     */
+        context.getBean(CLIController.class).start();
+    }
+
+
     public void start() {
         cli.initView();
         do {
@@ -79,11 +88,11 @@ public class CLIController {
      * * Service calls **.
      */
     public void findEveryComputer() {
-        int currentPage = 0;
+        int currentPage = 1;
         boolean exit = false;
         do {
             List<Computer> cpuList = computerService.getComputerList(currentPage);
-            if (cpuList.isEmpty() && (currentPage > 0)) {
+            if (cpuList.isEmpty() && (currentPage > 1)) {
                 currentPage -= 1;
                 cpuList = computerService.getComputerList(currentPage);
             }
@@ -96,7 +105,7 @@ public class CLIController {
                 exit = true;
             } else if (action.equals("s") && !cpuList.isEmpty()) {
                 currentPage += 1;
-            } else if (action.equals("p") && (currentPage > 0)) {
+            } else if (action.equals("p") && (currentPage > 1)) {
                 currentPage -= 1;
             }
         } while (!exit);
@@ -106,11 +115,11 @@ public class CLIController {
      * Finds every company.
      */
     public void findEveryCompany() {
-        int currentPage = 0;
+        int currentPage = 1;
         boolean exit = false;
         do {
             List<Company> companyList = companyService.getCompanyList(currentPage);
-            if (companyList.isEmpty() && (currentPage > 0)) {
+            if (companyList.isEmpty() && (currentPage > 1)) {
                 currentPage -= 1;
                 companyList = companyService.getCompanyList(currentPage);
             }
@@ -123,7 +132,7 @@ public class CLIController {
                 exit = true;
             } else if (action.equals("s") && !companyList.isEmpty()) {
                 currentPage += 1;
-            } else if (action.equals("p") && (currentPage > 0)) {
+            } else if (action.equals("p") && (currentPage > 1)) {
                 currentPage -= 1;
             }
         } while (!exit);

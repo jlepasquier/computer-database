@@ -62,16 +62,16 @@ public class CompanyDAO {
      * @param offset the offset
      * @return the company page
      */
-    public Page<Company> getCompanyPage(int offset) {       
+    public Page<Company> getCompanyPage(int offset) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
         Root<Company> company = criteriaQuery.from(Company.class);
         criteriaQuery.select(company);
-        TypedQuery<Company> q = entityManager.createQuery(criteriaQuery)
-                .setFirstResult((offset - 1) * COMPANIES_PER_PAGE)
-                .setMaxResults(COMPANIES_PER_PAGE);
-        List<Company> companyList = q.getResultList();
-        companyList = new ArrayList<>();
+        
+        TypedQuery<Company> query = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((offset - 1) * COMPANIES_PER_PAGE).setMaxResults(COMPANIES_PER_PAGE);
+        List<Company> companyList = query.getResultList();
+        
         return new Page<Company>(COMPANIES_PER_PAGE, offset, companyList);
     }
 

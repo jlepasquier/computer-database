@@ -19,6 +19,10 @@ public class CLI {
 
     private static Scanner scan;
 
+    public CLI() {
+
+    }
+
     /**
      * Inits the view by enabling user interaction.
      */
@@ -103,7 +107,7 @@ public class CLI {
             return readLong();
         }
     }
-    
+
     /**
      * Reads an integer.
      * @return the int
