@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import javax.print.PrintServiceLookup;
 import javax.sql.DataSource;
@@ -69,9 +70,9 @@ public class ComputerDAO {
 
     public Optional<Computer> getComputer(long id) {
         CriteriaQuery<Computer> query = criteriaBuilder.createQuery(Computer.class);
-        Root<Computer> company = query.from(Computer.class);
-        query.where(criteriaBuilder.equal(company.get("id"), id));
-        query.select(company);
+        Root<Computer> computer = query.from(Computer.class);
+        query.where(criteriaBuilder.equal(computer.get("id"), id));
+        query.select(computer);
 
         return entityManager.createQuery(query).getResultList().stream().findFirst();
     }
@@ -87,15 +88,25 @@ public class ComputerDAO {
         return Optional.of(computer.getId());
     }
 
-    public boolean updateComputer(Computer cpu) {
+    @Transactional(readOnly = false)
+    public boolean updateComputer(Computer computer) {
+        entityManager.joinTransaction();
+        System.out.println("entry point");
 
-        long updatedRows = jdbcTemplate.update(connection -> {
-            return QueryMapper.prepareStatement(connection, UPDATE, cpu.getName(),
-                    cpu.getIntroduced() == null ? Types.NULL : Date.valueOf(cpu.getIntroduced()),
-                    cpu.getDiscontinued() == null ? Types.NULL : Date.valueOf(cpu.getDiscontinued()),
-                    cpu.getCompany() == null ? null : cpu.getCompany().getId(), cpu.getId());
-        });
-
+        CriteriaUpdate<Computer> update = criteriaBuilder.createCriteriaUpdate(Computer.class);
+        Root<Computer> cpuRoot = update.from(Computer.class);
+        int updatedRows = 0;
+        
+        update.set("introduced", computer.getIntroduced());
+        update.set("discontinued", computer.getDiscontinued());
+        update.set("name", computer.getName());
+        if (computer.getCompany() != null) {
+            update.set("company", computer.getCompany());
+        }
+        
+        update.where(criteriaBuilder.equal(cpuRoot.get("id"), computer.getId()));
+        updatedRows = entityManager.createQuery(update).executeUpdate();
+       
         return (updatedRows > 0);
     }
 
