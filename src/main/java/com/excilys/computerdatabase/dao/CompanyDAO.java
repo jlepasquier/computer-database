@@ -11,13 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import main.java.com.excilys.computerdatabase.model.Company;
 
@@ -26,7 +22,6 @@ public class CompanyDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private JdbcTemplate jdbcTemplate;
     private PlatformTransactionManager transactionManager;
 
     private static final int COMPANIES_PER_PAGE = 10;
@@ -38,7 +33,6 @@ public class CompanyDAO {
 
     public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager,
             EntityManager pEntityManager) {
-        jdbcTemplate = new JdbcTemplate(pDataSource);
         transactionManager = pPlatformTransactionManager;
         entityManager = pEntityManager;
     }
@@ -81,11 +75,14 @@ public class CompanyDAO {
      * @return whether the deletion was succesful
      */
     public boolean deleteCompany(Long id) {
+        /*
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaDelete<Company> delete = cb.createCriteriaDelete(Company.class);
         Root<Company> company = delete.from(Company.class);
         delete.where(cb.equal(company.get("id"), id));
         return entityManager.createQuery(delete).executeUpdate() > 0;
+        */
+        return false;
 
         // TransactionDefinition def = new DefaultTransactionDefinition();
         // TransactionStatus status = transactionManager.getTransaction(def);

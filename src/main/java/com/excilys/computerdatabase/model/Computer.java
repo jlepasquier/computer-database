@@ -2,19 +2,43 @@ package main.java.com.excilys.computerdatabase.model;
 
 import java.time.LocalDate;
 
-/**
- * The Class Computer.
- */
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "computer")
 public class Computer {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "introduced")
+    @Basic(optional = true)
     private LocalDate introduced;
+
+    @Column(name = "discontinued")
+    @Basic(optional = true)
     private LocalDate discontinued;
+
+    @ManyToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
     private Company company;
-    
+
     public Computer() {
-        
+
     }
 
     /**
