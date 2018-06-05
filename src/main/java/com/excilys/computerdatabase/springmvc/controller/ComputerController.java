@@ -4,6 +4,8 @@ import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.
 import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.CREATION_SUCCESS;
 import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.UPDATE_FAIL;
 import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.UPDATE_SUCCESS;
+import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.DELETION_FAIL;
+import static main.java.com.excilys.computerdatabase.springmvc.controller.enums.UserMessage.DELETION_SUCCESS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +77,23 @@ public class ComputerController {
 
         ModelAndView modelAndView = new ModelAndView("dashboard");
         setModelAndView(modelAndView, page, search, dtoList, totalPages, computerCount);
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/dashboard", method = RequestMethod.POST)
+    private ModelAndView postDashboard(@ModelAttribute("selection") String ids, BindingResult bindingResult,
+            RedirectAttributes attributes) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/dashboard");
+        try {
+            if (computerService.deleteComputers(ids)) {
+                setSuccessAttributes(attributes, DELETION_SUCCESS);
+            } else {
+                setFailureAttributes(attributes, DELETION_FAIL.toString());
+            }
+        } catch (CDBException e) {
+            setFailureAttributes(attributes, DELETION_FAIL + "\n" + e.getMessage());
+        }
 
         return modelAndView;
     }
