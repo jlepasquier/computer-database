@@ -1,6 +1,5 @@
 package main.java.com.excilys.computerdatabase.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -18,13 +17,10 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
-import main.java.com.excilys.computerdatabase.mapper.ComputerMapper;
-import main.java.com.excilys.computerdatabase.mapper.QueryMapper;
 import main.java.com.excilys.computerdatabase.model.Computer;
 
 @Repository("computerDAO")
@@ -33,19 +29,13 @@ public class ComputerDAO {
     @PersistenceContext
     private EntityManager entityManager;
     private CriteriaBuilder criteriaBuilder;
-
-    private JdbcTemplate jdbcTemplate; // TODO : delete once updated
-
+    
     private static final int COMPUTERS_PER_PAGE = 25;
-
-    private static final String SEARCH = "SELECT cpu.id AS id, cpu.name AS cpuname, cpu.introduced AS introduced, cpu.discontinued AS discontinued, cpy.name AS companyname, cpy.id AS companyid FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ? ORDER BY cpu.name LIMIT ? OFFSET ? ";
-    private static final String SEARCH_COUNT = "SELECT COUNT(*) FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ?";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
     ComputerDAO(DataSource pDataSource, EntityManager pEntityManager) {
-        jdbcTemplate = new JdbcTemplate(pDataSource);
-        entityManager = pEntityManager;
+         entityManager = pEntityManager;
     }
 
     @PostConstruct
