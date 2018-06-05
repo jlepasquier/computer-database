@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import main.java.com.excilys.computerdatabase.dao.ComputerDAO;
 import main.java.com.excilys.computerdatabase.exception.CDBException;
+import main.java.com.excilys.computerdatabase.exception.InvalidIdException;
 import main.java.com.excilys.computerdatabase.model.Computer;
 import main.java.com.excilys.computerdatabase.validator.ComputerValidator;
 import main.java.com.excilys.computerdatabase.validator.IdValidator;
@@ -52,7 +53,7 @@ public class ComputerService {
         if (cpu.isPresent()) {
             return cpu.get();
         } else {
-            throw new CDBException();
+            throw new InvalidIdException();
         }
     }
 
@@ -65,8 +66,8 @@ public class ComputerService {
     public long createComputer(Computer cpu) throws CDBException {
 
         ComputerValidator.check(cpu);
-
         Optional<Long> id = computerDAO.createComputer(cpu);
+        
         if (id.isPresent()) {
             return id.get();
         } else {

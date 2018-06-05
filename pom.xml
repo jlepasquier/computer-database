@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -9,45 +10,59 @@
 
 
    <properties>
+      <apachecommons.version>3.0</apachecommons.version>
+      <junit.version>4.12</junit.version>
+
       <slf4j.version>1.6.4</slf4j.version>
       <logback.version>1.0.1</logback.version>
-      <junit.version>4.12</junit.version>
+
       <mysql.version>8.0.11</mysql.version>
       <org.mockito.version>1.9.5</org.mockito.version>
       <org.apache.taglibs.version>1.2.5</org.apache.taglibs.version>
       <com.zaxxer.version>2.4.0</com.zaxxer.version>
 
-      <javax.servlet.version>3.1.0</javax.servlet.version>
-      <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
-      <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
-      <org.springframework.version>5.0.5.RELEASE</org.springframework.version>
+      <servlet.version>3.1.0</servlet.version>
+      <servlet.jstl.version>1.2</servlet.jstl.version>
+      <servlet.jsp.version>2.0</servlet.jsp.version>
+
+      <spring.version>5.0.6.RELEASE</spring.version>
+      <hibernate.version>5.3.1.Final</hibernate.version>
    </properties>
 
+
+
+
+
    <dependencies>
+      <!-- APACHE COMMONS -->
       <dependency>
          <groupId>org.apache.commons</groupId>
          <artifactId>commons-lang3</artifactId>
-         <version>3.0</version>
+         <version>${apachecommons.version}</version>
       </dependency>
 
+      <!-- JUNIT -->
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
          <version>${junit.version}</version>
       </dependency>
 
+      <!-- MYSQL -->
       <dependency>
          <groupId>mysql</groupId>
          <artifactId>mysql-connector-java</artifactId>
          <version>${mysql.version}</version>
       </dependency>
 
+      <!-- SLF4J -->
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-api</artifactId>
          <version>${slf4j.version}</version>
       </dependency>
 
+      <!-- LOGBACK -->
       <dependency>
          <groupId>ch.qos.logback</groupId>
          <artifactId>logback-classic</artifactId>
@@ -66,6 +81,13 @@
          <artifactId>mockito-all</artifactId>
          <version>${org.mockito.version}</version>
          <scope>test</scope>
+      </dependency>
+
+      <!-- SERVLETS -->
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jsp-api</artifactId>
+         <version>${servlet.jsp.version}</version>
       </dependency>
 
       <!-- TAGLIBS -->
@@ -88,52 +110,29 @@
          <version>${com.zaxxer.version}</version>
       </dependency>
 
-
-      <!-- SERVLETS -->
-      <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>javax.servlet-api</artifactId>
-         <version>${javax.servlet.version}</version>
-         <scope>provided</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>jstl</artifactId>
-         <version>${javax.servlet.jstl.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>javax.servlet.jsp</groupId>
-         <artifactId>javax.servlet.jsp-api</artifactId>
-         <version>${javax.servlet.jsp.version}</version>
-         <scope>provided</scope>
-      </dependency>
-
-
       <!-- SPRING -->
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-webmvc</artifactId>
-         <version>${org.springframework.version}</version>
+         <version>${spring.version}</version>
       </dependency>
 
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
-         <version>${org.springframework.version}</version>
+         <version>${spring.version}</version>
       </dependency>
 
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-tx</artifactId>
-         <version>${org.springframework.version}</version>
+         <version>${spring.version}</version>
       </dependency>
 
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-jdbc</artifactId>
-         <version>${org.springframework.version}</version>
+         <version>${spring.version}</version>
       </dependency>
 
       <!-- Validation -->
@@ -148,7 +147,32 @@
          <artifactId>hibernate-validator</artifactId>
          <version>6.0.10.Final</version>
       </dependency>
+
+      <!-- JPA Provider (Hibernate) -->
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-entitymanager</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-jpamodelgen</artifactId>
+         <version>${hibernate.version}</version>
+      </dependency>
+
+      <!-- Spring Data JPA -->
+      <dependency>
+         <groupId>org.springframework.data</groupId>
+         <artifactId>spring-data-jpa</artifactId>
+         <version>2.0.7.RELEASE</version>
+      </dependency>
+
+
    </dependencies>
+
+
+
 
    <build>
       <sourceDirectory>src</sourceDirectory>

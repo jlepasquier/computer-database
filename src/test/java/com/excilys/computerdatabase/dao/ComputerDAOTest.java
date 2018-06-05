@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -225,7 +226,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testDeleteComputer() throws CDBException {
-        String ids = IdValidator.checkList("5");
+        Set<Long> ids = IdValidator.checkList("5");
         assertTrue(computerDAO.deleteComputers(ids));
     }
 
@@ -237,7 +238,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testDeleteComputerNegativeId() throws CDBException {
-        String ids = IdValidator.checkList("-10000");
+        Set<Long> ids = IdValidator.checkList("-10000");
         assertFalse(computerDAO.deleteComputers(ids));
     }
 
@@ -249,7 +250,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testDeleteComputerInvalidId() throws CDBException {
-        String ids = IdValidator.checkList("10000");
+        Set<Long> ids = IdValidator.checkList("10000");
         assertFalse(computerDAO.deleteComputers(ids));
     }
 
