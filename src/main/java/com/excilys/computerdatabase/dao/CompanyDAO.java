@@ -2,6 +2,7 @@ package main.java.com.excilys.computerdatabase.dao;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -11,30 +12,36 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import main.java.com.excilys.computerdatabase.model.Company;
+import main.java.com.excilys.computerdatabase.model.Computer;
 
 @Repository("companyDAO")
 public class CompanyDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
+    private CriteriaBuilder criteriaBuilder;
     private PlatformTransactionManager transactionManager;
 
     private static final int COMPANIES_PER_PAGE = 10;
 
-    private static final String FIND_ALL = "SELECT * FROM company";
-    private static final String FIND_PAGE = "SELECT * FROM company LIMIT ? OFFSET ?";
-    private static final String DELETE_COMPANY = "DELETE FROM company WHERE id=?";
-    private static final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id=?";
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager,
             EntityManager pEntityManager) {
         transactionManager = pPlatformTransactionManager;
         entityManager = pEntityManager;
+    }
+
+    @PostConstruct
+    public void init() {
+        criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
     /**
@@ -43,7 +50,7 @@ public class CompanyDAO {
      * @return the company page
      */
     public List<Company> getCompanyList() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        LOGGER.info("DAO : Get Company List");
         CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
         Root<Company> company = criteriaQuery.from(Company.class);
         criteriaQuery.select(company);
@@ -57,7 +64,7 @@ public class CompanyDAO {
      * @return the company page
      */
     public Page<Company> getCompanyPage(int offset) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        LOGGER.info("DAO : Get Company Page");
         CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
         Root<Company> company = criteriaQuery.from(Company.class);
         criteriaQuery.select(company);
@@ -74,27 +81,20 @@ public class CompanyDAO {
      * @param id the id of the company to delete
      * @return whether the deletion was succesful
      */
-    public boolean deleteCompany(Long id) {
-        /*
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaDelete<Company> delete = cb.createCriteriaDelete(Company.class);
-        Root<Company> company = delete.from(Company.class);
-        delete.where(cb.equal(company.get("id"), id));
-        return entityManager.createQuery(delete).executeUpdate() > 0;
-        */
-        return false;
 
-        // TransactionDefinition def = new DefaultTransactionDefinition();
-        // TransactionStatus status = transactionManager.getTransaction(def);
-        //
-        // try {
-        // jdbcTemplate.update(DELETE_COMPUTERS, id);
-        // int updatedRows = jdbcTemplate.update(DELETE_COMPANY, id);
-        // transactionManager.commit(status);
-        // return (updatedRows > 0);
-        // } catch (DataAccessException e) {
-        // transactionManager.rollback(status);
-        // return false;
-        // }
+    @Transactional(readOnly = false)
+    public boolean deleteCompany(Long id) {
+        LOGGER.info("DAO : Delete Company");
+        entityManager.joinTransaction();
+
+        CriteriaDelete<Computer> delComputer = criteriaBuilder.createCriteriaDelete(Computer.class);
+        Root<Computer> computer = delComputer.from(Computer.class);
+        delComputer.where(criteriaBuilder.equal(computer.get("company").get("id"), id));
+        entityManager.createQuery(delComputer).executeUpdate();
+
+        CriteriaDelete<Company> delCompany = criteriaBuilder.createCriteriaDelete(Company.class);
+        Root<Company> company = delCompany.from(Company.class);
+        delCompany.where(criteriaBuilder.equal(company.get("id"), id));
+        return entityManager.createQuery(delCompany).executeUpdate() > 0;
     }
 }
