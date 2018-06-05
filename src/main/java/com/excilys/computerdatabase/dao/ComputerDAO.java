@@ -42,7 +42,7 @@ public class ComputerDAO {
     private static final String SEARCH_COUNT = "SELECT COUNT(*) FROM computer as cpu LEFT JOIN company as cpy ON cpy.id = cpu.company_id WHERE cpu.name LIKE ? OR cpy.name LIKE ?";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
-    
+
     ComputerDAO(DataSource pDataSource, EntityManager pEntityManager) {
         jdbcTemplate = new JdbcTemplate(pDataSource);
         entityManager = pEntityManager;
@@ -78,9 +78,9 @@ public class ComputerDAO {
 
     @Transactional(readOnly = false)
     public Optional<Long> createComputer(Computer computer) {
-        LOGGER.info("DAO : Create Computer");  
+        LOGGER.info("DAO : Create Computer");
         computer.setId(null);
-        entityManager.joinTransaction();      
+        entityManager.joinTransaction();
         entityManager.persist(computer);
         entityManager.flush();
         entityManager.refresh(computer);
@@ -96,17 +96,17 @@ public class ComputerDAO {
         CriteriaUpdate<Computer> update = criteriaBuilder.createCriteriaUpdate(Computer.class);
         Root<Computer> cpuRoot = update.from(Computer.class);
         int updatedRows = 0;
-        
+
         update.set("introduced", computer.getIntroduced());
         update.set("discontinued", computer.getDiscontinued());
         update.set("name", computer.getName());
         if (computer.getCompany() != null) {
             update.set("company", computer.getCompany());
         }
-        
+
         update.where(criteriaBuilder.equal(cpuRoot.get("id"), computer.getId()));
         updatedRows = entityManager.createQuery(update).executeUpdate();
-       
+
         return (updatedRows > 0);
     }
 
@@ -114,20 +114,19 @@ public class ComputerDAO {
     public boolean deleteComputers(Set<Long> ids) throws InvalidIdException {
         LOGGER.info("DAO : Delete Computer");
         entityManager.joinTransaction();
-        
+
         CriteriaDelete<Computer> delete = criteriaBuilder.createCriteriaDelete(Computer.class);
         Root<Computer> computer = delete.from(Computer.class);
         delete.where(computer.get("id").in(ids));
-        
+
         int updatedRows = entityManager.createQuery(delete).executeUpdate();
         return (updatedRows > 0);
     }
 
-    //TODO
     public Page<Computer> searchComputer(String search, int offset) {
         LOGGER.info("DAO : Search Computer");
         String searchString = "%" + search + "%";
-        
+
         CriteriaQuery<Computer> searchComputer = criteriaBuilder.createQuery(Computer.class);
         Root<Computer> computer = searchComputer.from(Computer.class);
         searchComputer.where(criteriaBuilder.like(computer.get("name"), searchString));
@@ -158,15 +157,17 @@ public class ComputerDAO {
         return Optional.ofNullable(numberOfPages);
     }
 
-    //TODO
     public Optional<Long> getSearchComputerCount(String search) {
         LOGGER.info("DAO : Get Search Computer Count");
-        
         String searchString = "%" + search + "%";
-        return jdbcTemplate.queryForObject(SEARCH_COUNT, new Object[] { searchString, searchString },
-                (resultSet, rowNum) -> {
-                    return Optional.of(resultSet.getLong(1));
-                });
+
+        CriteriaQuery<Long> count = criteriaBuilder.createQuery(Long.class);
+        Root<Computer> computer = count.from(Computer.class);
+
+        count.where(criteriaBuilder.like(computer.get("name"), searchString));
+        count.select(criteriaBuilder.count(computer));
+
+        return Optional.of(entityManager.createQuery(count).getSingleResult());
     }
 
     public Optional<Long> getSearchComputerPageCount(String search) {
