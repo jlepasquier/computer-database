@@ -10,12 +10,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import main.java.com.excilys.computerdatabase.model.Company;
@@ -27,15 +25,12 @@ public class CompanyDAO {
     @PersistenceContext
     private EntityManager entityManager;
     private CriteriaBuilder criteriaBuilder;
-    private PlatformTransactionManager transactionManager;
 
     private static final int COMPANIES_PER_PAGE = 10;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
-    public CompanyDAO(DataSource pDataSource, PlatformTransactionManager pPlatformTransactionManager,
-            EntityManager pEntityManager) {
-        transactionManager = pPlatformTransactionManager;
+    public CompanyDAO(EntityManager pEntityManager) {
         entityManager = pEntityManager;
     }
 
