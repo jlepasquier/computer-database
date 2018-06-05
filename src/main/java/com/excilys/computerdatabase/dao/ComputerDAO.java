@@ -57,8 +57,8 @@ public class ComputerDAO {
         LOGGER.info("DAO : Get Computer Page");
 
         CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-        Root<Computer> company = criteriaQuery.from(Computer.class);
-        criteriaQuery.select(company);
+        Root<Computer> computer = criteriaQuery.from(Computer.class);
+        criteriaQuery.select(computer);
 
         TypedQuery<Computer> query = entityManager.createQuery(criteriaQuery)
                 .setFirstResult((offset - 1) * COMPUTERS_PER_PAGE).setMaxResults(COMPUTERS_PER_PAGE);
@@ -78,10 +78,9 @@ public class ComputerDAO {
 
     @Transactional(readOnly = false)
     public Optional<Long> createComputer(Computer computer) {
-        LOGGER.info("DAO : Create Computer");
-        entityManager.joinTransaction();
-        
+        LOGGER.info("DAO : Create Computer");  
         computer.setId(null);
+        entityManager.joinTransaction();      
         entityManager.persist(computer);
         entityManager.flush();
         entityManager.refresh(computer);
@@ -124,27 +123,25 @@ public class ComputerDAO {
         return (updatedRows > 0);
     }
 
+    //TODO
     public Page<Computer> searchComputer(String search, int offset) {
         LOGGER.info("DAO : Search Computer");
+        String searchString = "%" + search + "%";
+        
+        CriteriaQuery<Computer> searchComputer = criteriaBuilder.createQuery(Computer.class);
+        Root<Computer> computer = searchComputer.from(Computer.class);
+        searchComputer.where(criteriaBuilder.like(computer.get("name"), searchString));
+        searchComputer.select(computer);
 
-        List<Computer> computerList;
-        try {
-            String searchString = "%" + search + "%";
-            computerList = jdbcTemplate.query(SEARCH, preparedStatement -> {
-                QueryMapper.prepareStatement(preparedStatement, searchString, searchString, COMPUTERS_PER_PAGE,
-                        (offset - 1) * COMPUTERS_PER_PAGE);
-            }, (resultSet, rowNum) -> {
-                return ComputerMapper.createComputer(resultSet);
-            });
-        } catch (Exception e) {
-            computerList = new ArrayList<>();
-        }
+        TypedQuery<Computer> query = entityManager.createQuery(searchComputer)
+                .setFirstResult((offset - 1) * COMPUTERS_PER_PAGE).setMaxResults(COMPUTERS_PER_PAGE);
+        List<Computer> computerList = query.getResultList();
+
         return new Page<Computer>(COMPUTERS_PER_PAGE, offset, computerList);
     }
 
     public Optional<Long> getComputerCount() {
         LOGGER.info("DAO : Get Computer Count");
-        
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         query.select(criteriaBuilder.count(query.from(Computer.class)));
         return Optional.of(entityManager.createQuery(query).getSingleResult());
@@ -152,17 +149,16 @@ public class ComputerDAO {
 
     public Optional<Long> getComputerPageCount() {
         LOGGER.info("DAO : Get Computer Page Count");
-
         Long numberOfPages = null;
         Optional<Long> numberOfComputers = getComputerCount();
 
         if (numberOfComputers.isPresent()) {
             numberOfPages = (long) Math.ceil(numberOfComputers.get() / COMPUTERS_PER_PAGE);
         }
-
         return Optional.ofNullable(numberOfPages);
     }
 
+    //TODO
     public Optional<Long> getSearchComputerCount(String search) {
         LOGGER.info("DAO : Get Search Computer Count");
         
@@ -175,7 +171,6 @@ public class ComputerDAO {
 
     public Optional<Long> getSearchComputerPageCount(String search) {
         LOGGER.info("DAO : Get Search Computer Page Count");
-        
         Long numberOfPages = null;
         Optional<Long> numberOfComputers = getSearchComputerCount(search);
 
