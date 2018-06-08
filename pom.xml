@@ -1,277 +1,256 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>computer-database</groupId>
-   <artifactId>computer-database</artifactId>
-   <version>0.0.1-SNAPSHOT</version>
-   <packaging>war</packaging>
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.excilys.computerdatabase</groupId>
+<artifactId>computer-database</artifactId>
+<version>0.6.1</version>
+<packaging>pom</packaging>
+<name>computer-database</name>
+<url>https://github.com/jlepasquier/computer-database</url>
+<modules>
+<module>core</module>
+<module>persistence</module>
+<module>service</module>
+<module>binding</module>
+<module>webapp</module>
+<module>console</module>
+</modules>
 
+<properties>
+<apachecommons.version>3.0</apachecommons.version>
+<junit.version>4.12</junit.version>
+<slf4j.version>1.6.4</slf4j.version>
+<logback.version>1.0.1</logback.version>
+<mysql.version>8.0.11</mysql.version>
+<org.mockito.version>1.9.5</org.mockito.version>
+<org.apache.taglibs.version>1.2.5</org.apache.taglibs.version>
+<com.zaxxer.version>2.4.0</com.zaxxer.version>
+<javax.servlet.version>3.1.0</javax.servlet.version>
+<javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
+<javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
+<spring.version>5.0.6.RELEASE</spring.version>
+<hibernate.version>5.3.1.Final</hibernate.version>
+<cdb.version>0.6.1</cdb.version>
+<jboss-logging.version>3.2.0.Final</jboss-logging.version>
+</properties>
 
-   <properties>
-      <apachecommons.version>3.0</apachecommons.version>
-      <junit.version>4.12</junit.version>
+<dependencyManagement>
+<dependencies>
+<!-- APACHE COMMONS -->
+<dependency>
+<groupId>org.apache.commons</groupId>
+<artifactId>commons-lang3</artifactId>
+<version>${apachecommons.version}</version>
+</dependency>
+<!-- JUNIT -->
+<dependency>
+<groupId>junit</groupId>
+<artifactId>junit</artifactId>
+<version>${junit.version}</version>
+</dependency>
+<!-- MYSQL -->
+<dependency>
+<groupId>mysql</groupId>
+<artifactId>mysql-connector-java</artifactId>
+<version>${mysql.version}</version>
+</dependency>
+<!-- SLF4J -->
+<dependency>
+<groupId>org.slf4j</groupId>
+<artifactId>slf4j-api</artifactId>
+<version>${slf4j.version}</version>
+</dependency>
 
-      <slf4j.version>1.6.4</slf4j.version>
-      <logback.version>1.0.1</logback.version>
+<dependency>
+<groupId>org.slf4j</groupId>
+<artifactId>slf4j-log4j12</artifactId>
+<version>${slf4j.version}</version>
+</dependency>
 
-      <mysql.version>8.0.11</mysql.version>
-      <org.mockito.version>1.9.5</org.mockito.version>
-      <org.apache.taglibs.version>1.2.5</org.apache.taglibs.version>
-      <com.zaxxer.version>2.4.0</com.zaxxer.version>
+<dependency>
+<artifactId>jboss-logging</artifactId>
+<groupId>org.jboss.logging</groupId>
+<version>${jboss-logging.version}</version>
+</dependency>
+<!-- LOGBACK -->
+<dependency>
+<groupId>ch.qos.logback</groupId>
+<artifactId>logback-classic</artifactId>
+<version>${logback.version}</version>
+</dependency>
 
-      <servlet.version>3.1.0</servlet.version>
-      <servlet.jstl.version>1.2</servlet.jstl.version>
-      <servlet.jsp.version>2.0</servlet.jsp.version>
+<dependency>
+<groupId>ch.qos.logback</groupId>
+<artifactId>logback-core</artifactId>
+<version>${logback.version}</version>
+</dependency>
+<!-- MOCKITO -->
+<dependency>
+<groupId>org.mockito</groupId>
+<artifactId>mockito-all</artifactId>
+<version>${org.mockito.version}</version>
+<scope>test</scope>
+</dependency>
+<!-- TAGLIBS -->
+<dependency>
+<groupId>org.apache.taglibs</groupId>
+<artifactId>taglibs-standard-spec</artifactId>
+<version>${org.apache.taglibs.version}</version>
+</dependency>
+<dependency>
+<groupId>org.apache.taglibs</groupId>
+<artifactId>taglibs-standard-impl</artifactId>
+<version>${org.apache.taglibs.version}</version>
+</dependency>
+<!-- HIKARICP -->
+<dependency>
+<groupId>com.zaxxer</groupId>
+<artifactId>HikariCP</artifactId>
+<version>${com.zaxxer.version}</version>
+</dependency>
+<!-- SERVLETS -->
+<dependency>
+<groupId>javax.servlet</groupId>
+<artifactId>javax.servlet-api</artifactId>
+<version>${javax.servlet.version}</version>
+<scope>provided</scope>
+</dependency>
 
-      <spring.version>5.0.6.RELEASE</spring.version>
-      <hibernate.version>5.3.1.Final</hibernate.version>
-   </properties>
+<dependency>
+<groupId>javax.servlet</groupId>
+<artifactId>jstl</artifactId>
+<version>${javax.servlet.jstl.version}</version>
+</dependency>
 
+<dependency>
+<groupId>javax.servlet.jsp</groupId>
+<artifactId>javax.servlet.jsp-api</artifactId>
+<version>${javax.servlet.jsp.version}</version>
+<scope>provided</scope>
+</dependency>
+<!-- SPRING -->
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-webmvc</artifactId>
+<version>${spring.version}</version>
+</dependency>
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-test</artifactId>
+<version>${spring.version}</version>
+</dependency>
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-tx</artifactId>
+<version>${spring.version}</version>
+</dependency>
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-jdbc</artifactId>
+<version>${spring.version}</version>
+</dependency>
+<!-- Validation -->
+<dependency>
+<groupId>javax.validation</groupId>
+<artifactId>validation-api</artifactId>
+<version>2.0.1.Final</version>
+</dependency>
+<dependency>
+<groupId>org.hibernate</groupId>
+<artifactId>hibernate-validator</artifactId>
+<version>6.0.10.Final</version>
+</dependency>
+<dependency>
+<groupId>org.hibernate</groupId>
+<artifactId>hibernate-jpamodelgen</artifactId>
+<version>${hibernate.version}</version>
+</dependency>
+<!-- JPA Provider (Hibernate) -->
+<dependency>
+<groupId>org.hibernate</groupId>
+<artifactId>hibernate-core</artifactId>
+<version>${hibernate.version}</version>
+</dependency>
+<dependency>
+<groupId>org.hibernate</groupId>
+<artifactId>hibernate-entitymanager</artifactId>
+<version>${hibernate.version}</version>
+</dependency>
+<!-- Spring Data JPA -->
+<dependency>
+<groupId>org.springframework.data</groupId>
+<artifactId>spring-data-jpa</artifactId>
+<version>2.0.7.RELEASE</version>
+</dependency>
+</dependencies>
+</dependencyManagement>
 
+<build>
+<finalName>computer-database</finalName>
+<pluginManagement>
+<plugins>
 
-
-
-   <dependencies>
-      <!-- APACHE COMMONS -->
-      <dependency>
-         <groupId>org.apache.commons</groupId>
-         <artifactId>commons-lang3</artifactId>
-         <version>${apachecommons.version}</version>
-      </dependency>
-
-      <!-- JUNIT -->
-      <dependency>
-         <groupId>junit</groupId>
-         <artifactId>junit</artifactId>
-         <version>${junit.version}</version>
-      </dependency>
-
-      <!-- MYSQL -->
-      <dependency>
-         <groupId>mysql</groupId>
-         <artifactId>mysql-connector-java</artifactId>
-         <version>${mysql.version}</version>
-      </dependency>
-
-      <!-- SLF4J -->
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-         <version>${slf4j.version}</version>
-      </dependency>
-
-      <!-- LOGBACK -->
-      <dependency>
-         <groupId>ch.qos.logback</groupId>
-         <artifactId>logback-classic</artifactId>
-         <version>${logback.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>ch.qos.logback</groupId>
-         <artifactId>logback-core</artifactId>
-         <version>${logback.version}</version>
-      </dependency>
-
-      <!-- MOCKITO -->
-      <dependency>
-         <groupId>org.mockito</groupId>
-         <artifactId>mockito-all</artifactId>
-         <version>${org.mockito.version}</version>
-         <scope>test</scope>
-      </dependency>
-
-      <!-- SERVLETS -->
-      <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>jsp-api</artifactId>
-         <version>${servlet.jsp.version}</version>
-      </dependency>
-
-      <!-- TAGLIBS -->
-      <dependency>
-         <groupId>org.apache.taglibs</groupId>
-         <artifactId>taglibs-standard-spec</artifactId>
-         <version>${org.apache.taglibs.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.apache.taglibs</groupId>
-         <artifactId>taglibs-standard-impl</artifactId>
-         <version>${org.apache.taglibs.version}</version>
-      </dependency>
-
-      <!-- HIKARICP -->
-      <dependency>
-         <groupId>com.zaxxer</groupId>
-         <artifactId>HikariCP</artifactId>
-         <version>${com.zaxxer.version}</version>
-      </dependency>
-
-      <!-- SPRING -->
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-webmvc</artifactId>
-         <version>${spring.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-test</artifactId>
-         <version>${spring.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-tx</artifactId>
-         <version>${spring.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-jdbc</artifactId>
-         <version>${spring.version}</version>
-      </dependency>
-
-      <!-- Validation -->
-      <dependency>
-         <groupId>javax.validation</groupId>
-         <artifactId>validation-api</artifactId>
-         <version>2.0.1.Final</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-validator</artifactId>
-         <version>6.0.10.Final</version>
-      </dependency>
-
-      <!-- JPA Provider (Hibernate) -->
-      <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-entitymanager</artifactId>
-         <version>${hibernate.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-jpamodelgen</artifactId>
-         <version>${hibernate.version}</version>
-      </dependency>
-
-      <!-- Spring Data JPA -->
-      <dependency>
-         <groupId>org.springframework.data</groupId>
-         <artifactId>spring-data-jpa</artifactId>
-         <version>2.0.7.RELEASE</version>
-      </dependency>
-
-
-   </dependencies>
-
-
-
-
-   <build>
-      <sourceDirectory>src</sourceDirectory>
-      <resources>
-         <resource>
-            <directory>resources</directory>
-            <excludes>
-               <exclude>**/*.java</exclude>
-            </excludes>
-         </resource>
-      </resources>
-      <plugins>
-         <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.7.0</version>
-            <configuration>
-               <source>1.8</source>
-               <target>1.8</target>
-            </configuration>
-         </plugin>
-
-         <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.0.0</version>
-            <configuration>
-               <!-- <warSourceDirectory>WebContent</warSourceDirectory> -->
-               <warSourceDirectory>src/main/webapp</warSourceDirectory>
-               <warName>computer-database</warName>
-               <failOnMissingWebXml>false</failOnMissingWebXml>
-            </configuration>
-         </plugin>
-
-
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>sql-maven-plugin</artifactId>
-            <version>1.5</version>
-
-            <dependencies>
-               <dependency>
-                  <groupId>mysql</groupId>
-                  <artifactId>mysql-connector-java</artifactId>
-                  <version>5.1.9</version>
-               </dependency>
-            </dependencies>
-
-            <configuration>
-               <driver>com.mysql.jdbc.Driver</driver>
-               <url>jdbc:mysql://localhost:3306/computer-database-test?zeroDateTimeBehavior=convertToNull</url>
-               <settingsKey>
-                  testDBKey
-               </settingsKey>
-            </configuration>
-
-            <executions>
-               <execution>
-      <?m2e execute onConfiguration?>
-                  <id>drop-table</id>
-                  <phase>process-test-resources</phase>
-                  <goals>
-                     <goal>execute</goal>
-                  </goals>
-                  <configuration>
-                     <autocommit>true</autocommit>
-                     <sqlCommand>DROP TABLE IF EXISTS company</sqlCommand>
-                     <sqlCommand>DROP TABLE IF EXISTS computer</sqlCommand>
-                  </configuration>
-               </execution>
-
-               <execution> <?m2e execute onConfiguration?>
-                  <id>create-table</id>
-                  <phase>process-test-resources</phase>
-                  <goals>
-                     <goal>execute</goal>
-                  </goals>
-                  <configuration>
-                     <autocommit>true</autocommit>
-                     <srcFiles>
-                        <srcFile>src/main/sql/com/excilys/computerdatabase/schema.sql</srcFile>
-                     </srcFiles>
-                  </configuration>
-               </execution>
-               <execution> <?m2e execute onConfiguration?>
-                  <id>insert-table</id>
-                  <phase>process-test-resources</phase>
-                  <goals>
-                     <goal>execute</goal>
-                  </goals>
-                  <configuration>
-                     <autocommit>true</autocommit>
-                     <srcFiles>
-                        <srcFile>src/test/sql/com/excilys/computerdatabase/entries.sql</srcFile>
-                     </srcFiles>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-      </plugins>
-
-      <finalName>computer-database</finalName>
-   </build>
+<plugin>
+<artifactId>maven-compiler-plugin</artifactId>
+<version>3.7.0</version>
+<configuration>
+<source>1.8</source>
+<target>1.8</target>
+</configuration>
+</plugin>
+<plugin>
+<artifactId>maven-war-plugin</artifactId>
+<version>3.0.0</version>
+<configuration>
+<warSourceDirectory>src/main/webapp</warSourceDirectory>
+<warName>computer-database</warName>
+<failOnMissingWebXml>false</failOnMissingWebXml>
+</configuration>
+</plugin>
+<plugin>
+<groupId>org.codehaus.mojo</groupId>
+<artifactId>sql-maven-plugin</artifactId>
+<version>1.5</version>
+<dependencies>
+<dependency>
+<groupId>mysql</groupId>
+<artifactId>mysql-connector-java</artifactId>
+<version>5.1.9</version>
+</dependency>
+</dependencies>
+<configuration>
+<driver>com.mysql.jdbc.Driver</driver>
+<url>jdbc:mysql://localhost:3306/computer-database-test?zeroDateTimeBehavior=convertToNull</url>
+<settingsKey>testDBKey</settingsKey>
+</configuration>
+<executions>
+<execution>
+<?m2e execute onConfiguration?>
+<id>create-schema</id>
+<phase>process-test-resources</phase>
+<goals>
+<goal>execute</goal>
+</goals>
+<configuration>
+<autocommit>true</autocommit>
+<sqlCommand>DROP TABLE IF EXISTS company</sqlCommand>
+<sqlCommand>DROP TABLE
+IF EXISTS computer</sqlCommand>
+<srcFiles>
+<srcFile>src/test/sql/schema.sql</srcFile>
+<srcFile>src/test/sql/entries.sql</srcFile>
+</srcFiles>
+</configuration>
+</execution>
+</executions>
+</plugin>
+<!-- <plugin> <groupId>com.mysema.maven</groupId> <artifactId>apt-maven-plugin</artifactId>
+<version>1.1.3</version> <executions> <execution> <goals> <goal>process</goal>
+</goals> <configuration> <outputDirectory>target/generated-sources/java</outputDirectory>
+<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor> </configuration>
+</execution> </executions> </plugin> -->
+</plugins>
+</pluginManagement>
+</build>
 </project>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>computer-database</artifactId>
+    <groupId>com.excilys.computerdatabase</groupId>
+    <version>0.6.1</version>
+  </parent>
+
+  <artifactId>console</artifactId>
+  <name>console</name>
+  <packaging>jar</packaging>
+
+  <properties>
+  </properties>
+
+  <dependencies>
+    <!-- CDB CORE -->
+    <dependency>
+      <groupId>com.excilys.computerdatabase</groupId>
+      <artifactId>core</artifactId>
+      <version>0.6.1</version>
+    </dependency>
+
+    <!-- CDB SERVICE -->
+    <dependency>
+      <groupId>com.excilys.computerdatabase</groupId>
+      <artifactId>service</artifactId>
+      <version>0.6.1</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+  </build>
+</project>

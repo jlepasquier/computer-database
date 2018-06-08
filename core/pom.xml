@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <artifactId>computer-database</artifactId>
+      <groupId>com.excilys.computerdatabase</groupId>
+      <version>0.6.1</version>
+   </parent>
+
+   <artifactId>core</artifactId>
+   <name>core</name>
+   <packaging>jar</packaging>
+
+   <properties></properties>
+
+   <dependencies>
+      <!-- JUNIT -->
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+      </dependency>
+
+      <!-- SERVLETS -->
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>javax.servlet-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.servlet.jsp</groupId>
+         <artifactId>javax.servlet.jsp-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+      <!-- TAGLIBS -->
+      <dependency>
+         <groupId>org.apache.taglibs</groupId>
+         <artifactId>taglibs-standard-spec</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.apache.taglibs</groupId>
+         <artifactId>taglibs-standard-impl</artifactId>
+      </dependency>
+
+      <!-- JPA Provider (Hibernate) -->
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-entitymanager</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-jpamodelgen</artifactId>
+      </dependency>
+
+      <!-- Spring Data JPA -->
+      <dependency>
+         <groupId>org.springframework.data</groupId>
+         <artifactId>spring-data-jpa</artifactId>
+      </dependency>
+   </dependencies>
+
+   <build></build>
+</project>
