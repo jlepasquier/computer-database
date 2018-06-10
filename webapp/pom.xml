@@ -35,21 +35,12 @@
          <version>0.6.1</version>
       </dependency>
 
-      <!-- APACHE COMMONS -->
-      <dependency>
-         <groupId>org.apache.commons</groupId>
-         <artifactId>commons-lang3</artifactId>
-      </dependency>
       <!-- JUNIT -->
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
       </dependency>
-      <!-- MYSQL -->
-      <dependency>
-         <groupId>mysql</groupId>
-         <artifactId>mysql-connector-java</artifactId>
-      </dependency>
+
       <!-- SLF4J -->
       <dependency>
          <groupId>org.slf4j</groupId>
@@ -74,12 +65,6 @@
       <dependency>
          <groupId>ch.qos.logback</groupId>
          <artifactId>logback-core</artifactId>
-      </dependency>
-      <!-- MOCKITO -->
-      <dependency>
-         <groupId>org.mockito</groupId>
-         <artifactId>mockito-all</artifactId>
-         <scope>test</scope>
       </dependency>
       <!-- SERVLETS -->
       <dependency>
@@ -107,11 +92,7 @@
          <groupId>org.apache.taglibs</groupId>
          <artifactId>taglibs-standard-impl</artifactId>
       </dependency>
-      <!-- HIKARICP -->
-      <dependency>
-         <groupId>com.zaxxer</groupId>
-         <artifactId>HikariCP</artifactId>
-      </dependency>
+     
       <!-- SPRING -->
       <dependency>
          <groupId>org.springframework</groupId>
@@ -151,11 +132,7 @@
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-entitymanager</artifactId>
       </dependency>
-      <!-- Spring Data JPA -->
-      <dependency>
-         <groupId>org.springframework.data</groupId>
-         <artifactId>spring-data-jpa</artifactId>
-      </dependency>
+
 
    </dependencies>
 

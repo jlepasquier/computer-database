@@ -8,12 +8,10 @@
       <groupId>com.excilys.computerdatabase</groupId>
       <version>0.6.1</version>
    </parent>
-
    <artifactId>persistence</artifactId>
+   <name>persistence</name>
    <packaging>jar</packaging>
 
-   <name>persistence</name>
-   <url>https://github.com/jlepasquier/computer-database</url>
 
    <properties></properties>
 
@@ -55,58 +53,10 @@
          <groupId>ch.qos.logback</groupId>
          <artifactId>logback-core</artifactId>
       </dependency>
-      <!-- MOCKITO -->
-      <dependency>
-         <groupId>org.mockito</groupId>
-         <artifactId>mockito-all</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <!-- SERVLETS -->
-      <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-         </dependency>
-
-         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-         </dependency>
-
-         <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-         </dependency>
-      <!-- TAGLIBS -->
-      <dependency>
-         <groupId>org.apache.taglibs</groupId>
-         <artifactId>taglibs-standard-spec</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.apache.taglibs</groupId>
-         <artifactId>taglibs-standard-impl</artifactId>
-      </dependency>
       <!-- HIKARICP -->
       <dependency>
          <groupId>com.zaxxer</groupId>
          <artifactId>HikariCP</artifactId>
-      </dependency>
-      <!-- SPRING -->
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-webmvc</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-test</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-tx</artifactId>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-jdbc</artifactId>
       </dependency>
       <!-- Validation -->
       <dependency>
@@ -126,12 +76,13 @@
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-entitymanager</artifactId>
       </dependency>
+
       <!-- Spring Data JPA -->
       <dependency>
          <groupId>org.springframework.data</groupId>
          <artifactId>spring-data-jpa</artifactId>
       </dependency>
-      
+
    </dependencies>
 
    <build>
