@@ -25,7 +25,7 @@ drop schema if exists `computer-database-db`;
   create table users (
   	id				bigint not null,
   	name			varchar(20) NOT NULL UNIQUE,
-  	password		varchar(20) NOT NULL,
+  	password		varchar(255) NOT NULL,
 	role_id			bigint not null,
   	constraint pk_user primary key (id))
   ;

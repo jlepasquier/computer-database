@@ -1,41 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>computer-database</artifactId>
-		<groupId>com.excilys.computerdatabase</groupId>
-		<version>0.6.1</version>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <artifactId>computer-database</artifactId>
+      <groupId>com.excilys.computerdatabase</groupId>
+      <version>0.6.1</version>
+   </parent>
 
-	<artifactId>service</artifactId>
-	<name>service</name>
-	<packaging>jar</packaging>
+   <artifactId>service</artifactId>
+   <name>service</name>
+   <packaging>jar</packaging>
 
-	<properties></properties>
+   <properties></properties>
 
-	<dependencies>
-		<!-- CDB CORE -->
-		<dependency>
-			<groupId>com.excilys.computerdatabase</groupId>
-			<artifactId>core</artifactId>
-			<version>0.6.1</version>
-		</dependency>
+   <dependencies>
+      <!-- CDB CORE -->
+      <dependency>
+         <groupId>com.excilys.computerdatabase</groupId>
+         <artifactId>core</artifactId>
+         <version>0.6.1</version>
+      </dependency>
 
-		<!-- CDB BINDING -->
-		<dependency>
-			<groupId>com.excilys.computerdatabase</groupId>
-			<artifactId>binding</artifactId>
-			<version>0.6.1</version>
-		</dependency>
+      <!-- CDB BINDING -->
+      <dependency>
+         <groupId>com.excilys.computerdatabase</groupId>
+         <artifactId>binding</artifactId>
+         <version>0.6.1</version>
+      </dependency>
 
-		<!-- CDB PERSISTENCE -->
-		<dependency>
-			<groupId>com.excilys.computerdatabase</groupId>
-			<artifactId>persistence</artifactId>
-			<version>0.6.1</version>
-		</dependency>
-	</dependencies>
+      <!-- CDB PERSISTENCE -->
+      <dependency>
+         <groupId>com.excilys.computerdatabase</groupId>
+         <artifactId>persistence</artifactId>
+         <version>0.6.1</version>
+      </dependency>
 
-	<build></build>
+      <!-- Spring security -->
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-web</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-config</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-taglibs</artifactId>
+      </dependency>
+   </dependencies>
+
+   <build></build>
 </project>

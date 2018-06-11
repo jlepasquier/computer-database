@@ -16,8 +16,10 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +35,8 @@ import com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import com.excilys.computerdatabase.model.CDBException;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
-import com.excilys.computerdatabase.model.User;
 import com.excilys.computerdatabase.service.CompanyService;
 import com.excilys.computerdatabase.service.ComputerService;
-import com.excilys.computerdatabase.service.UserService;
 
 @Controller
 @RequestMapping("/")
@@ -44,19 +44,22 @@ public class ComputerController {
 
     private ComputerService computerService;
     private CompanyService companyService;
-    private UserService userService;
 
     private static final String DEFAULT_PAGE = "1";
     private static final String DEFAULT_SEARCH = "";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
 
-    public ComputerController(ComputerService computerService, CompanyService companyService, UserService userService) {
+    public ComputerController(ComputerService computerService, CompanyService companyService) {
         super();
         this.computerService = computerService;
         this.companyService = companyService;
-        this.userService = userService;
-        LOGGER.debug("Instanciating Computer Controller");
+        LOGGER.debug("Instanciated Computer Controller");
+    }
+
+    @GetMapping(path = "/login")
+    public String loginPage() {
+        return "login";
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)

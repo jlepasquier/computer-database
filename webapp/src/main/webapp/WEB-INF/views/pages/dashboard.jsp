@@ -7,20 +7,7 @@
 <%@include file="../partials/header.jsp"%>
 
 <section id="main">
-	<div class="container">
-	
-	
-	<p>
-      Hello <b><c:out value="${pageContext.request.remoteUser}"/></b><br>
-      Roles: <b><sec:authentication property="principal.authorities" /></b>
-    </p>
-    
-    <form action="logout" method="post">
-      <input type="submit" value="Logout" />
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    </form>
-		
-	
+	<div class="container">	
 	
 		<%@include file="../partials/displayUserMessage.jsp"%>
 		
