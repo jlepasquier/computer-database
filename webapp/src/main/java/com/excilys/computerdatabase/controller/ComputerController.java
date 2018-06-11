@@ -33,8 +33,10 @@ import com.excilys.computerdatabase.mapper.ComputerDTOMapper;
 import com.excilys.computerdatabase.model.CDBException;
 import com.excilys.computerdatabase.model.Company;
 import com.excilys.computerdatabase.model.Computer;
+import com.excilys.computerdatabase.model.User;
 import com.excilys.computerdatabase.service.CompanyService;
 import com.excilys.computerdatabase.service.ComputerService;
+import com.excilys.computerdatabase.service.UserService;
 
 @Controller
 @RequestMapping("/")
@@ -42,16 +44,18 @@ public class ComputerController {
 
     private ComputerService computerService;
     private CompanyService companyService;
+    private UserService userService;
 
     private static final String DEFAULT_PAGE = "1";
     private static final String DEFAULT_SEARCH = "";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
 
-    public ComputerController(ComputerService computerService, CompanyService companyService) {
+    public ComputerController(ComputerService computerService, CompanyService companyService, UserService userService) {
         super();
         this.computerService = computerService;
         this.companyService = companyService;
+        this.userService = userService;
         LOGGER.debug("Instanciating Computer Controller");
     }
 

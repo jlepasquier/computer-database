@@ -92,7 +92,7 @@
          <groupId>org.apache.taglibs</groupId>
          <artifactId>taglibs-standard-impl</artifactId>
       </dependency>
-     
+
       <!-- SPRING -->
       <dependency>
          <groupId>org.springframework</groupId>
@@ -131,6 +131,20 @@
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate-entitymanager</artifactId>
+      </dependency>
+
+      <!-- Spring security -->
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-web</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-config</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-taglibs</artifactId>
       </dependency>
 
 
