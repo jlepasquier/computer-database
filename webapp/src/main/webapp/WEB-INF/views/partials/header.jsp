@@ -12,6 +12,7 @@
 <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
 <link href="static/css/main.css" rel="stylesheet" media="screen">
+<link href="static/css/custom.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -20,13 +21,14 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="dashboard"> Application -	Computer Database</a>
 			</div>
-			
-			<div class="navbar-header pull-right text-center">
-				<p class="navbar-brand my-0" style="margin-bottom:0;">Logged in as : <b><c:out value="${pageContext.request.remoteUser}"/></b></p>
-				    <form action="logout" method="post">
-				      <input type="submit" value="Logout" />
-				      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-				    </form>
-			</div>
+			<c:if test="${pageContext.request.remoteUser != null}">
+				<div class="navbar-header pull-right text-center">
+					<p class="text-secondary my-0" style="margin-bottom:0;">Logged in as : <b><c:out value="${pageContext.request.remoteUser}"/></b></p>
+					    <form action="logout" method="post">
+					      <input type="submit" value="Logout" />
+					      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					    </form>
+				</div>
+			</c:if>
 		</div>
 	</nav>
