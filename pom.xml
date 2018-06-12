@@ -33,6 +33,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <hibernate.version>5.3.1.Final</hibernate.version>
 <cdb.version>0.6.1</cdb.version>
 <jboss-logging.version>3.2.0.Final</jboss-logging.version>
+<springsecurityweb.version>3.2.3.RELEASE</springsecurityweb.version>
+<springsecuritytaglibs.version>3.0.5.RELEASE</springsecuritytaglibs.version>
+<springdatajpa.version>2.0.7.RELEASE</springdatajpa.version>
 </properties>
 
 <dependencyManagement>
@@ -181,7 +184,24 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <dependency>
 <groupId>org.springframework.data</groupId>
 <artifactId>spring-data-jpa</artifactId>
-<version>2.0.7.RELEASE</version>
+<version>${springdatajpa.version}</version>
+</dependency>
+
+<!--  Spring security -->
+<dependency>
+<groupId>org.springframework.security</groupId>
+<artifactId>spring-security-web</artifactId>
+<version>${springsecurityweb.version}</version>
+</dependency>
+<dependency>
+<groupId>org.springframework.security</groupId>
+<artifactId>spring-security-config</artifactId>
+<version>${springsecurityweb.version}</version>
+</dependency>
+<dependency>
+<groupId>org.springframework.security</groupId>
+<artifactId>spring-security-taglibs</artifactId>
+<version>${springsecuritytaglibs.version}</version>
 </dependency>
 </dependencies>
 </dependencyManagement>

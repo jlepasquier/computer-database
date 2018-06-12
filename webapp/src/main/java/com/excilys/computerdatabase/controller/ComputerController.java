@@ -16,8 +16,10 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,7 +54,12 @@ public class ComputerController {
         super();
         this.computerService = computerService;
         this.companyService = companyService;
-        LOGGER.debug("Instanciating Computer Controller");
+        LOGGER.debug("Instanciated Computer Controller");
+    }
+
+    @GetMapping(path = "/login")
+    public String loginPage() {
+        return "login";
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)

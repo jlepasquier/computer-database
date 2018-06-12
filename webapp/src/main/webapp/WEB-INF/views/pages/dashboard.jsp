@@ -2,11 +2,12 @@
 <%@page import="java.util.List"%>
 <%@page import="com.excilys.computerdatabase.dto.ComputerDTO"%>
 <%@ taglib prefix="paginator" uri="/WEB-INF/tlds/Paginator"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <%@include file="../partials/header.jsp"%>
 
 <section id="main">
-	<div class="container">
+	<div class="container">	
 	
 		<%@include file="../partials/displayUserMessage.jsp"%>
 		
